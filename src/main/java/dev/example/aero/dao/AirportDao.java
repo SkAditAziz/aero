@@ -8,4 +8,5 @@ public interface AirportDao {
     void save(Airport airport);
     List<Airport> findAll();
     Airport findByID(String code);
+    boolean deleteByID(String code);
 }

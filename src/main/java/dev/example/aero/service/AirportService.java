@@ -29,4 +29,11 @@ public class AirportService {
             return ResponseEntity.noContent().build();
         return ResponseEntity.ok(a);
     }
+
+    public ResponseEntity deleteById(String code){
+        if(airportDao.deleteByID(code))
+            return ResponseEntity.ok().build();
+        else
+            return ResponseEntity.notFound().build();
+    }
 }

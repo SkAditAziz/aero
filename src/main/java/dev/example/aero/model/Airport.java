@@ -16,15 +16,9 @@ public class Airport {
     @Column(name = "CODE")
     private String code;
 
-    @Column(
-            name = "NAME",
-            nullable = false
-    )
+    @Column(name = "NAME",length = 1000,nullable = false)
     private String name;
 
-    @Column(
-            name = "CITY",
-            nullable = false
-    )
+    @Column(name = "CITY",nullable = false)
     private String city;
 }
