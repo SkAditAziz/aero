@@ -34,11 +34,11 @@ public class Flight implements Serializable {
     @Column(name = "AIRLINE_NAME")
     private String airline;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "FROM_AIRPORT_CODE", nullable = false)
     private Airport fromAirport;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "TO_AIRPORT_CODE", nullable = false)
     private Airport toAirport;
 
