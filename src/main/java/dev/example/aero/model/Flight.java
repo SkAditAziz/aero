@@ -1,10 +1,10 @@
 package dev.example.aero.model;
 
+import dev.example.aero.custom.CustomFlightIDGenerator;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.io.Serializable;
@@ -26,7 +26,7 @@ public class Flight implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "custom-flight-id-generator")
     @GenericGenerator(
             name = "custom-flight-id-generator",
-            strategy = "dev.example.aero.custom.CustomFlightIDGenerator"
+            type = CustomFlightIDGenerator.class
     )
     @Column(name = "FLIGHT_ID")
     private String id;
