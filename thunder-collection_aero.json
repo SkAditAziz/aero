@@ -1,0 +1,150 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "aero",
+    "dateExported": "2023-11-10T18:20:22.149Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "adaf7fd2-53ca-4f69-b253-7b126195ca4e",
+            "name": "airports",
+            "containerId": "",
+            "created": "2023-11-10T18:19:54.909Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "caf26294-b646-46e7-972b-e05d2638edc0",
+            "name": "flights",
+            "containerId": "",
+            "created": "2023-11-10T18:20:10.498Z",
+            "sortNum": 20000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "75376a54-bb6a-4eca-8a8d-3bfdf61093e2",
+            "colId": "b1ac7054-c271-427d-a620-f8f0e78bd7df",
+            "containerId": "adaf7fd2-53ca-4f69-b253-7b126195ca4e",
+            "name": "an Airport with Code",
+            "url": "http://localhost:8080/airports/BRT",
+            "method": "DELETE",
+            "sortNum": 10000,
+            "created": "2023-11-09T17:23:18.188Z",
+            "modified": "2023-11-10T17:59:26.604Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "4ddafd54-aa85-485c-8536-47dd9536f527",
+            "colId": "b1ac7054-c271-427d-a620-f8f0e78bd7df",
+            "containerId": "caf26294-b646-46e7-972b-e05d2638edc0",
+            "name": "available flights from to to",
+            "url": "http://localhost:8080/flights?from=DAC&to=CXB",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-11-09T17:51:28.362Z",
+            "modified": "2023-11-10T17:59:10.347Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "from",
+                    "value": "DAC",
+                    "isPath": false
+                },
+                {
+                    "name": "to",
+                    "value": "CXB",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "4f7f4309-3220-494d-8693-739828ca72c2",
+            "colId": "b1ac7054-c271-427d-a620-f8f0e78bd7df",
+            "containerId": "adaf7fd2-53ca-4f69-b253-7b126195ca4e",
+            "name": "all airports",
+            "url": "http://localhost:8080/airports",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-11-09T17:24:01.595Z",
+            "modified": "2023-11-10T17:59:21.581Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "640faaf7-3ea0-4bb5-a749-a9715446052d",
+            "colId": "b1ac7054-c271-427d-a620-f8f0e78bd7df",
+            "containerId": "caf26294-b646-46e7-972b-e05d2638edc0",
+            "name": "flight from to (rest-data-api)",
+            "url": "http://localhost:8080/rest-data-api/flights?from=DAC&to=CXB",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-11-10T17:51:27.730Z",
+            "modified": "2023-11-10T18:14:07.826Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "from",
+                    "value": "DAC",
+                    "isPath": false
+                },
+                {
+                    "name": "to",
+                    "value": "CXB",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "4a45c513-8d9a-4246-86a7-d9ef5ad60c5b",
+            "colId": "b1ac7054-c271-427d-a620-f8f0e78bd7df",
+            "containerId": "adaf7fd2-53ca-4f69-b253-7b126195ca4e",
+            "name": "An airport with Code",
+            "url": "http://localhost:8080/airports/CCU",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-11-09T17:24:34.853Z",
+            "modified": "2023-11-10T17:59:16.092Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "b76ede9d-463f-4154-9120-b78d1ea94ef1",
+            "colId": "b1ac7054-c271-427d-a620-f8f0e78bd7df",
+            "containerId": "caf26294-b646-46e7-972b-e05d2638edc0",
+            "name": "sorting flights (rest-data-api)",
+            "url": "http://localhost:8080/rest-data-api/flights?sort=airline",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-11-10T18:18:04.715Z",
+            "modified": "2023-11-10T18:18:04.715Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "sort",
+                    "value": "airline",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "fccc78ae-d782-41ac-bcba-4802419bac4f",
+            "colId": "b1ac7054-c271-427d-a620-f8f0e78bd7df",
+            "containerId": "caf26294-b646-46e7-972b-e05d2638edc0",
+            "name": "flight by id (rest-data-api)",
+            "url": "http://localhost:8080/rest-data-api/flights/CXB-DAC-001",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2023-11-10T18:19:38.933Z",
+            "modified": "2023-11-10T18:19:38.933Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        }
+    ]
+}
