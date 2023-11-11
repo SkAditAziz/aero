@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 @Service
 public class FlightScheduleService {
@@ -30,12 +31,14 @@ public class FlightScheduleService {
         else{
             for( String flightID : flightsCodeOnDate){
                 String[] airportsCodes = flightID.split("-");
-                if(from.equals(airportsCodes[0]) && to.equals(airportsCodes[1]))
-                    flightsOnTheDay.add(flightService.findFlightToFormWithID(flightID));
+                if(from.equals(airportsCodes[0]) && to.equals(airportsCodes[1])) {
+                    flightsOnTheDay.add(flightDAO.findById(flightID).orElse(null));
+                }
             }
         }
         if(flightsOnTheDay.isEmpty())
             return ResponseEntity.noContent().build();
+        flightsOnTheDay.sort(Comparator.comparing(Flight::getDepartureTime));
         return ResponseEntity.ok(flightsOnTheDay);
     }
 }

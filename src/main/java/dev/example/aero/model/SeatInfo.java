@@ -1,5 +1,6 @@
 package dev.example.aero.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import dev.example.aero.model.Enumaration.SeatClassType;
 import dev.example.aero.model.Enumaration.SeatClassTypeConverter;
 import jakarta.persistence.*;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Entity
 @Table(name="SEAT_INFORMATION")
+@JsonIgnoreProperties({"flight"})   // Flight in SeatInfo creates a circular dependency, so ignore this while serialization
 public class SeatInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,5 +40,15 @@ public class SeatInfo implements Serializable {
         this.seatClassType = seatClassType;
         this.availableSeats = availableSeats;
         this.fare = fare;
+    }
+
+    @Override
+    public String toString() {
+        return "SeatInfo{" +
+                "id=" + id +
+                ", seatClassType=" + seatClassType +
+                ", availableSeats=" + availableSeats +
+                ", fare=" + fare +
+                '}';
     }
 }

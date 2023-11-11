@@ -23,7 +23,4 @@ public class FlightService {
         else
             return ResponseEntity.ok(availableFlights);
     }
-    public Flight findFlightToFormWithID(String flightID){
-        return flightDAO.getById(flightID);
-    }
 }
