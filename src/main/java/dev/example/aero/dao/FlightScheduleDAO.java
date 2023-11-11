@@ -10,4 +10,6 @@ import java.util.List;
 public interface FlightScheduleDAO extends JpaRepository<FlightSchedule,Long> {
     @Query("SELECT fs.flightIds FROM FlightSchedule fs WHERE fs.flightDate = :desiredDate")
     List<String> findCodesByDate(LocalDate desiredDate);
+
+    FlightSchedule findByFlightDate(LocalDate flightDate);
 }

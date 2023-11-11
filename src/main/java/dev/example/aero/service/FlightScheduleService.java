@@ -3,13 +3,13 @@ package dev.example.aero.service;
 import dev.example.aero.dao.FlightDAO;
 import dev.example.aero.dao.FlightScheduleDAO;
 import dev.example.aero.model.Flight;
+import dev.example.aero.model.FlightSchedule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 @Service
@@ -40,5 +40,16 @@ public class FlightScheduleService {
             return ResponseEntity.noContent().build();
         flightsOnTheDay.sort(Comparator.comparing(Flight::getDepartureTime));
         return ResponseEntity.ok(flightsOnTheDay);
+    }
+
+    // TODO add constraint violation exception handler
+    public void addOrUpdateFlightSchedule(LocalDate flightDate, List<String> flightIDs) {
+        FlightSchedule existedSchedule = flightScheduleDAO.findByFlightDate(flightDate);
+        if(existedSchedule == null){
+            existedSchedule = new FlightSchedule(flightDate,flightIDs);
+        } else {
+            existedSchedule.getFlightIds().addAll(flightIDs);
+        }
+        flightScheduleDAO.save(existedSchedule);
     }
 }
