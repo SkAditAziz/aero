@@ -5,12 +5,15 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -63,4 +66,19 @@ public class Flight implements Serializable {
 
     @Column(name="DISTANCE(KM)")
     private double distance;
+
+    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SeatInfo> seatInfoList = new ArrayList<>();
+
+    public Flight(String id, String airline, Airport fromAirport, Airport toAirport, LocalTime departureTime, ZoneId departureTimeZone, LocalTime arrivalTime, ZoneId arrivalTimeZone, double distance) {
+        this.id = id;
+        this.airline = airline;
+        this.fromAirport = fromAirport;
+        this.toAirport = toAirport;
+        this.departureTime = departureTime;
+        this.departureTimeZone = departureTimeZone;
+        this.arrivalTime = arrivalTime;
+        this.arrivalTimeZone = arrivalTimeZone;
+        this.distance = distance;
+    }
 }

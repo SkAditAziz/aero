@@ -34,7 +34,8 @@ public class FlightScheduleService {
                     flightsOnTheDay.add(flightService.findFlightToFormWithID(flightID));
             }
         }
-        System.out.println(Arrays.toString(flightsOnTheDay.toArray()));
+        if(flightsOnTheDay.isEmpty())
+            return ResponseEntity.noContent().build();
         return ResponseEntity.ok(flightsOnTheDay);
     }
 }
