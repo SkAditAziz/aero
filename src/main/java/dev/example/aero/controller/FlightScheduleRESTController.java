@@ -22,7 +22,10 @@ public class FlightScheduleRESTController {
             @RequestParam String from, @RequestParam String to, @RequestParam String date,
             @RequestParam String classType, @RequestParam int noPassengers
     ){
-        return flightScheduleService.getFlightDetailsOnDate(from,to,date,classType,noPassengers);
+        List<FlightDetailsResponseDTO> flightResponseDTOList = flightScheduleService.getFlightDetailsOnDate(from,to,date,classType,noPassengers);
+        if(flightResponseDTOList.isEmpty())
+            return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(flightResponseDTOList);
     }
 
     @PostMapping

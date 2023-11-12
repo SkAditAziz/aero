@@ -15,25 +15,16 @@ public class AirportService {
     @Autowired
     private AirportDao airportDao;
 
-    public ResponseEntity<List<Airport>> getAllAirports() {
-        List<Airport> airportList = airportDao.findAll();
-        if (airportList.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(airportList);
+    public List<Airport> getAllAirports() {
+        return airportDao.findAll();
     }
 
-    public ResponseEntity<Airport> findById(String code) {
-        Airport a = airportDao.findByID(code);
-        if(a == null)
-            return ResponseEntity.noContent().build();
-        return ResponseEntity.ok(a);
+    public Airport findById(String code) {
+        return airportDao.findByID(code);
+
     }
 
-    public ResponseEntity deleteById(String code){
-        if(airportDao.deleteByID(code))
-            return ResponseEntity.ok().build();
-        else
-            return ResponseEntity.notFound().build();
+    public boolean deleteById(String code){
+        return airportDao.deleteByID(code);
     }
 }

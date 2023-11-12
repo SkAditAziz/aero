@@ -16,16 +16,24 @@ public class AirportRESTController {
 
     @GetMapping("")
     public ResponseEntity<List<Airport>> airportsList() {
-        return airportService.getAllAirports();
+        List<Airport> airportList = airportService.getAllAirports();
+        if (airportList.isEmpty())
+            return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(airportList);
     }
 
     @GetMapping("/{code}")
     public ResponseEntity<Airport> airportByCode(@PathVariable("code") String code) {
-        return airportService.findById(code);
+        Airport a = airportService.findById(code);
+        if(a == null)
+            return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(a);
     }
 
     @DeleteMapping("/{code}")
     public ResponseEntity deleteAirportByCode(@PathVariable("code") String code){
-        return airportService.deleteById(code);
+        if(airportService.deleteById(code))
+            return ResponseEntity.ok().build();
+        return ResponseEntity.notFound().build();
     }
 }

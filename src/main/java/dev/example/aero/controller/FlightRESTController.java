@@ -22,6 +22,9 @@ public class FlightRESTController {
     private FlightService flightService;
     @GetMapping
     public ResponseEntity<List<Flight>> getFlight(@RequestParam String from, @RequestParam String to){
-        return flightService.findFlightsToFrom(to,from);
+        List<Flight> availableFlights = flightService.findFlightsToFrom(to,from);
+        if(availableFlights.isEmpty())
+            return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(availableFlights);
     }
 }

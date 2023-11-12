@@ -59,15 +59,14 @@ public class FlightScheduleService {
         flightScheduleDAO.save(existedSchedule);
     }
 
-    public ResponseEntity<List<FlightDetailsResponseDTO>> getFlightDetailsOnDate(String from, String to, String date, String classType, int noPassengers) {
+    public List<FlightDetailsResponseDTO> getFlightDetailsOnDate(String from, String to, String date, String classType, int noPassengers) {
         List<Flight> flightsOnTheDate = getFlightsOnDate(from,to,date);
         if(flightsOnTheDate.isEmpty()){
-            return ResponseEntity.noContent().build();
+            return Collections.emptyList();
         }
         FlightDetailsResponseDTOMapper flightDetailsResponseDTOMapper = new FlightDetailsResponseDTOMapper(classType, noPassengers);
-        List<FlightDetailsResponseDTO> flightResponseDTOList = flightsOnTheDate.stream()
+        return flightsOnTheDate.stream()
                 .map(flightDetailsResponseDTOMapper)
                 .toList();
-        return ResponseEntity.ok(flightResponseDTOList);
     }
 }

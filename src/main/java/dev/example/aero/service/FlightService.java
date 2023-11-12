@@ -16,11 +16,7 @@ public class FlightService {
     @Autowired
     private AirportDao airportDao;
 
-    public ResponseEntity<List<Flight>> findFlightsToFrom(String to, String from) {
-        List<Flight> availableFlights =  flightDAO.findByFromAirportAndToAirport(airportDao.findByID(from), airportDao.findByID(to));
-        if(availableFlights.isEmpty())
-            return ResponseEntity.noContent().build();
-        else
-            return ResponseEntity.ok(availableFlights);
+    public List<Flight> findFlightsToFrom(String to, String from) {
+        return flightDAO.findByFromAirportAndToAirport(airportDao.findByID(from), airportDao.findByID(to));
     }
 }
