@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -37,7 +38,7 @@ public class FlightScheduleService {
 
         List<Flight> flightsOnTheDay = new ArrayList<>();
         if(desiredFLightCodes.isEmpty())
-            return null;
+            return Collections.emptyList();
         else{
             for( String flightID : desiredFLightCodes) {
                 flightsOnTheDay.add(flightDAO.findById(flightID).orElse(null));
@@ -60,6 +61,9 @@ public class FlightScheduleService {
 
     public ResponseEntity<List<FlightDetailsResponseDTO>> getFlightDetailsOnDate(String from, String to, String date, String classType, int noPassengers) {
         List<Flight> flightsOnTheDate = getFlightsOnDate(from,to,date);
+        if(flightsOnTheDate.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
         FlightDetailsResponseDTOMapper flightDetailsResponseDTOMapper = new FlightDetailsResponseDTOMapper(classType, noPassengers);
         List<FlightDetailsResponseDTO> flightResponseDTOList = flightsOnTheDate.stream()
                 .map(flightDetailsResponseDTOMapper)
