@@ -49,7 +49,6 @@ public class FlightScheduleService {
         return flightsOnTheDay;
     }
 
-    // TODO add constraint violation exception handler
     public void addOrUpdateFlightSchedule(LocalDate flightDate, List<String> flightIDs) throws DataIntegrityViolationException {
         FlightSchedule existedSchedule = flightScheduleDAO.findByFlightDate(flightDate);
         if (existedSchedule == null) {
