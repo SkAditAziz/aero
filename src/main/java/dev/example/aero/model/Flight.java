@@ -5,13 +5,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,12 +22,6 @@ import java.util.List;
 //        @UniqueConstraint(name = "UniqueRunwayUseDeparture", columnNames = {"FROM_AIRPORT_CODE","ARRIVAL_TIME","DEPART_TIME"}),
 //        @UniqueConstraint(name = "UniqueRunwayUseArrival", columnNames = {"TO_AIRPORT_CODE","ARRIVAL_TIME", "DEPART_TIME"})
 })
-/*
-    It's a temporary solution. when I was returning a bunch of data from FlightScheduleService.getFlightsOnDate()
-    com.fasterxml.jackson.databind.exc.InvalidDefinitionException: No serializer found for class org.hibernate.proxy.pojo.bytebuddy.ByteBuddyInterceptor and no properties discovered to create BeanSerializer (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS) (through reference chain: java.util.ArrayList[0]->dev.example.aero.model.Flight$HibernateProxy$fDX4dqIt["hibernateLazyInitializer"])
-    Briefly : is related to the serialization of Hibernate proxy objects. When you fetch an entity from the database using Hibernate, it may be wrapped in a proxy object (in this case, a ByteBuddyInterceptor) for lazy loading
- */
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // TODO: add FlightDTO and remove this ignore property
 public class Flight implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "custom-flight-id-generator")
@@ -80,5 +71,19 @@ public class Flight implements Serializable {
         this.arrivalTime = arrivalTime;
         this.arrivalTimeZone = arrivalTimeZone;
         this.distance = distance;
+    }
+
+    public String getDuration(){
+        ZonedDateTime departureZonedDateTime = ZonedDateTime.of(ZonedDateTime.now().toLocalDate(),this.departureTime,this.departureTimeZone);
+        ZonedDateTime arrivalZonedDateTime = ZonedDateTime.of(ZonedDateTime.now().toLocalDate(),this.arrivalTime,this.arrivalTimeZone);
+        // Ensure arrival is after departure
+        if (arrivalZonedDateTime.isBefore(departureZonedDateTime)) {
+            arrivalZonedDateTime = arrivalZonedDateTime.plusDays(1);
+        }
+        Duration duration = Duration.between(arrivalZonedDateTime,departureZonedDateTime);
+        long days = Math.abs(duration.toDays());
+        long hours = Math.abs(duration.toHoursPart());
+        long minutes = Math.abs(duration.toMinutesPart());
+        return (days == 0) ? ((hours != 0) ? (hours + " H " + minutes + " M") : (minutes + " M")) : (days + " D " +  hours + " H " + minutes + " M");
     }
 }

@@ -2,6 +2,8 @@ package dev.example.aero.service;
 
 import dev.example.aero.dao.FlightDAO;
 import dev.example.aero.dao.FlightScheduleDAO;
+import dev.example.aero.dto.FlightDetailsResponseDTO;
+import dev.example.aero.dto.mapper.FlightDetailsResponseDTOMapper;
 import dev.example.aero.model.Flight;
 import dev.example.aero.model.FlightSchedule;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Pattern;
+
 @Service
 public class FlightScheduleService {
     @Autowired
@@ -21,25 +25,26 @@ public class FlightScheduleService {
     @Autowired
     private FlightService flightService;
 
-
-    public ResponseEntity<List<Flight>> getFlightsOnDate(String from, String to, String date) {
+    public List<Flight> getFlightsOnDate(String from, String to, String date) {
         LocalDate desiredDate = LocalDate.parse(date);
         List<String> flightsCodeOnDate = flightScheduleDAO.findCodesByDate(desiredDate);
+
+        String regex = String.format("%s-%s-\\d{3}", from, to);
+        Pattern pattern = Pattern.compile(regex);
+        List<String> desiredFLightCodes = flightsCodeOnDate.stream()
+                .filter(pattern.asPredicate())
+                .toList();
+
         List<Flight> flightsOnTheDay = new ArrayList<>();
-        if(flightsCodeOnDate.isEmpty())
-            return ResponseEntity.noContent().build();
+        if(desiredFLightCodes.isEmpty())
+            return null;
         else{
-            for( String flightID : flightsCodeOnDate){
-                String[] airportsCodes = flightID.split("-");
-                if(from.equals(airportsCodes[0]) && to.equals(airportsCodes[1])) {
-                    flightsOnTheDay.add(flightDAO.findById(flightID).orElse(null));
-                }
+            for( String flightID : desiredFLightCodes) {
+                flightsOnTheDay.add(flightDAO.findById(flightID).orElse(null));
             }
         }
-        if(flightsOnTheDay.isEmpty())
-            return ResponseEntity.noContent().build();
         flightsOnTheDay.sort(Comparator.comparing(Flight::getDepartureTime));
-        return ResponseEntity.ok(flightsOnTheDay);
+        return flightsOnTheDay;
     }
 
     // TODO add constraint violation exception handler
@@ -51,5 +56,14 @@ public class FlightScheduleService {
             existedSchedule.getFlightIds().addAll(flightIDs);
         }
         flightScheduleDAO.save(existedSchedule);
+    }
+
+    public ResponseEntity<List<FlightDetailsResponseDTO>> getFlightDetailsOnDate(String from, String to, String date, String classType, int noPassengers) {
+        List<Flight> flightsOnTheDate = getFlightsOnDate(from,to,date);
+        FlightDetailsResponseDTOMapper flightDetailsResponseDTOMapper = new FlightDetailsResponseDTOMapper(classType, noPassengers);
+        List<FlightDetailsResponseDTO> flightResponseDTOList = flightsOnTheDate.stream()
+                .map(flightDetailsResponseDTOMapper)
+                .toList();
+        return ResponseEntity.ok(flightResponseDTOList);
     }
 }

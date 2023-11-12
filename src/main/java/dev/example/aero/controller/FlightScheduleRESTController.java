@@ -1,6 +1,6 @@
 package dev.example.aero.controller;
 
-import dev.example.aero.model.Flight;
+import dev.example.aero.dto.FlightDetailsResponseDTO;
 import dev.example.aero.model.FlightSchedule;
 import dev.example.aero.service.FlightScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +18,11 @@ public class FlightScheduleRESTController {
     private FlightScheduleService flightScheduleService;
 
     @GetMapping
-    public ResponseEntity<List<Flight>> getFlightsScheduleOnDate (@RequestParam String from, @RequestParam String to, @RequestParam String date){
-        return flightScheduleService.getFlightsOnDate(from, to, date);
+    public ResponseEntity<List<FlightDetailsResponseDTO>> getFlightDetailsOnDate(
+            @RequestParam String from, @RequestParam String to, @RequestParam String date,
+            @RequestParam String classType, @RequestParam int noPassengers
+    ){
+        return flightScheduleService.getFlightDetailsOnDate(from,to,date,classType,noPassengers);
     }
 
     @PostMapping
