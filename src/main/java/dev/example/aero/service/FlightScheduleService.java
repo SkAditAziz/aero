@@ -7,6 +7,7 @@ import dev.example.aero.dto.mapper.FlightDetailsResponseDTOMapper;
 import dev.example.aero.model.Flight;
 import dev.example.aero.model.FlightSchedule;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -49,10 +50,10 @@ public class FlightScheduleService {
     }
 
     // TODO add constraint violation exception handler
-    public void addOrUpdateFlightSchedule(LocalDate flightDate, List<String> flightIDs) {
+    public void addOrUpdateFlightSchedule(LocalDate flightDate, List<String> flightIDs) throws DataIntegrityViolationException {
         FlightSchedule existedSchedule = flightScheduleDAO.findByFlightDate(flightDate);
-        if(existedSchedule == null){
-            existedSchedule = new FlightSchedule(flightDate,flightIDs);
+        if (existedSchedule == null) {
+            existedSchedule = new FlightSchedule(flightDate, flightIDs);
         } else {
             existedSchedule.getFlightIds().addAll(flightIDs);
         }
