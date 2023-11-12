@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "aero",
-    "dateExported": "2023-11-10T18:20:22.149Z",
+    "dateExported": "2023-11-12T16:10:54.668Z",
     "version": "1.1",
     "folders": [
         {
@@ -17,6 +17,13 @@
             "containerId": "",
             "created": "2023-11-10T18:20:10.498Z",
             "sortNum": 20000
+        },
+        {
+            "_id": "d8ffd462-e4fc-44df-a6c4-8c527cd674aa",
+            "name": "schedule",
+            "containerId": "",
+            "created": "2023-11-10T22:08:08.476Z",
+            "sortNum": 30000
         }
     ],
     "requests": [
@@ -25,11 +32,11 @@
             "colId": "b1ac7054-c271-427d-a620-f8f0e78bd7df",
             "containerId": "adaf7fd2-53ca-4f69-b253-7b126195ca4e",
             "name": "an Airport with Code",
-            "url": "http://localhost:8080/airports/BRT",
-            "method": "DELETE",
+            "url": "http://localhost:8080/airports/CCU",
+            "method": "GET",
             "sortNum": 10000,
             "created": "2023-11-09T17:23:18.188Z",
-            "modified": "2023-11-10T17:59:26.604Z",
+            "modified": "2023-11-12T16:06:41.925Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -54,6 +61,36 @@
                 {
                     "name": "to",
                     "value": "CXB",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "f6ad5f41-e7ce-4fc1-bd78-f1449cc00b85",
+            "colId": "b1ac7054-c271-427d-a620-f8f0e78bd7df",
+            "containerId": "d8ffd462-e4fc-44df-a6c4-8c527cd674aa",
+            "name": "(depricated) flights on a date from to airport",
+            "url": "http://localhost:8080/schedule?from=DAC&to=ZYL&date=2023-11-26",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-11-10T21:56:02.589Z",
+            "modified": "2023-11-12T15:12:58.831Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "from",
+                    "value": "DAC",
+                    "isPath": false
+                },
+                {
+                    "name": "to",
+                    "value": "ZYL",
+                    "isPath": false
+                },
+                {
+                    "name": "date",
+                    "value": "2023-11-26",
                     "isPath": false
                 }
             ],
@@ -102,12 +139,12 @@
             "_id": "4a45c513-8d9a-4246-86a7-d9ef5ad60c5b",
             "colId": "b1ac7054-c271-427d-a620-f8f0e78bd7df",
             "containerId": "adaf7fd2-53ca-4f69-b253-7b126195ca4e",
-            "name": "An airport with Code",
-            "url": "http://localhost:8080/airports/CCU",
+            "name": "An airport with Code (rest-data-api)",
+            "url": "http://localhost:8080/rest-data-api/airports/CCU",
             "method": "GET",
             "sortNum": 30000,
             "created": "2023-11-09T17:24:34.853Z",
-            "modified": "2023-11-10T17:59:16.092Z",
+            "modified": "2023-11-12T16:07:04.945Z",
             "headers": [],
             "params": [],
             "tests": []
@@ -144,6 +181,65 @@
             "modified": "2023-11-10T18:19:38.933Z",
             "headers": [],
             "params": [],
+            "tests": []
+        },
+        {
+            "_id": "616871dc-c6e0-45f5-974c-cd4b27080d9b",
+            "colId": "b1ac7054-c271-427d-a620-f8f0e78bd7df",
+            "containerId": "d8ffd462-e4fc-44df-a6c4-8c527cd674aa",
+            "name": "New Or Update Schedule of a day",
+            "url": "http://localhost:8080/schedule",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2023-11-11T18:46:37.379Z",
+            "modified": "2023-11-11T18:46:37.379Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"flightDate\": \"2023-11-30\",\n  \"flightIds\": [\"CCU-DAC-001\",\"CGP-CCU-001\",\"CXB-DAC-001\",\"CXB-DAC-002\",\"DAC-CXB-001\",\"DAC-CXB-002\",\"DAC-CXB-003\"]\n}\n\n",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "ce43bc5c-e8c5-44ee-a285-f9a9581799be",
+            "colId": "b1ac7054-c271-427d-a620-f8f0e78bd7df",
+            "containerId": "d8ffd462-e4fc-44df-a6c4-8c527cd674aa",
+            "name": "(***) Schedule with ALL the params",
+            "url": "http://localhost:8080/schedule?from=DAC&to=CXB&date=2023-11-26&classType=ECO&noPassengers=2",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2023-11-12T16:05:44.955Z",
+            "modified": "2023-11-12T16:10:42.484Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "from",
+                    "value": "DAC",
+                    "isPath": false
+                },
+                {
+                    "name": "to",
+                    "value": "CXB",
+                    "isPath": false
+                },
+                {
+                    "name": "date",
+                    "value": "2023-11-26",
+                    "isPath": false
+                },
+                {
+                    "name": "classType",
+                    "value": "ECO",
+                    "isPath": false
+                },
+                {
+                    "name": "noPassengers",
+                    "value": "2",
+                    "isPath": false
+                }
+            ],
             "tests": []
         }
     ]
