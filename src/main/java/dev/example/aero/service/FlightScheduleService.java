@@ -1,11 +1,11 @@
 package dev.example.aero.service;
 
-import dev.example.aero.dao.FlightScheduleDAO;
 import dev.example.aero.dto.FlightDetailsResponseDTO;
 import dev.example.aero.dto.mapper.FlightDetailsResponseDTOMapper;
 import dev.example.aero.model.Flight;
 import dev.example.aero.model.FlightSchedule;
 import dev.example.aero.repository.FlightRepository;
+import dev.example.aero.repository.FlightScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 @Service
 public class FlightScheduleService {
     @Autowired
-    private FlightScheduleDAO flightScheduleDAO;
+    private FlightScheduleRepository flightScheduleRepository;
     @Autowired
     private FlightRepository flightRepository;
     @Autowired
@@ -28,7 +28,7 @@ public class FlightScheduleService {
 
     public List<Flight> getFlightsOnDate(String from, String to, String date) {
         LocalDate desiredDate = LocalDate.parse(date);
-        List<String> flightsCodeOnDate = flightScheduleDAO.findCodesByDate(desiredDate);
+        List<String> flightsCodeOnDate = flightScheduleRepository.findCodesByDate(desiredDate);
 
         String regex = String.format("%s-%s-\\d{3}", from, to);
         Pattern pattern = Pattern.compile(regex);
@@ -49,13 +49,13 @@ public class FlightScheduleService {
     }
 
     public void addOrUpdateFlightSchedule(LocalDate flightDate, List<String> flightIDs) throws DataIntegrityViolationException {
-        FlightSchedule existedSchedule = flightScheduleDAO.findByFlightDate(flightDate);
+        FlightSchedule existedSchedule = flightScheduleRepository.findByFlightDate(flightDate);
         if (existedSchedule == null) {
             existedSchedule = new FlightSchedule(flightDate, flightIDs);
         } else {
             existedSchedule.getFlightIds().addAll(flightIDs);
         }
-        flightScheduleDAO.save(existedSchedule);
+        flightScheduleRepository.save(existedSchedule);
     }
 
     public List<FlightDetailsResponseDTO> getFlightDetailsOnDate(String from, String to, String date, String classType, int noPassengers) {
