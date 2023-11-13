@@ -3,8 +3,9 @@ package dev.example.aero.controller;
 import dev.example.aero.model.Airport;
 import dev.example.aero.service.AirportService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -14,26 +15,24 @@ public class AirportRESTController {
     @Autowired
     private AirportService airportService;
 
-    @GetMapping("")
-    public ResponseEntity<List<Airport>> airportsList() {
-        List<Airport> airportList = airportService.getAllAirports();
-        if (airportList.isEmpty())
-            return ResponseEntity.noContent().build();
-        return ResponseEntity.ok(airportList);
+    @GetMapping
+    public List<Airport> airportsList() {
+        return airportService.getAllAirports();
     }
 
     @GetMapping("/{code}")
-    public ResponseEntity<Airport> airportByCode(@PathVariable("code") String code) {
+    public Airport airportByCode(@PathVariable("code") String code) {
         Airport a = airportService.findById(code);
-        if(a == null)
-            return ResponseEntity.noContent().build();
-        return ResponseEntity.ok(a);
+        if (a == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"No airport found by with the code");
+        return a;
     }
 
     @DeleteMapping("/{code}")
-    public ResponseEntity deleteAirportByCode(@PathVariable("code") String code){
-        if(airportService.deleteById(code))
-            return ResponseEntity.ok().build();
-        return ResponseEntity.notFound().build();
+    public String deleteAirportByCode(@PathVariable("code") String code) {
+        if (airportService.deleteById(code))
+            return "The Airport is deleted!";
+        else
+            return "Internal Error";
     }
 }
