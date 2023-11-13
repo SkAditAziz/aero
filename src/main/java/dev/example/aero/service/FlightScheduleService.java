@@ -40,8 +40,8 @@ public class FlightScheduleService {
         List<Flight> flightsOnTheDay = new ArrayList<>();
         if(desiredFLightCodes.isEmpty())
             return Collections.emptyList();
-        else{
-            for( String flightID : desiredFLightCodes) {
+        else {
+            for(String flightID : desiredFLightCodes) {
                 flightsOnTheDay.add(flightDAO.findById(flightID).orElse(null));
             }
         }
@@ -61,7 +61,7 @@ public class FlightScheduleService {
 
     public List<FlightDetailsResponseDTO> getFlightDetailsOnDate(String from, String to, String date, String classType, int noPassengers) {
         List<Flight> flightsOnTheDate = getFlightsOnDate(from,to,date);
-        if(flightsOnTheDate.isEmpty()){
+        if (flightsOnTheDate.isEmpty()) {
             return Collections.emptyList();
         }
         FlightDetailsResponseDTOMapper flightDetailsResponseDTOMapper = new FlightDetailsResponseDTOMapper(classType, noPassengers);

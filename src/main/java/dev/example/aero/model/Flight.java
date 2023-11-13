@@ -73,7 +73,7 @@ public class Flight implements Serializable {
         this.distance = distance;
     }
 
-    public String getDuration(){
+    public String getDuration() {
         ZonedDateTime departureZonedDateTime = ZonedDateTime.of(ZonedDateTime.now().toLocalDate(),this.departureTime,this.departureTimeZone);
         ZonedDateTime arrivalZonedDateTime = ZonedDateTime.of(ZonedDateTime.now().toLocalDate(),this.arrivalTime,this.arrivalTimeZone);
         // Ensure arrival is after departure

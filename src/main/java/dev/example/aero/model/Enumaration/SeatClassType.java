@@ -16,7 +16,7 @@ public enum SeatClassType {
         return code;
     }
 
-    public static SeatClassType fromCode(String code){
+    public static SeatClassType fromCode(String code) {
         return Stream.of(SeatClassType.values())
                 .filter(classType -> classType.getCode().equals(code))
                 .findFirst()

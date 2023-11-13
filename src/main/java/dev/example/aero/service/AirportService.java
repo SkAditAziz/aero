@@ -21,10 +21,9 @@ public class AirportService {
 
     public Airport findById(String code) {
         return airportDao.findByID(code);
-
     }
 
-    public boolean deleteById(String code){
+    public boolean deleteById(String code) {
         return airportDao.deleteByID(code);
     }
 }

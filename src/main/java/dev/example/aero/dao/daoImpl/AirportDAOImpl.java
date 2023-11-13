@@ -42,12 +42,12 @@ public class AirportDAOImpl implements AirportDao {
     @Transactional
     public boolean deleteByID(String code) {
         Airport a = findByID(code);
-        if(a == null)
+        if (a == null)
             return false;
 
         List<Flight> flightsToDelete = flightDAO.findOnAirport(code);
 
-       if (!flightsToDelete.isEmpty()) {
+        if (!flightsToDelete.isEmpty()) {
             for (Flight deleteFlight : flightsToDelete)
                 flightDAO.delete(deleteFlight);
         }

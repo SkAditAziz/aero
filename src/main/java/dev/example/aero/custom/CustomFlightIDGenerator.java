@@ -23,7 +23,7 @@ public class CustomFlightIDGenerator implements IdentifierGenerator {
         getMaxIDQuery.setParameter("customIDPrefix", customIDPrefix + "%");
 
         String maxIDString = (String) getMaxIDQuery.getResultList().toArray()[0];
-        int sequence = (maxIDString != null)? (Integer.parseInt(maxIDString) + 1): 1;
+        int sequence = (maxIDString != null) ? (Integer.parseInt(maxIDString) + 1): 1;
 
         return customIDPrefix + String.format("%03d", sequence);
     }
