@@ -30,9 +30,11 @@ public class AirportRESTController {
 
     @DeleteMapping("/{code}")
     public String deleteAirportByCode(@PathVariable("code") String code) {
-        if (airportService.deleteById(code))
+        if (airportService.findById(code) != null) {
+            airportService.deleteById(code);
             return "The Airport is deleted!";
-        else
-            return "Internal Error";
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"No airport found by with the code");
+        }
     }
 }
