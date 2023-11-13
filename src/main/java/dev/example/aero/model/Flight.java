@@ -2,9 +2,7 @@ package dev.example.aero.model;
 
 import dev.example.aero.custom.CustomFlightIDGenerator;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.io.Serializable;
@@ -12,7 +10,8 @@ import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
