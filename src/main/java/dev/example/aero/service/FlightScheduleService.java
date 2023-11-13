@@ -1,14 +1,13 @@
 package dev.example.aero.service;
 
-import dev.example.aero.dao.FlightDAO;
 import dev.example.aero.dao.FlightScheduleDAO;
 import dev.example.aero.dto.FlightDetailsResponseDTO;
 import dev.example.aero.dto.mapper.FlightDetailsResponseDTOMapper;
 import dev.example.aero.model.Flight;
 import dev.example.aero.model.FlightSchedule;
+import dev.example.aero.repository.FlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,7 +22,7 @@ public class FlightScheduleService {
     @Autowired
     private FlightScheduleDAO flightScheduleDAO;
     @Autowired
-    private FlightDAO flightDAO;
+    private FlightRepository flightRepository;
     @Autowired
     private FlightService flightService;
 
@@ -42,7 +41,7 @@ public class FlightScheduleService {
             return Collections.emptyList();
         else {
             for(String flightID : desiredFLightCodes) {
-                flightsOnTheDay.add(flightDAO.findById(flightID).orElse(null));
+                flightsOnTheDay.add(flightRepository.findById(flightID).orElse(null));
             }
         }
         flightsOnTheDay.sort(Comparator.comparing(Flight::getDepartureTime));
