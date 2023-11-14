@@ -1,13 +1,14 @@
 package dev.example.aero.dto;
 
 import dev.example.aero.model.Enumaration.SeatClassType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import java.time.Duration;
 import java.time.LocalTime;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class FlightDetailsResponseDTO {
     private String id;
