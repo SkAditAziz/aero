@@ -7,10 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
@@ -18,10 +16,14 @@ import org.springframework.web.server.ResponseStatusException;
 public class PassengerRESTController {
     @Autowired
     private PassengerService passengerService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    @PostMapping()
-    public String insertPassenger(@Valid @RequestBody Passenger passenger){
+    @PostMapping
+    public String registerPassenger(@Valid @RequestBody Passenger passenger){
         try {
+            String encodedPassword = passwordEncoder.encode(passenger.getPassword());
+            passenger.setPassword(encodedPassword);
             passengerService.insertPassenger(passenger);
             return "Passenger inserted";
         }
