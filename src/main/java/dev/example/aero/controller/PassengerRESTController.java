@@ -2,12 +2,16 @@ package dev.example.aero.controller;
 
 import dev.example.aero.model.Passenger;
 import dev.example.aero.service.PassengerService;
+import jakarta.persistence.PersistenceException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/passenger")
@@ -17,6 +21,19 @@ public class PassengerRESTController {
 
     @PostMapping()
     public String insertPassenger(@Valid @RequestBody Passenger passenger){
-        return "Passenger inserted";
+        try {
+            passengerService.insertPassenger(passenger);
+            return "Passenger inserted";
+        }
+        catch (DataIntegrityViolationException e) {
+            // cannot catch the ConstraintViolationException since JPA will wrap it as a PersistenceException
+            if (e.getCause() instanceof PersistenceException pe) {
+                if (pe.getMessage().contains("unique_contact"))
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Try another Contact No");
+                if (pe.getMessage().contains("unique_email"))
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Try another Email");
+            }
+        }
+        return "Internal Error!";
     }
 }
