@@ -20,7 +20,7 @@ public class PassengerRESTController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping
-    public String registerPassenger(@Valid @RequestBody Passenger passenger){
+    public String registerPassenger(@Valid @RequestBody Passenger passenger) {
         try {
             String encodedPassword = passwordEncoder.encode(passenger.getPassword());
             passenger.setPassword(encodedPassword);
@@ -31,11 +31,32 @@ public class PassengerRESTController {
             // cannot catch the ConstraintViolationException since JPA will wrap it as a PersistenceException
             if (e.getCause() instanceof PersistenceException pe) {
                 if (pe.getMessage().contains("unique_contact"))
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Try another Contact No");
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Try another Contact No");
                 if (pe.getMessage().contains("unique_email"))
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Try another Email");
             }
         }
         return "Internal Error!";
+    }
+
+    @PostMapping("/login")
+    public String loginPassenger(@RequestBody Passenger passenger) {
+        String contactNo = passenger.getContactNo();
+        String email = passenger.getEmail();
+        String rawPassword = passenger.getPassword();
+        String encodedPassword = "";
+
+        if ((contactNo != null) && (passengerService.getPassengerByContact(contactNo) != null)) {
+            encodedPassword = passengerService.getPassengerPasswordByContact(contactNo);
+        } else if ((email != null) && (passengerService.getPassengerByEmail(email) != null)) {
+            encodedPassword = passengerService.getPassengerPasswordByEmail(email);
+        } else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Provide correct Contact no or Email");
+        }
+
+        if (passwordEncoder.matches(rawPassword,encodedPassword)) {
+            return "logged in successfully";
+        }
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect Password! Login Failed!");
     }
 }

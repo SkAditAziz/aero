@@ -15,4 +15,20 @@ public class PassengerService {
            passenger.setContactNo("0" + passenger.getContactNo());
         passengerRepository.save(passenger);
     }
+
+    public String getPassengerPasswordByContact(String contactNo) {
+        return passengerRepository.findPasswordByContactNo(contactNo);
+    }
+
+    public String getPassengerPasswordByEmail(String email) {
+        return passengerRepository.findPasswordByEmail(email);
+    }
+
+    public Passenger getPassengerByContact(String contactNo) {
+        return passengerRepository.findByContactNo(contactNo);
+    }
+
+    public Passenger getPassengerByEmail(String email) {
+        return passengerRepository.findByEmail(email);
+    }
 }
