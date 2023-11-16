@@ -1,16 +1,21 @@
 package dev.example.aero.custom;
 
-import dev.example.aero.repository.TicketRepository;
+import jakarta.persistence.TypedQuery;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class CustomTicketIDGenerator implements IdentifierGenerator {
-    @Autowired
-    private TicketRepository ticketRepository;
+
     @Override
     public Object generate(SharedSessionContractImplementor sharedSessionContractImplementor, Object o) {
-        String lastMaxID = ticketRepository.findMaxId();
+        TypedQuery<String> getMaxIDQuery = sharedSessionContractImplementor.createQuery(
+                "select max(t.id) from Ticket t", String.class);
+
+        String lastMaxID = (String) getMaxIDQuery.getResultList().toArray()[0];
+
+        if (lastMaxID == null)
+            return "A00001";
+
         char prefix = lastMaxID.charAt(0);
         int number = Integer.parseInt(lastMaxID.substring(1));
 
