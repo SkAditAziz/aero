@@ -36,6 +36,10 @@ public class Ticket implements Serializable {
     @JoinColumn(name = "PASSENGER_ID", nullable = false)
     private Passenger passenger;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "SCHEDULE_ID", nullable = false)
+    private FlightSchedule flightSchedule;
+
     @Column(name = "SEAT_CLASS", nullable = false)
     private SeatClassType seatClassType;
 
