@@ -11,11 +11,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.regex.Pattern;
 
 @Service
 public class FlightScheduleService {
@@ -26,45 +23,35 @@ public class FlightScheduleService {
     @Autowired
     private FlightService flightService;
 
-    public List<Flight> getFlightsOnDate(String from, String to, String date) {
-        LocalDate desiredDate = LocalDate.parse(date);
-        List<String> flightsCodeOnDate = flightScheduleRepository.findCodesByDate(desiredDate);
-
-        String regex = String.format("%s-%s-\\d{3}", from, to);
-        Pattern pattern = Pattern.compile(regex);
-        List<String> desiredFLightCodes = flightsCodeOnDate.stream()
-                .filter(pattern.asPredicate())
-                .toList();
-
-        List<Flight> flightsOnTheDay = new ArrayList<>();
-        if(desiredFLightCodes.isEmpty())
-            return Collections.emptyList();
-        else {
-            for(String flightID : desiredFLightCodes) {
-                flightsOnTheDay.add(flightRepository.findById(flightID).orElse(null));
-            }
-        }
-        flightsOnTheDay.sort(Comparator.comparing(Flight::getDepartureTime));
-        return flightsOnTheDay;
-    }
-
     public void addOrUpdateFlightSchedule(LocalDate flightDate, List<String> flightIDs) throws DataIntegrityViolationException {
         FlightSchedule existedSchedule = flightScheduleRepository.findByFlightDate(flightDate);
+        List<Flight> flightList = flightIDs.stream().
+                map(id -> flightRepository.findById(id).orElse(null))
+                .toList();
+
         if (existedSchedule == null) {
-            existedSchedule = new FlightSchedule(flightDate, flightIDs);
+            existedSchedule = new FlightSchedule(flightDate, flightList);
         } else {
-            existedSchedule.getFlightIds().addAll(flightIDs);
+            existedSchedule.getFlights().addAll(flightList);
         }
+
         flightScheduleRepository.save(existedSchedule);
     }
 
     public List<FlightDetailsResponseDTO> getFlightDetailsOnDate(String from, String to, String date, String classType, int noPassengers) {
-        List<Flight> flightsOnTheDate = getFlightsOnDate(from,to,date);
-        if (flightsOnTheDate.isEmpty()) {
+        FlightSchedule desiredSchedule = flightScheduleRepository.findByFlightDate(LocalDate.parse(date));
+        if (desiredSchedule == null) {
+            return Collections.emptyList();
+        }
+        List<Flight> desiredFlightsOnTheDay = desiredSchedule.getFlights().stream()
+                .filter(f -> f.getFromAirport().getCode().equals(from) && f.getToAirport().getCode().equals(to))
+                .toList();
+
+        if (desiredFlightsOnTheDay.isEmpty()) {
             return Collections.emptyList();
         }
         FlightDetailsResponseDTOMapper flightDetailsResponseDTOMapper = new FlightDetailsResponseDTOMapper(classType, noPassengers);
-        return flightsOnTheDate.stream()
+        return desiredFlightsOnTheDay.stream()
                 .map(flightDetailsResponseDTOMapper)
                 .toList();
     }

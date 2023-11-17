@@ -57,7 +57,7 @@ public class Flight implements Serializable {
     @Column(name="DISTANCE(KM)")
     private double distance;
 
-    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "flight", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SeatInfo> seatInfoList = new ArrayList<>();
 
     public Flight(String id, String airline, Airport fromAirport, Airport toAirport, LocalTime departureTime, ZoneId departureTimeZone, LocalTime arrivalTime, ZoneId arrivalTimeZone, double distance) {

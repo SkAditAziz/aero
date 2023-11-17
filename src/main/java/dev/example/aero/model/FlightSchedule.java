@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -23,14 +24,18 @@ public class FlightSchedule implements Serializable {
     @Column(name = "FLIGHT_DATE", nullable = false)
     private LocalDate flightDate;
 
-    @ElementCollection
-    @CollectionTable(name = "SCHEDULED_FLIGHTS", joinColumns = @JoinColumn(name = "SCHEDULE_ID"),
-            uniqueConstraints = @UniqueConstraint(name = "unique-date-flight", columnNames = {"SCHEDULE_ID", "FLIGHT_ID"}))
-    @Column(name = "FLIGHT_ID")
-    private List<String> flightIds;
+// This didn't work, as we need flight seats to manipulate for each of the schedule
+//    @ElementCollection
+//    @CollectionTable(name = "SCHEDULED_FLIGHTS", joinColumns = @JoinColumn(name = "SCHEDULE_ID"),
+//            uniqueConstraints = @UniqueConstraint(name = "unique-date-flight", columnNames = {"SCHEDULE_ID", "FLIGHT_ID"}))
+//    @Column(name = "FLIGHT_ID")
+//    private List<String> flightIds;
 
-    public FlightSchedule(LocalDate flightDate, List<String> flightIds) {
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Flight> flights = new ArrayList<>();
+
+    public FlightSchedule(LocalDate flightDate, List<Flight> flights) {
         this.flightDate = flightDate;
-        this.flightIds = flightIds;
+        this.flights = flights;
     }
 }
