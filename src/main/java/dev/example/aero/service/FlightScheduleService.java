@@ -68,4 +68,8 @@ public class FlightScheduleService {
                 .map(flightDetailsResponseDTOMapper)
                 .toList();
     }
+
+    public FlightSchedule getScheduleByDate(LocalDate date) {
+        return flightScheduleRepository.findByFlightDate(date);
+    }
 }

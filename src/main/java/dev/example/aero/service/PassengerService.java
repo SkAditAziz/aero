@@ -31,4 +31,8 @@ public class PassengerService {
     public Passenger getPassengerByEmail(String email) {
         return passengerRepository.findByEmail(email);
     }
+
+    public Passenger getPassengerById(long userId) {
+        return passengerRepository.findById(userId).orElse(null);
+    }
 }
