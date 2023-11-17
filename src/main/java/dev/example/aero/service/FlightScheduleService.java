@@ -12,7 +12,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class FlightScheduleService {
@@ -25,9 +28,9 @@ public class FlightScheduleService {
 
     public void addOrUpdateFlightSchedule(LocalDate flightDate, List<String> flightIDs) throws DataIntegrityViolationException {
         FlightSchedule existedSchedule = flightScheduleRepository.findByFlightDate(flightDate);
-        List<Flight> flightList = flightIDs.stream().
+        Set<Flight> flightList = flightIDs.stream().
                 map(id -> flightRepository.findById(id).orElse(null))
-                .toList();
+                .collect(Collectors.toSet());
 
         if (existedSchedule == null) {
             existedSchedule = new FlightSchedule(flightDate, flightList);
@@ -45,11 +48,12 @@ public class FlightScheduleService {
         }
         List<Flight> desiredFlightsOnTheDay = desiredSchedule.getFlights().stream()
                 .filter(f -> f.getFromAirport().getCode().equals(from) && f.getToAirport().getCode().equals(to))
-                .toList();
+                .collect(Collectors.toList());
 
         if (desiredFlightsOnTheDay.isEmpty()) {
             return Collections.emptyList();
         }
+        desiredFlightsOnTheDay.sort(Comparator.comparing(Flight::getDepartureTime));
         FlightDetailsResponseDTOMapper flightDetailsResponseDTOMapper = new FlightDetailsResponseDTOMapper(classType, noPassengers);
         return desiredFlightsOnTheDay.stream()
                 .map(flightDetailsResponseDTOMapper)
