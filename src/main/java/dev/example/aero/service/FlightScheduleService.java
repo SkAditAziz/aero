@@ -7,7 +7,7 @@ import dev.example.aero.model.FlightSchedule;
 import dev.example.aero.repository.FlightRepository;
 import dev.example.aero.repository.FlightScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,21 +23,22 @@ public class FlightScheduleService {
     private FlightScheduleRepository flightScheduleRepository;
     @Autowired
     private FlightRepository flightRepository;
-    @Autowired
-    private FlightService flightService;
 
-    public void addOrUpdateFlightSchedule(LocalDate flightDate, List<String> flightIDs) throws DataIntegrityViolationException {
+    public void addOrUpdateFlightSchedule(LocalDate flightDate, List<String> flightIDs) throws InvalidDataAccessApiUsageException {
         FlightSchedule existedSchedule = flightScheduleRepository.findByFlightDate(flightDate);
-        Set<Flight> flightList = flightIDs.stream().
-                map(id -> flightRepository.findById(id).orElse(null))
+        List<Flight> flightList = flightIDs.stream()
+                .map(id -> flightRepository.findById(id).orElse(null))
+                .collect(Collectors.toList());
+        // Deep copied flight list so the seatInfo of FlightSchedule->Flight->SeatInfo is some other to the actual flight
+        Set<Flight> copiedFlightSet = flightList.stream()
+                .map(Flight::deepCopy)
                 .collect(Collectors.toSet());
-
+        //TODO Still not working! why?
         if (existedSchedule == null) {
-            existedSchedule = new FlightSchedule(flightDate, flightList);
+            existedSchedule = new FlightSchedule(flightDate, copiedFlightSet);
         } else {
-            existedSchedule.getFlights().addAll(flightList);
+            existedSchedule.getFlights().addAll(copiedFlightSet);
         }
-
         flightScheduleRepository.save(existedSchedule);
     }
 
