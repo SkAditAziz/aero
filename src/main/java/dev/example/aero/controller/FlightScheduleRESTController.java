@@ -3,7 +3,7 @@ package dev.example.aero.controller;
 import dev.example.aero.dto.FlightDetailsResponseDTO;
 import dev.example.aero.service.FlightScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -37,7 +37,7 @@ public class FlightScheduleRESTController {
         try {
             flightScheduleService.addOrUpdateFlightSchedule(flightDate,flightIDs);
             return "Schedule Updated Successfully!";
-        } catch (DataIntegrityViolationException e) {
+        } catch (InvalidDataAccessApiUsageException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT,"Already have the Flight(s) On the day");
         }
     }
