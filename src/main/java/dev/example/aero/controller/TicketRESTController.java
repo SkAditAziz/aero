@@ -4,7 +4,6 @@ import dev.example.aero.model.*;
 import dev.example.aero.model.Enumaration.SeatClassType;
 import dev.example.aero.model.Enumaration.TicketStatus;
 import dev.example.aero.service.FlightScheduleService;
-import dev.example.aero.service.FlightService;
 import dev.example.aero.service.PassengerService;
 import dev.example.aero.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,6 @@ import java.util.Map;
 @RequestMapping("/ticket")
 public class TicketRESTController {
     @Autowired
-    private FlightService flightService;
-    @Autowired
     private PassengerService passengerService;
     @Autowired
     private FlightScheduleService flightScheduleService;
@@ -31,10 +28,13 @@ public class TicketRESTController {
     private TicketService ticketService;
     @PostMapping("/confirm")
     public String confirmTicket (@RequestBody Map<String, Object> req) { // Is it okay? or a class TicketConfirmReq ?
-        Flight f = flightService.getFlightById((String) req.get("flightId"));
         // TODO use jwt authToken to retrieve passenger
         Passenger p = passengerService.getPassengerById(((Integer) req.get("userId")).longValue());
         FlightSchedule fs = flightScheduleService.getScheduleByDate(LocalDate.parse((String) req.get("date")));
+        Flight f = fs.getFlights().stream()
+                .filter(flight -> flight.getId().equals((String) req.get("flightId")))
+                .findFirst()
+                .orElse(null);
         SeatClassType sct = (SeatClassType) SeatClassType.fromCode((String) req.get("seatClassType"));
         int totalSeats = (int) req.get("noPassengers");
         double totalFare = (double) req.get("totalFare");
@@ -44,7 +44,7 @@ public class TicketRESTController {
             ticketService.issueTicket(t);
             return "Ticket Confirmed";
         } catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to isuue ticket");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to issue ticket");
         }
     }
 }
