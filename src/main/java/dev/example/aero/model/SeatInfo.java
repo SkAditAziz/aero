@@ -10,6 +10,7 @@ import java.io.Serializable;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -31,23 +32,18 @@ public class SeatInfo implements Serializable {
     @Column(name = "FARE", nullable = false)
     private double fare;
 
-    @ManyToOne
-    @JoinColumn(name = "FLIGHT_ID", nullable = false)
-    private Flight flight;
-
     public SeatInfo(SeatClassType seatClassType, int availableSeats, double fare) {
         this.seatClassType = seatClassType;
         this.availableSeats = availableSeats;
         this.fare = fare;
     }
 
-    @Override
-    public String toString() {
-        return "SeatInfo{" +
-                "id=" + id +
-                ", seatClassType=" + seatClassType +
-                ", availableSeats=" + availableSeats +
-                ", fare=" + fare +
-                '}';
+    public SeatInfo deepCopy() {
+        SeatInfo copySeatInfo = new SeatInfo();
+        copySeatInfo.setId(this.id);
+        copySeatInfo.setSeatClassType(this.seatClassType);
+        copySeatInfo.setAvailableSeats(this.availableSeats);
+        copySeatInfo.setFare(this.fare);
+        return copySeatInfo;
     }
 }
