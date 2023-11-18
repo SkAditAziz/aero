@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,11 +32,20 @@ public class FlightSchedule implements Serializable {
 //    @Column(name = "FLIGHT_ID")
 //    private List<String> flightIds;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE, orphanRemoval = true)
     private Set<Flight> flights = new HashSet<>();
 
     public FlightSchedule(LocalDate flightDate, Set<Flight> flights) {
         this.flightDate = flightDate;
         this.flights = flights;
+    }
+
+    @Override
+    public String toString() {
+        return "FlightSchedule{" +
+                "id=" + id +
+                ", flightDate=" + flightDate +
+                ", flights=" + Arrays.toString(flights.toArray()) +
+                '}';
     }
 }
