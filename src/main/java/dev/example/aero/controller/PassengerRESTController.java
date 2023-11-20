@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -17,7 +18,11 @@ public class PassengerRESTController {
     private PassengerService passengerService;
 
     @PostMapping
-    public String registerPassenger(@Valid @RequestBody Passenger passenger) {
+    public String registerPassenger(@Valid @RequestBody Passenger passenger, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+        }
         try {
             passengerService.insertPassenger(passenger);
             return "Passenger inserted";

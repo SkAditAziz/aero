@@ -32,7 +32,7 @@ public class Passenger implements Serializable {
 
     @NotEmpty(message = "Provide your contact number")
     @Column(name = "CONTACT_NO", nullable = false)
-    @Pattern(regexp = "^(01\\d{9}|1\\d{10})$", message = "Invalid phone number format")
+    @Pattern(regexp = "^(01\\d{9}|1\\d{9})$", message = "Invalid phone number format")
     private String contactNo;
 
     @NotEmpty(message = "Email Address is required")
