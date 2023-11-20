@@ -26,13 +26,15 @@ public class FlightSchedule implements Serializable {
     private LocalDate flightDate;
 
 // This didn't work, as we need flight seats to manipulate for each of the schedule
-//    @ElementCollection
-//    @CollectionTable(name = "SCHEDULED_FLIGHTS", joinColumns = @JoinColumn(name = "SCHEDULE_ID"),
-//            uniqueConstraints = @UniqueConstraint(name = "unique-date-flight", columnNames = {"SCHEDULE_ID", "FLIGHT_ID"}))
-//    @Column(name = "FLIGHT_ID")
-//    private List<String> flightIds;
+/*
+    @ElementCollection
+    @CollectionTable(name = "SCHEDULED_FLIGHTS", joinColumns = @JoinColumn(name = "SCHEDULE_ID"),
+            uniqueConstraints = @UniqueConstraint(name = "unique-date-flight", columnNames = {"SCHEDULE_ID", "FLIGHT_ID"}))
+    @Column(name = "FLIGHT_ID")
+    private List<String> flightIds;
+*/
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE, orphanRemoval = true)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Set<Flight> flights = new HashSet<>();
 
     public FlightSchedule(LocalDate flightDate, Set<Flight> flights) {
