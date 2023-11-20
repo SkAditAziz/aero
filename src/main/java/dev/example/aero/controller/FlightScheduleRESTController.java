@@ -32,10 +32,8 @@ public class FlightScheduleRESTController {
 
     @PostMapping
     public String addFlightSchedule(@RequestBody Map<String,Object> req) {
-        LocalDate flightDate = LocalDate.parse((String) req.get("flightDate"));
-        List<String> flightIDs = new ArrayList<>((ArrayList<String>) req.get("flightIds"));
         try {
-            flightScheduleService.addOrUpdateFlightSchedule(flightDate,flightIDs);
+            flightScheduleService.addOrUpdateFlightSchedule(req);
             return "Schedule Updated Successfully!";
         } catch (InvalidDataAccessApiUsageException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT,"Already have the Flight(s) On the day");
