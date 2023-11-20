@@ -7,7 +7,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -16,14 +15,10 @@ import org.springframework.web.server.ResponseStatusException;
 public class PassengerRESTController {
     @Autowired
     private PassengerService passengerService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @PostMapping
     public String registerPassenger(@Valid @RequestBody Passenger passenger) {
         try {
-            String encodedPassword = passwordEncoder.encode(passenger.getPassword());
-            passenger.setPassword(encodedPassword);
             passengerService.insertPassenger(passenger);
             return "Passenger inserted";
         }
@@ -41,22 +36,13 @@ public class PassengerRESTController {
 
     @PostMapping("/login")
     public String loginPassenger(@RequestBody Passenger passenger) {
-        String contactNo = passenger.getContactNo();
-        String email = passenger.getEmail();
-        String rawPassword = passenger.getPassword();
-        String encodedPassword = "";
-
-        if ((contactNo != null) && (passengerService.getPassengerByContact(contactNo) != null)) {
-            encodedPassword = passengerService.getPassengerPasswordByContact(contactNo);
-        } else if ((email != null) && (passengerService.getPassengerByEmail(email) != null)) {
-            encodedPassword = passengerService.getPassengerPasswordByEmail(email);
-        } else {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Provide correct Contact no or Email");
+        try {
+            if (passengerService.login(passenger)) {
+                return "logged in successfully";
+            } else
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect Password! Login Failed!");
+        } catch (ResponseStatusException e) {
+            throw new RuntimeException(e);
         }
-
-        if (passwordEncoder.matches(rawPassword,encodedPassword)) {
-            return "logged in successfully";
-        }
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect Password! Login Failed!");
     }
 }
