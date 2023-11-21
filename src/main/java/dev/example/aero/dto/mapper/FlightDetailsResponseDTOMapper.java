@@ -25,9 +25,8 @@ public class FlightDetailsResponseDTOMapper implements Function<FlightSchedule, 
                 flight.getDepartureTime(),
                 flight.getDuration(),
                 flightSchedule.getSeatClassType(),
-                flightSchedule.getAvailableSeats() >= noPassengers,
-                (flightSchedule.getAvailableSeats() >= noPassengers)
-                        ? noPassengers * flightSchedule.getFare()
-                        : 0.0);
+                flightSchedule.isSeatAvailable(noPassengers),
+                flightSchedule.getTotalFare(noPassengers),
+                flightSchedule.getId());
     }
 }

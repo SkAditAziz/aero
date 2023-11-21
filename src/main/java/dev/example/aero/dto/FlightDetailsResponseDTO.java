@@ -18,4 +18,5 @@ public class FlightDetailsResponseDTO {
     private SeatClassType seatClassType;
     private boolean seatAvailable;
     private Double totalFare;
+    private long scheduleId;
 }
