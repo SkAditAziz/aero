@@ -1,43 +1,33 @@
 package dev.example.aero.dto.mapper;
 
 import dev.example.aero.dto.FlightDetailsResponseDTO;
-import dev.example.aero.model.Enumaration.SeatClassType;
 import dev.example.aero.model.Flight;
-import dev.example.aero.model.SeatInfo;
+import dev.example.aero.model.FlightSchedule;
+import dev.example.aero.service.FlightService;
 
 import java.util.function.Function;
 
-public class FlightDetailsResponseDTOMapper implements Function<Flight, FlightDetailsResponseDTO> {
+public class FlightDetailsResponseDTOMapper implements Function<FlightSchedule, FlightDetailsResponseDTO> {
     private final String classType;
     private final int noPassengers;
-
-    public FlightDetailsResponseDTOMapper(String classType, int noPassengers) {
+    private final FlightService flightService;  // is there any better way?
+    public FlightDetailsResponseDTOMapper(String classType, int noPassengers, FlightService flightService) {
         this.classType = classType;
         this.noPassengers = noPassengers;
+        this.flightService = flightService;
     }
     @Override
-    public FlightDetailsResponseDTO apply(Flight flight) {
+    public FlightDetailsResponseDTO apply(FlightSchedule flightSchedule) {
+        Flight flight = flightService.getFlightById(flightSchedule.getFlightID());
         return new FlightDetailsResponseDTO(
-                flight.getId(),
+                flightSchedule.getFlightID(),
                 flight.getAirline(),
                 flight.getDepartureTime(),
                 flight.getDuration(),
-                flight.getSeatInfoList()
-                        .stream()
-                        .filter(seatInfo -> SeatClassType.fromCode(classType) == seatInfo.getSeatClassType())
-                        .findFirst()
-                        .map(SeatInfo::getSeatClassType)
-                        .orElse(null),
-                flight.getSeatInfoList()
-                        .stream()
-                        .filter(seatInfo -> SeatClassType.fromCode(classType) == seatInfo.getSeatClassType())
-                        .anyMatch(seatInfo -> seatInfo.getAvailableSeats() >= noPassengers),
-                flight.getSeatInfoList()
-                        .stream()
-                        .filter(seatInfo -> SeatClassType.fromCode(classType) == seatInfo.getSeatClassType() &&
-                                seatInfo.getAvailableSeats() >= noPassengers)
-                        .mapToDouble(seatInfo -> noPassengers * seatInfo.getFare())
-                        .findFirst()
-                        .orElse(0.0));
+                flightSchedule.getSeatClassType(),
+                flightSchedule.getAvailableSeats() >= noPassengers,
+                (flightSchedule.getAvailableSeats() >= noPassengers)
+                        ? noPassengers * flightSchedule.getFare()
+                        : 0.0);
     }
 }
