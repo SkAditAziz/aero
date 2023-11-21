@@ -3,15 +3,13 @@ package dev.example.aero.model;
 import dev.example.aero.model.Enumaration.SeatClassType;
 import dev.example.aero.model.Enumaration.SeatClassTypeConverter;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
 @Getter
+@Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
@@ -45,5 +43,13 @@ public class FlightSchedule implements Serializable {
         this.seatClassType = seatClassType;
         this.availableSeats = availableSeats;
         this.fare = fare;
+    }
+
+    public double getTotalFare(int noPassenger) {
+        return isSeatAvailable(noPassenger) ? noPassenger * fare : 0.0;
+    }
+
+    public boolean isSeatAvailable(int noPassenger) {
+        return availableSeats >= noPassenger;
     }
 }
