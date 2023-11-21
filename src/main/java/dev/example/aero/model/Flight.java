@@ -62,18 +62,6 @@ public class Flight implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SeatInfo> seatInfoList = new ArrayList<>();
 
-    public Flight(String id, String airline, Airport fromAirport, Airport toAirport, LocalTime departureTime, ZoneId departureTimeZone, LocalTime arrivalTime, ZoneId arrivalTimeZone, double distance) {
-        this.id = id;
-        this.airline = airline;
-        this.fromAirport = fromAirport;
-        this.toAirport = toAirport;
-        this.departureTime = departureTime;
-        this.departureTimeZone = departureTimeZone;
-        this.arrivalTime = arrivalTime;
-        this.arrivalTimeZone = arrivalTimeZone;
-        this.distance = distance;
-    }
-
     public String getDuration() {
         ZonedDateTime departureZonedDateTime = ZonedDateTime.of(ZonedDateTime.now().toLocalDate(),this.departureTime,this.departureTimeZone);
         ZonedDateTime arrivalZonedDateTime = ZonedDateTime.of(ZonedDateTime.now().toLocalDate(),this.arrivalTime,this.arrivalTimeZone);
@@ -86,25 +74,5 @@ public class Flight implements Serializable {
         long hours = Math.abs(duration.toHoursPart());
         long minutes = Math.abs(duration.toMinutesPart());
         return (days == 0) ? ((hours != 0) ? (hours + " H " + minutes + " M") : (minutes + " M")) : (days + " D " +  hours + " H " + minutes + " M");
-    }
-
-    public Flight deepCopy() {
-        Flight copyFlight = new Flight();
-        copyFlight.setId(this.id);
-        copyFlight.setAirline(this.airline);
-        copyFlight.setFromAirport(this.fromAirport);
-        copyFlight.setToAirport(this.toAirport);
-        copyFlight.setDepartureTime(this.departureTime);
-        copyFlight.setDepartureTimeZone(this.departureTimeZone);
-        copyFlight.setArrivalTime(this.arrivalTime);
-        copyFlight.setArrivalTimeZone(this.arrivalTimeZone);
-        copyFlight.setDistance(this.distance);
-
-        List<SeatInfo> copiedSeatInfoList = this.seatInfoList.stream()
-                .map(SeatInfo::deepCopy)
-                .collect(Collectors.toList());
-        copyFlight.setSeatInfoList(copiedSeatInfoList);
-
-        return copyFlight;
     }
 }

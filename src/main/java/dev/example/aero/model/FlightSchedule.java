@@ -1,21 +1,22 @@
 package dev.example.aero.model;
 
+import dev.example.aero.model.Enumaration.SeatClassType;
+import dev.example.aero.model.Enumaration.SeatClassTypeConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "FLIGHT_SCHEDULE", uniqueConstraints = @UniqueConstraint(name = "unique-date-schedule", columnNames = "FLIGHT_DATE"))
+@Table(name = "FLIGHT_SCHEDULE", uniqueConstraints = @UniqueConstraint(name = "unique-date-schedule", columnNames = {"FLIGHT_DATE", "FLIGHT_ID", "SEAT_CLASS_TYPE"}))
 public class FlightSchedule implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,29 +26,24 @@ public class FlightSchedule implements Serializable {
     @Column(name = "FLIGHT_DATE", nullable = false)
     private LocalDate flightDate;
 
-// This didn't work, as we need flight seats to manipulate for each of the schedule
-/*
-    @ElementCollection
-    @CollectionTable(name = "SCHEDULED_FLIGHTS", joinColumns = @JoinColumn(name = "SCHEDULE_ID"),
-            uniqueConstraints = @UniqueConstraint(name = "unique-date-flight", columnNames = {"SCHEDULE_ID", "FLIGHT_ID"}))
     @Column(name = "FLIGHT_ID")
-    private List<String> flightIds;
-*/
+    private String flightID;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    private Set<Flight> flights = new HashSet<>();
+    @Convert(converter = SeatClassTypeConverter.class)
+    @Column(name = "SEAT_CLASS_TYPE", nullable = false)
+    private SeatClassType seatClassType;
 
-    public FlightSchedule(LocalDate flightDate, Set<Flight> flights) {
+    @Column(name = "AVAILABLE_SEATS", nullable = false)
+    private int availableSeats;
+
+    @Column(name = "FARE", nullable = false)
+    private double fare;
+
+    public FlightSchedule(LocalDate flightDate, String flightID, SeatClassType seatClassType, int availableSeats, double fare) {
         this.flightDate = flightDate;
-        this.flights = flights;
-    }
-
-    @Override
-    public String toString() {
-        return "FlightSchedule{" +
-                "id=" + id +
-                ", flightDate=" + flightDate +
-                ", flights=" + Arrays.toString(flights.toArray()) +
-                '}';
+        this.flightID = flightID;
+        this.seatClassType = seatClassType;
+        this.availableSeats = availableSeats;
+        this.fare = fare;
     }
 }

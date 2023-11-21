@@ -6,12 +6,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
+import java.io.Serializable;
+
 @Getter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "AIRPORT")
-public class Airport {
+public class Airport implements Serializable {
     @Id
     @Column(name = "CODE")
     private String code;
