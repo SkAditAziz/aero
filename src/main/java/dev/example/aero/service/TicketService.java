@@ -8,8 +8,6 @@ import dev.example.aero.repository.FlightScheduleRepository;
 import dev.example.aero.repository.TicketRepository;
 import dev.example.aero.util.TicketPDFGenerator;
 import jakarta.transaction.Transactional;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,11 +24,6 @@ public class TicketService {
     private FlightRepository flightRepository;
     @Autowired
     private PassengerService passengerService;
-
-    // temporarily adding, PDF Ticket generating will be moved to a class
-    @Getter
-    @Setter
-    private float spacing;
 
     @Transactional
     public void issueTicket(Map<String,Object> req) {

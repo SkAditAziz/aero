@@ -18,7 +18,7 @@ public class TicketRESTController {
     @Autowired
     private TicketService ticketService;
     @PostMapping("/confirm")
-    public String confirmTicket (@RequestBody Map<String, Object> req) { // Is it okay? or a class TicketConfirmReq ?
+    public String confirmTicket (@RequestBody Map<String, Object> req) {
         try {
             ticketService.issueTicket(req);
             return "Ticket Confirmed";

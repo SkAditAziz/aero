@@ -15,6 +15,7 @@ public class PassengerService {
     PassengerRepository passengerRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     public void insertPassenger(Passenger passenger) throws DataIntegrityViolationException {
         String encodedPassword = passwordEncoder.encode(passenger.getPassword());
         passenger.setPassword(encodedPassword);

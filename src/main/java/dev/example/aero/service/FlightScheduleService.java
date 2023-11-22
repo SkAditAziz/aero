@@ -46,13 +46,9 @@ public class FlightScheduleService {
     public List<FlightDetailsResponseDTO> getFlightDetailsOnDate(String from, String to, String date, String classType, int noPassengers) {
         List<FlightDetailsResponseDTO> result = flightScheduleRepository.findAllByFlightDateAndFromAndToAndClass(
                         LocalDate.parse(date), from, to, classType).stream()
-                .map(new FlightDetailsResponseDTOMapper(classType, noPassengers, flightService))
+                .map(new FlightDetailsResponseDTOMapper(noPassengers, flightService))
                 .collect(Collectors.toList());
 
         return result.isEmpty() ? Collections.emptyList() : result;
-    }
-
-    public FlightSchedule getScheduleByDate(LocalDate date) {
-        return flightScheduleRepository.findByFlightDate(date);
     }
 }

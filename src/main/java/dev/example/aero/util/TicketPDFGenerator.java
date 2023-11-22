@@ -11,6 +11,8 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class TicketPDFGenerator {
     private final Ticket ticket;
@@ -71,7 +73,6 @@ public class TicketPDFGenerator {
         Font valueFont = FontFactory.getFont(FontFactory.HELVETICA, 16);
 
         Paragraph paragraph = new Paragraph();
-        // temp
         paragraph.setSpacingBefore(spacing);
         if (spacing != 0) setSpacing(0);
 
@@ -86,15 +87,12 @@ public class TicketPDFGenerator {
     }
 
     private String generateSeatNo() {
-        StringBuilder seatNo = new StringBuilder();
-        String seatClassStr = String.valueOf(ticket.getSeatClassType()).substring(0,1);
+        String seatClassStr = String.valueOf(ticket.getSeatClassType()).substring(0, 1);
         int lastSeatNo = getLastSeatNo();
-        for (int i=1; i<=ticket.getTotalSeats(); i++) {
-            seatNo.append(seatClassStr).append(lastSeatNo + i);
-            if (i != ticket.getTotalSeats())
-                seatNo.append(" - ");
-        }
-        return seatNo.toString();
+
+        return IntStream.rangeClosed(1, ticket.getTotalSeats())
+                .mapToObj(i -> seatClassStr + (lastSeatNo + i))
+                .collect(Collectors.joining(" - "));
     }
 
     private int getLastSeatNo() {

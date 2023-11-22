@@ -8,11 +8,9 @@ import dev.example.aero.service.FlightService;
 import java.util.function.Function;
 
 public class FlightDetailsResponseDTOMapper implements Function<FlightSchedule, FlightDetailsResponseDTO> {
-    private final String classType;
     private final int noPassengers;
     private final FlightService flightService;  // is there any better way?
-    public FlightDetailsResponseDTOMapper(String classType, int noPassengers, FlightService flightService) {
-        this.classType = classType;
+    public FlightDetailsResponseDTOMapper(int noPassengers, FlightService flightService) {
         this.noPassengers = noPassengers;
         this.flightService = flightService;
     }

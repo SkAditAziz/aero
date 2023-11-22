@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -20,8 +19,6 @@ import java.util.stream.Collectors;
 @Table(name = "FLIGHT", uniqueConstraints = {
         @UniqueConstraint(name = "UniqueDeparture", columnNames = {"FROM_AIRPORT_CODE","DEPART_TIME"}),
         @UniqueConstraint(name = "UniqueArrival", columnNames = {"TO_AIRPORT_CODE","ARRIVAL_TIME"})
-//        @UniqueConstraint(name = "UniqueRunwayUseDeparture", columnNames = {"FROM_AIRPORT_CODE","ARRIVAL_TIME","DEPART_TIME"}),
-//        @UniqueConstraint(name = "UniqueRunwayUseArrival", columnNames = {"TO_AIRPORT_CODE","ARRIVAL_TIME", "DEPART_TIME"})
 })
 public class Flight implements Serializable {
     @Id
@@ -59,7 +56,7 @@ public class Flight implements Serializable {
     @Column(name="DISTANCE(KM)")
     private double distance;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SeatInfo> seatInfoList = new ArrayList<>();
 
     public String getDuration() {
