@@ -1,8 +1,11 @@
 package dev.example.aero.util;
 
 import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import dev.example.aero.model.Ticket;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.io.ByteArrayOutputStream;
@@ -13,80 +16,116 @@ import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
+@Getter
+@Setter
 public class TicketPDFGenerator {
     private final Ticket ticket;
-    @Setter
     private float spacing;
+    private final Font headerFont;
+    private final Font valueFont;
 
     public TicketPDFGenerator(Ticket ticket) {
         this.ticket = ticket;
-        this.spacing = 200;
+        this.spacing = 100;
+        headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 20);
+        valueFont = FontFactory.getFont(FontFactory.HELVETICA, 16);
     }
 
     public byte[] generatePDF() throws URISyntaxException, IOException, DocumentException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        Path logoPath = Paths.get(ClassLoader.getSystemResource("aero_logo.png").toURI());
-
-        Document document = new Document(PageSize.A4, 50, 50, 50, 50);
+        Document document = new Document(PageSize.A3);
 
         PdfWriter.getInstance(document, byteArrayOutputStream);
 
         document.open();
 
-        Image logoImage = Image.getInstance(logoPath.toAbsolutePath().toString());
-        float logoXcoord = document.right() - logoImage.getScaledWidth();
-        float logoYCoord = document.top() - logoImage.getScaledHeight();
-        logoImage.setAbsolutePosition(logoXcoord, logoYCoord);
-        document.add(logoImage);
+        document.add(generateHeader());
+
+        document.add(generateBorder());
 
         String passengerName = ticket.getPassenger().getFirstName() + " " + ticket.getPassenger().getLastName();
-        addInfoToPdf(document,"Passenger Name", passengerName);
+        document.add(addInfoToTable(new PdfPTable(1), new String[]{"Passenger"}, new String[]{passengerName}));
 
         String from = ticket.getFlight().getFromAirport().getCity() + "\n" + ticket.getFlight().getFromAirport().getName();
-        addInfoToPdf(document,"From", from);
+        document.add(addInfoToTable(new PdfPTable(1), new String[]{"From"}, new String[]{from}));
 
         String to = ticket.getFlight().getToAirport().getCity() + "\n" + ticket.getFlight().getToAirport().getName();
-        addInfoToPdf(document,"To",to);
+        document.add(addInfoToTable(new PdfPTable(1), new String[]{"To"}, new String[]{to}));
 
         String airline = ticket.getFlight().getAirline();
-        addInfoToPdf(document,"Carrier", airline);
-
         String flightNo = ticket.getFlight().getId();
-        addInfoToPdf(document,"Flight", flightNo);
+        document.add(addInfoToTable(new PdfPTable(new float[]{1,1}), new String[]{"Carrier", "Flight"}, new String[]{airline,flightNo}));
+
 
         String date = ticket.getFlightSchedule().getFlightDate()
                 .format(DateTimeFormatter.ofPattern("d MMM, uuuu"));
-        addInfoToPdf(document,"Departure Date", date);
-
         String departTime = ticket.getFlight().getDepartureTime()
                 .format(DateTimeFormatter.ofPattern("HH:mm"));
-        addInfoToPdf(document,"Time", departTime);
+        document.add(addInfoToTable(new PdfPTable(new float[]{1,1}), new String[]{"Departure Date", "Time"}, new String[]{date,departTime}));
 
         String seatNo = generateSeatNo();
-        addInfoToPdf(document,"Seat", seatNo);
+        document.add(addInfoToTable(new PdfPTable(1), new String[]{"Seat"}, new String[]{seatNo}));
 
         document.close();
 
         return byteArrayOutputStream.toByteArray();
     }
 
-    private void addInfoToPdf(Document document, String header, String value) throws DocumentException {
-        Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 20);
-        Font valueFont = FontFactory.getFont(FontFactory.HELVETICA, 16);
+    private PdfPTable generateHeader() throws DocumentException, IOException, URISyntaxException {
+        Path logoPath = Paths.get(ClassLoader.getSystemResource("aero_logo.png").toURI());
 
-        Paragraph paragraph = new Paragraph();
-        paragraph.setSpacingBefore(spacing);
-        if (spacing != 0) setSpacing(0);
+        PdfPTable table = new PdfPTable(2);
+        table.setWidths(new float[]{1, 2});
 
-        paragraph.setFont(headerFont);
-        paragraph.add(new Chunk(header));
-        paragraph.add(Chunk.NEWLINE);
-        paragraph.setFont(valueFont);
-        paragraph.add(new Chunk(value));
+        PdfPCell idCell = new PdfPCell(new Phrase("#" + ticket.getId(), headerFont));
+        idCell.setBorder(0);
+        idCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        idCell.setVerticalAlignment(Element.ALIGN_BOTTOM);
 
-        document.add(paragraph);
-        document.add(Chunk.NEWLINE);
+        Image logoImage = Image.getInstance(logoPath.toAbsolutePath().toString());
+        PdfPCell logoCell = new PdfPCell(logoImage);
+        logoCell.setBorder(0);
+        logoCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+
+        table.addCell(idCell);
+        table.addCell(logoCell);
+
+        return table;
+    }
+
+    private PdfPTable generateBorder() {
+        PdfPCell lineCell = new PdfPCell();
+        lineCell.setBorder(Rectangle.BOTTOM);
+        lineCell.setBorderColor(BaseColor.GRAY);
+        lineCell.setFixedHeight(20f);
+
+        PdfPTable lineTable = new PdfPTable(1);
+        lineTable.setSpacingBefore(20f);
+        lineTable.addCell(lineCell);
+        lineTable.setWidthPercentage(100);
+        lineTable.setSpacingAfter(50f);
+
+        return lineTable;
+    }
+
+    private PdfPTable addInfoToTable(PdfPTable table, String[] header, String[] value) {
+        for (int i = 0; i < header.length; i++) {
+            PdfPCell infoCell = new PdfPCell();
+            infoCell.setBorder(0);
+
+            Paragraph paragraph = new Paragraph();
+            paragraph.setFont(valueFont);
+            paragraph.add(new Chunk(header[i]));
+            paragraph.add(Chunk.NEWLINE);
+            paragraph.setLeading(30f);
+            paragraph.setFont(headerFont);
+            paragraph.add(new Chunk(value[i]));
+
+            infoCell.addElement(paragraph);
+            table.addCell(infoCell);
+        }
+        table.setSpacingAfter(20f);
+        return table;
     }
 
     private String generateSeatNo() {
