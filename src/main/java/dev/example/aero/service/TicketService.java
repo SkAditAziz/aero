@@ -26,7 +26,7 @@ public class TicketService {
     private PassengerService passengerService;
 
     @Transactional
-    public void issueTicket(Map<String,Object> req) {
+    public byte[] issueTicket(Map<String,Object> req) {
         // TODO use jwt authToken to retrieve passenger
         Passenger p = passengerService.getPassengerById(((Integer) req.get("userId")).longValue());
         FlightSchedule fs = flightScheduleRepository.findById(((Integer) req.get("scheduleId")).longValue()).orElse(null);
@@ -39,15 +39,17 @@ public class TicketService {
         Ticket ticket = new Ticket("",f,p,fs,sct,totalSeats,totalFare,ts);
 
         //TODO check if the passenger has already bought 4 tickets on the same flight on the same schedule
+        byte[] pdfTicket = new byte[0];
         try {
             ticketRepository.save(ticket);
             updateSeatAllocation(ticket);
             TicketPDFGenerator ticketPDFGenerator = new TicketPDFGenerator(ticket);
-            ticketPDFGenerator.generatePDF();
+            pdfTicket = ticketPDFGenerator.generatePDF();
         } catch (Exception e) {
             System.out.println("Exception in generating pdf..................");
             e.printStackTrace();
         }
+        return pdfTicket;
     }
 
     private void updateSeatAllocation(Ticket ticket) {

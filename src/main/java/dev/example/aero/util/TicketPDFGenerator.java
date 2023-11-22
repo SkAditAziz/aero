@@ -5,7 +5,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import dev.example.aero.model.Ticket;
 import lombok.Setter;
 
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
@@ -24,12 +24,13 @@ public class TicketPDFGenerator {
         this.spacing = 200;
     }
 
-    public void generatePDF() throws URISyntaxException, IOException, DocumentException {
+    public byte[] generatePDF() throws URISyntaxException, IOException, DocumentException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         Path logoPath = Paths.get(ClassLoader.getSystemResource("aero_logo.png").toURI());
 
         Document document = new Document(PageSize.A4, 50, 50, 50, 50);
 
-        PdfWriter.getInstance(document, new FileOutputStream("ticket_" + ticket.getId() + ".pdf"));
+        PdfWriter.getInstance(document, byteArrayOutputStream);
 
         document.open();
 
@@ -66,6 +67,8 @@ public class TicketPDFGenerator {
         addInfoToPdf(document,"Seat", seatNo);
 
         document.close();
+
+        return byteArrayOutputStream.toByteArray();
     }
 
     private void addInfoToPdf(Document document, String header, String value) throws DocumentException {
