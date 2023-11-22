@@ -20,13 +20,14 @@ import java.util.stream.IntStream;
 @Setter
 public class TicketPDFGenerator {
     private final Ticket ticket;
-    private float spacing;
+    private static final float SPACING = 20f;
+    private static final float BORDER_AFTER = 50f;
+    private static final float PARAGRAPH_LEADING = 30f;
     private final Font headerFont;
     private final Font valueFont;
 
     public TicketPDFGenerator(Ticket ticket) {
         this.ticket = ticket;
-        this.spacing = 100;
         headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 20);
         valueFont = FontFactory.getFont(FontFactory.HELVETICA, 16);
     }
@@ -97,13 +98,13 @@ public class TicketPDFGenerator {
         PdfPCell lineCell = new PdfPCell();
         lineCell.setBorder(Rectangle.BOTTOM);
         lineCell.setBorderColor(BaseColor.GRAY);
-        lineCell.setFixedHeight(20f);
+        lineCell.setFixedHeight(SPACING);
 
         PdfPTable lineTable = new PdfPTable(1);
-        lineTable.setSpacingBefore(20f);
+        lineTable.setSpacingBefore(SPACING);
         lineTable.addCell(lineCell);
         lineTable.setWidthPercentage(100);
-        lineTable.setSpacingAfter(50f);
+        lineTable.setSpacingAfter(BORDER_AFTER);
 
         return lineTable;
     }
@@ -117,14 +118,14 @@ public class TicketPDFGenerator {
             paragraph.setFont(valueFont);
             paragraph.add(new Chunk(header[i]));
             paragraph.add(Chunk.NEWLINE);
-            paragraph.setLeading(30f);
+            paragraph.setLeading(PARAGRAPH_LEADING);
             paragraph.setFont(headerFont);
             paragraph.add(new Chunk(value[i]));
 
             infoCell.addElement(paragraph);
             table.addCell(infoCell);
         }
-        table.setSpacingAfter(20f);
+        table.setSpacingAfter(SPACING);
         return table;
     }
 
