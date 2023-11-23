@@ -4,10 +4,13 @@ import dev.example.aero.dto.FlightDetailsResponseDTO;
 import dev.example.aero.dto.mapper.FlightDetailsResponseDTOMapper;
 import dev.example.aero.model.Flight;
 import dev.example.aero.model.FlightSchedule;
+import dev.example.aero.model.Ticket;
 import dev.example.aero.repository.FlightRepository;
 import dev.example.aero.repository.FlightScheduleRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -50,5 +53,11 @@ public class FlightScheduleService {
                 .collect(Collectors.toList());
 
         return result.isEmpty() ? Collections.emptyList() : result;
+    }
+
+    @Scheduled(fixedRate = 1000 * 60 * 60)
+    @Transactional
+    public void updateTicketStatusAndDistance() {
+        List<Ticket> ticketsToUpdate = flightScheduleRepository.completedFlightTickets();
     }
 }
