@@ -1,6 +1,9 @@
 package dev.example.aero.util;
 
 import com.itextpdf.text.*;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -25,11 +28,13 @@ public class TicketPDFGenerator {
     private static final float PARAGRAPH_LEADING = 30f;
     private final Font headerFont;
     private final Font valueFont;
+    private final Font coloredFont;
 
     public TicketPDFGenerator(Ticket ticket) {
         this.ticket = ticket;
         headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 20);
-        valueFont = FontFactory.getFont(FontFactory.HELVETICA, 16);
+        valueFont = FontFactory.getFont(FontFactory.COURIER, 18);
+        coloredFont= FontFactory.getFont(FontFactory.HELVETICA_BOLD, 20, BaseColor.BLUE);
     }
 
     public byte[] generatePDF() throws URISyntaxException, IOException, DocumentException {
@@ -119,9 +124,14 @@ public class TicketPDFGenerator {
             paragraph.add(new Chunk(header[i]));
             paragraph.add(Chunk.NEWLINE);
             paragraph.setLeading(PARAGRAPH_LEADING);
-            paragraph.setFont(headerFont);
-            paragraph.add(new Chunk(value[i]));
 
+            if (header[i].equals("Flight")){
+                Chunk valueChunk = new Chunk(value[i], coloredFont);
+                paragraph.add(valueChunk);
+            } else {
+                paragraph.setFont(headerFont);
+                paragraph.add(new Chunk(value[i]));
+            }
             infoCell.addElement(paragraph);
             table.addCell(infoCell);
         }
