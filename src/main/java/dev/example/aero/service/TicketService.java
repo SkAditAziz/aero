@@ -1,5 +1,7 @@
 package dev.example.aero.service;
 
+import dev.example.aero.dto.TicketDetailsResponseDTO;
+import dev.example.aero.dto.mapper.TicketDetailsResponseDTOMapper;
 import dev.example.aero.model.*;
 import dev.example.aero.model.Enumaration.SeatClassType;
 import dev.example.aero.model.Enumaration.TicketStatus;
@@ -11,7 +13,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -56,5 +60,12 @@ public class TicketService {
         FlightSchedule desiredSchedule = ticket.getFlightSchedule();
         desiredSchedule.setAvailableSeats(desiredSchedule.getAvailableSeats() - ticket.getTotalSeats());
         flightScheduleRepository.save(desiredSchedule);
+    }
+
+    public List<TicketDetailsResponseDTO> getTicketsByPassengerId(long passengerId) {
+        List<Ticket> tickets = ticketRepository.getTicketsByPassengerId(passengerId);
+        return tickets.stream()
+                .map(new TicketDetailsResponseDTOMapper())
+                .collect(Collectors.toList());
     }
 }
