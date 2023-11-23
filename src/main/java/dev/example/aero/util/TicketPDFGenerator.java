@@ -23,8 +23,8 @@ import java.util.stream.IntStream;
 @Setter
 public class TicketPDFGenerator {
     private final Ticket ticket;
-    private static final float SPACING = 20f;
-    private static final float BORDER_AFTER = 50f;
+    private static final float SPACING = 10f;
+    private static final float BORDER_AFTER = 30f;
     private static final float PARAGRAPH_LEADING = 30f;
     private final Font headerFont;
     private final Font valueFont;
@@ -39,7 +39,7 @@ public class TicketPDFGenerator {
 
     public byte[] generatePDF() throws URISyntaxException, IOException, DocumentException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        Document document = new Document(PageSize.A3);
+        Document document = new Document(PageSize.A4);
 
         PdfWriter.getInstance(document, byteArrayOutputStream);
 
