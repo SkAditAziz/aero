@@ -9,14 +9,19 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @SpringBootApplication
+@EnableScheduling
 public class AeroApplication {
 
 	public static void main(String[] args) {
@@ -60,32 +65,36 @@ public class AeroApplication {
 //			Ticket t = new Ticket("0",f,p,fs,s,totalSeat,totalFare,ts);
 //			ticketRepository.save(t);
 
-// Creating Schedule
 //			Flight f = flightRepository.findById("CCU-DAC-001").orElse(null);
 //			System.out.println(f.getDuration());
-//
+
+// Creating Schedule
 //			List<String> flightcodelists = new ArrayList<>(
 //					List.of(
 //							"CCU-DAC-001","CGP-CCU-001","CXB-DAC-001","CXB-DAC-002","DAC-CXB-001","DAC-CXB-002","DAC-CXB-003",
-//							"DAC-RJH-001","DAC-ZYL-001", "DAC-CXB-004", "DAC-CXB-005"
+//							"DAC-RJH-001","DAC-ZYL-001", "DAC-CXB-004", "DAC-CXB-005", "RJH-DAC-001"
 //					)
 //			);
-			
-//			List<String> flightcodelists = new ArrayList<>(
-//					List.of("DAC-CXB-005")
-//			);
-			
-//			FlightSchedule fs = new FlightSchedule(LocalDate.of(2023,11,15),flightcodelists);
+//
+//			List<Flight> flightList = flightcodelists.stream()
+//					.map(id -> flightRepository.findById(id).orElse(null))
+//					.collect(Collectors.toList());
+//			// Deep copied flight list so the seatInfo of FlightSchedule->Flight->SeatInfo is some other to the actual flight
+//			Set<Flight> copiedFlightSet = flightList.stream()
+//					.map(Flight::deepCopy)
+//					.collect(Collectors.toSet());
+//
+//			FlightSchedule fs = new FlightSchedule(LocalDate.of(2023,11,27),copiedFlightSet);
 //			flightScheduleRepository.save(fs);
 			
 //			Airport bar = new Airport("BRT","Barisal Airport","Borisal");
 //			airportRepository.save(bar);
 			
-//	new SeatInfo
+//	Declaring new SeatInfo
 //			List<SeatInfo> seatInfoList = new ArrayList<>(
 //					List.of(
-//						new SeatInfo( SeatClassType.BUSINESS, 10, 6000),
-//						new SeatInfo( SeatClassType.ECONOMY, 40, 3500)
+//						new SeatInfo(0L,SeatClassType.BUSINESS, 10, 10000),
+//						new SeatInfo(0L,SeatClassType.ECONOMY, 40, 7500)
 //					)
 //			);
 
@@ -97,16 +106,15 @@ public class AeroApplication {
 //          f.setSeatInfoList(seatInfoList);
 //			flightRepository.save(f);
 
-// 	Adding seatinfo to flights
-//			Airport a1 = airportRepository.findById("RJH").orElse(null);
-//			Airport a2 = airportRepository.findById("DAC").orElse(null);
+// 	Adding seatinfo to New flight
+//			Airport a1 = airportRepository.findById("DAC").orElse(null);
+//			Airport a2 = airportRepository.findById("CCU").orElse(null);
 //
-//			Flight f1 = new Flight("1","US-Bangla",a1,a2,
-//					LocalTime.of(16,15), ZoneId.of("Asia/Dhaka"),
-//					LocalTime.of(16,45), ZoneId.of("Asia/Dhaka"),
-//					192);
+//			Flight f1 = new Flight("1","Qatar Airways",a1,a2,
+//					LocalTime.of(11,30), ZoneId.of("Asia/Dhaka"),
+//					LocalTime.of(11,0), ZoneId.of("Asia/Kolkata"),
+//					244.2,seatInfoList);
 //
-//			f1.setSeatInfoList(seatInfoList);
 //			flightRepository.save(f1);
 
 //	 Delete an airport
