@@ -1,8 +1,6 @@
 package dev.example.aero.repository;
 
-import dev.example.aero.model.Flight;
 import dev.example.aero.model.FlightSchedule;
-import dev.example.aero.model.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -18,6 +16,4 @@ public interface FlightScheduleRepository extends JpaRepository<FlightSchedule,L
             "AND f.to_airport_code = :toAirportCode " +
             "AND fs.seat_class_type = :classType", nativeQuery = true)
     List<FlightSchedule> findAllByFlightDateAndFromAndToAndClass(LocalDate flightDate, String fromAirportCode, String toAirportCode, String classType);
-
-    List<Ticket> completedFlightTickets();
 }

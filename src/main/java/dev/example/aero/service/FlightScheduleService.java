@@ -7,6 +7,7 @@ import dev.example.aero.model.FlightSchedule;
 import dev.example.aero.model.Ticket;
 import dev.example.aero.repository.FlightRepository;
 import dev.example.aero.repository.FlightScheduleRepository;
+import dev.example.aero.repository.TicketRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,8 @@ public class FlightScheduleService {
     private FlightRepository flightRepository;
     @Autowired
     private FlightService flightService;
+    @Autowired
+    private TicketRepository ticketRepository;
 
     public void addOrUpdateFlightSchedule(Map<String,Object> req) {
         LocalDate flightDate = LocalDate.parse((String) req.get("flightDate"));
@@ -55,9 +58,9 @@ public class FlightScheduleService {
         return result.isEmpty() ? Collections.emptyList() : result;
     }
 
-    @Scheduled(fixedRate = 1000 * 60 * 60)
+    @Scheduled(fixedRate = 1000 * 60)
     @Transactional
     public void updateTicketStatusAndDistance() {
-        List<Ticket> ticketsToUpdate = flightScheduleRepository.completedFlightTickets();
+        List<Ticket> ticketsToUpdate = ticketRepository.completedFlightTickets();
     }
 }
