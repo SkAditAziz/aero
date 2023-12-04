@@ -62,5 +62,9 @@ public class FlightScheduleService {
     @Transactional
     public void updateTicketStatusAndDistance() {
         List<Ticket> ticketsToUpdate = ticketRepository.completedFlightTickets();
+        for (Ticket t: ticketsToUpdate) {
+            ticketRepository.updateToComplete(t.getId());
+            // update passenger distance_flied from flight.distance
+        }
     }
 }

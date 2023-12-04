@@ -2,6 +2,7 @@ package dev.example.aero.repository;
 
 import dev.example.aero.model.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -15,4 +16,7 @@ public interface TicketRepository extends JpaRepository<Ticket,String> {
             "AND (fs.flight_date < CONVERT_TZ(now(), 'UTC', f.arrival_time_zone)) " +
             "AND (f.arrival_time < CONVERT_TZ(now(), 'UTC', f.arrival_time_zone))" , nativeQuery = true)
     List<Ticket> completedFlightTickets();
+    @Modifying
+    @Query("UPDATE Ticket t SET ticketStatus = 'COMPLETED' WHERE t.id =:ticketId")
+    void updateToComplete(String ticketId);
 }
