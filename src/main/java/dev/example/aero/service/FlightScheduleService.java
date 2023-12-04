@@ -66,7 +66,7 @@ public class FlightScheduleService {
     public void updateTicketStatusAndDistance() {
         List<Ticket> ticketsToUpdate = ticketRepository.completedFlightTickets();
         for (Ticket t: ticketsToUpdate) {
-            ticketRepository.updateToComplete(t.getId());
+            ticketRepository.updateToComplete(t);
             passengerRepository.addDistanceFlied(t.getPassenger(), t.getFlight());
         }
     }
