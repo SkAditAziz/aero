@@ -61,7 +61,7 @@ public class FlightScheduleService {
         return result.isEmpty() ? Collections.emptyList() : result;
     }
 
-    @Scheduled(fixedRate = 1000 * 60 * 60 * 24)
+    @Scheduled(cron = "0 1 0 * * *") // run it on everyday 00:01 AM
     @Transactional
     public void updateTicketStatusAndDistance() {
         List<Ticket> ticketsToUpdate = ticketRepository.completedFlightTickets();
