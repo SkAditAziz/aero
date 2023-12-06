@@ -11,6 +11,7 @@ import dev.example.aero.repository.TicketRepository;
 import dev.example.aero.util.TicketPDFGenerator;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +29,8 @@ public class TicketService {
     private FlightRepository flightRepository;
     @Autowired
     private PassengerService passengerService;
+    @Autowired
+    private JmsTemplate jmsTemplate;
 
     @Transactional
     public byte[] issueTicket(Map<String,Object> req) {
@@ -49,6 +52,7 @@ public class TicketService {
             updateSeatAllocation(ticket);
             TicketPDFGenerator ticketPDFGenerator = new TicketPDFGenerator(ticket);
             pdfTicket = ticketPDFGenerator.generatePDF();
+            jmsTemplate.convertAndSend("messagequeue.q", ticket);
         } catch (Exception e) {
             System.out.println("Exception in generating pdf..................");
             e.printStackTrace();
