@@ -72,4 +72,16 @@ public class TicketService {
                 .map(new TicketDetailsResponseDTOMapper())
                 .collect(Collectors.toList());
     }
+
+    public Map<String, String> getEmailDetails(Ticket ticket) {
+        return Map.of(
+                "to", ticket.getPassenger().getEmail(),
+                "sub", "Your Aero Ticket",
+                "body", "Dear " + ticket.getPassenger().getFirstName() + " " +
+                        ticket.getPassenger().getLastName() + ",\n\n" +
+                        "Your ticket has been confirmed.\n\n" +
+                        "Wishing a great journey!\n" +
+                        "-Team Aero"
+        );
+    }
 }
