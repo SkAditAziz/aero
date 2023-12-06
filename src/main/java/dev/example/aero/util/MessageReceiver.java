@@ -8,7 +8,7 @@ import org.springframework.jms.annotation.JmsListener;
 
 import java.util.Map;
 
-public class Receiver {
+public class MessageReceiver {
     @Autowired
     private EmailService emailService;
     @Autowired

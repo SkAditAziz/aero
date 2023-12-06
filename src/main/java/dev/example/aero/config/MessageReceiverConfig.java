@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 
-import dev.example.aero.util.Receiver;
+import dev.example.aero.util.MessageReceiver;
 
 @Configuration
 @EnableJms
@@ -30,7 +30,7 @@ public class MessageReceiverConfig {
     }
 
     @Bean
-    public Receiver receiver() {
-        return new Receiver();
+    public MessageReceiver receiver() {
+        return new MessageReceiver();
     }
 }
