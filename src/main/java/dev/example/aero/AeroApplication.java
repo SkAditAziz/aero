@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 public class AeroApplication {
 
 	public static void main(String[] args) {
+		System.setProperty("org.apache.activemq.SERIALIZABLE_PACKAGES","*");
 		SpringApplication.run(AeroApplication.class, args);
 	}
 
