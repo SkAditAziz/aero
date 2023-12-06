@@ -27,4 +27,9 @@ public class MessageSenderConfig {
     public JmsTemplate jmsTemplate() {
         return new JmsTemplate(cachingConnectionFactory());
     }
+
+    // TODO add preDestroy to resolve it?
+    /*
+    o.a.c.loader.WebappClassLoaderBase       : The web application [ROOT] appears to have started a thread named [ActiveMQ Transport: tcp://localhost/127.0.0.1:61616@44014] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+     */
 }
