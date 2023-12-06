@@ -18,6 +18,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 
 @Service
 public class TicketService {
@@ -52,12 +57,29 @@ public class TicketService {
             updateSeatAllocation(ticket);
             TicketPDFGenerator ticketPDFGenerator = new TicketPDFGenerator(ticket);
             pdfTicket = ticketPDFGenerator.generatePDF();
-            jmsTemplate.convertAndSend("messagequeue.q", ticket);
+            jmsTemplate.convertAndSend("messagequeue.q", new TicketWrapper(ticket, pdfTicket));
         } catch (Exception e) {
             System.out.println("Exception in generating pdf..................");
             e.printStackTrace();
         }
         return pdfTicket;
+    }
+
+    public String saveTicketPdf(Ticket ticket, byte[] pdfTicket) {
+        try {
+            String resourcesDirectory = getClass().getClassLoader().getResource("").getPath();
+            String ticketsDirectoryPath = resourcesDirectory + "tickets";
+            Files.createDirectories(Paths.get(ticketsDirectoryPath));
+            String filePath = ticketsDirectoryPath + "/" + ticket.getId() + ".pdf";
+
+            try (FileOutputStream fos = new FileOutputStream(filePath)) {
+                fos.write(pdfTicket);
+            }
+            return filePath;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private void updateSeatAllocation(Ticket ticket) {
