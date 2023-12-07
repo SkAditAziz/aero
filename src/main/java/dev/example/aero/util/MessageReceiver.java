@@ -15,7 +15,7 @@ public class MessageReceiver {
     private TicketService ticketService;
 
     @JmsListener(destination = "messagequeue.q")
-    public void sendMail(TicketWrapper ticketWrapper) {
+    public void saveTicketAndSendMail(TicketWrapper ticketWrapper) {
         String filePath = ticketService.saveTicketPdf(ticketWrapper.getTicket(), ticketWrapper.getPdfTicket());
 
         Map<String, String> emailDetails = ticketService.getEmailDetails(ticketWrapper.getTicket());

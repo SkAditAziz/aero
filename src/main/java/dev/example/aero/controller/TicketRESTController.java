@@ -27,7 +27,7 @@ public class TicketRESTController {
             headers.setContentType(MediaType.APPLICATION_PDF);
             headers.setContentDispositionFormData("attachement", "ticket.pdf");
             return new ResponseEntity<>(pdfTicket, headers, HttpStatus.OK);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to issue ticket");
         }
     }
