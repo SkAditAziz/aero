@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 
-import dev.example.aero.util.MessageReceiver;
-
 @Configuration
 @EnableJms
 public class MessageReceiverConfig {
@@ -27,10 +25,5 @@ public class MessageReceiverConfig {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(receiverActiveMQConnectionFactory());
         return factory;
-    }
-
-    @Bean
-    public MessageReceiver receiver() {
-        return new MessageReceiver();
     }
 }

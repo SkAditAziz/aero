@@ -5,9 +5,10 @@ import dev.example.aero.service.EmailService;
 import dev.example.aero.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
-
+@Component
 public class MessageReceiver {
     @Autowired
     private EmailService emailService;
