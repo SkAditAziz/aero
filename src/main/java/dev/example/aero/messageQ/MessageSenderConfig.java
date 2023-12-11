@@ -1,4 +1,4 @@
-package dev.example.aero.config;
+package dev.example.aero.messageQ;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;

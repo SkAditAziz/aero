@@ -1,13 +1,14 @@
-package dev.example.aero.util;
+package dev.example.aero.messageQ;
 
 import dev.example.aero.model.TicketWrapper;
-import dev.example.aero.service.EmailService;
 import dev.example.aero.service.TicketService;
+import dev.example.aero.service.utilService.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+
 @Component
 public class MessageReceiver {
     @Autowired

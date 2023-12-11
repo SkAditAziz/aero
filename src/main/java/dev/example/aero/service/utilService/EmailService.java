@@ -1,4 +1,4 @@
-package dev.example.aero.service;
+package dev.example.aero.service.utilService;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
