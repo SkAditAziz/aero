@@ -2,12 +2,21 @@ package dev.example.aero.service;
 
 import dev.example.aero.model.Passenger;
 import dev.example.aero.repository.PassengerRepository;
+import dev.example.aero.security.dto.AuthenticationResponse;
+import dev.example.aero.security.service.JwtService;
+import dev.example.aero.security.userdetails.PassengerDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Map;
 
 @Service
 public class PassengerService {
@@ -15,6 +24,10 @@ public class PassengerService {
     PassengerRepository passengerRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private JwtService jwtService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     public void insertPassenger(Passenger passenger) throws DataIntegrityViolationException {
         String encodedPassword = passwordEncoder.encode(passenger.getPassword());
@@ -58,5 +71,22 @@ public class PassengerService {
 
     public Passenger getPassengerById(long userId) {
         return passengerRepository.findById(userId).orElse(null);
+    }
+
+    public AuthenticationResponse register(Passenger passenger) {
+        insertPassenger(passenger);
+        return new AuthenticationResponse(jwtService.generateToken(new PassengerDetails(passenger)));
+    }
+
+    public AuthenticationResponse authenticate(Map<String, Object> request) {
+        String pEmail = (String) request.get("email");
+        String pPassword = (String) request.get("password");
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(pEmail, pPassword));
+        } catch (UsernameNotFoundException | BadCredentialsException e) {
+            throw e;
+        }
+        Passenger passenger = passengerRepository.findByEmail(pEmail);
+        return new AuthenticationResponse(jwtService.generateToken(new PassengerDetails(passenger)));
     }
 }
