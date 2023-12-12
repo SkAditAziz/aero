@@ -27,7 +27,7 @@ public class PassengerDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return passenger.getContactNo();
+        return passenger.getEmail();
     }
 
     @Override
