@@ -1,7 +1,8 @@
-package dev.example.aero.security;
+package dev.example.aero.security.service;
 
 import dev.example.aero.model.Passenger;
 import dev.example.aero.repository.PassengerRepository;
+import dev.example.aero.security.userdetails.PassengerDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

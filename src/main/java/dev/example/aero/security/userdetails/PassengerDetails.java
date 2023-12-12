@@ -1,4 +1,4 @@
-package dev.example.aero.security;
+package dev.example.aero.security.userdetails;
 
 import dev.example.aero.model.Passenger;
 import org.springframework.security.core.GrantedAuthority;
