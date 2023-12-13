@@ -2,7 +2,7 @@ package dev.example.aero.controller;
 
 import dev.example.aero.model.Passenger;
 import dev.example.aero.security.dto.AuthenticationResponse;
-import dev.example.aero.service.PassengerService;
+import dev.example.aero.security.service.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,20 +18,20 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthenticationRESTController {
     @Autowired
-    private PassengerService passengerService;
+    private AuthenticationService authenticationService;
     @PostMapping("/register")
     public AuthenticationResponse register(@Valid @RequestBody Passenger passenger, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             String errorMessage = bindingResult.getAllErrors().get(0).getDefaultMessage();
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
         }
-        return passengerService.register(passenger);
+        return authenticationService.register(passenger);
     }
 
     @PostMapping("/login")
     public AuthenticationResponse login(@RequestBody Map<String, Object> loginRequest) {
         try {
-            return passengerService.authenticate(loginRequest);
+            return authenticationService.authenticate(loginRequest);
         } catch (Exception e) {
             // TODO why these message is not being sent as response?
             if (e instanceof UsernameNotFoundException) {
