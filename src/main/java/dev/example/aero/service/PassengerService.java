@@ -1,5 +1,6 @@
 package dev.example.aero.service;
 
+import dev.example.aero.model.Enumaration.Role;
 import dev.example.aero.model.Passenger;
 import dev.example.aero.repository.PassengerRepository;
 import dev.example.aero.security.dto.AuthenticationResponse;
@@ -32,6 +33,7 @@ public class PassengerService {
     public void insertPassenger(Passenger passenger) throws DataIntegrityViolationException {
         String encodedPassword = passwordEncoder.encode(passenger.getPassword());
         passenger.setPassword(encodedPassword);
+        passenger.setRole(Role.PASSENGER);
         if (passenger.getContactNo().startsWith("1"))
            passenger.setContactNo("0" + passenger.getContactNo());
         passengerRepository.save(passenger);

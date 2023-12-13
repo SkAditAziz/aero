@@ -1,5 +1,6 @@
 package dev.example.aero.model;
 
+import dev.example.aero.model.Enumaration.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -47,4 +48,7 @@ public class Passenger implements Serializable {
 
     @Column(name = "DISTANCE_FLIED_KM")
     private double distanceFlied;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }
