@@ -1,10 +1,13 @@
 package dev.example.aero.security.service;
 
+import dev.example.aero.repository.PassengerRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,8 @@ import java.util.function.Function;
 @Service
 public class JwtService {
     private final String SECRET_KEY;
+    @Autowired
+    private PassengerRepository passengerRepository;
 
     public JwtService(@Value("${jwt.secretkey}") String secretKey) {
         SECRET_KEY = secretKey;
@@ -71,5 +76,15 @@ public class JwtService {
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public int getUserIdFromRequest(HttpServletRequest request) {
+        final String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return 0;
+        }
+        final String token = authHeader.substring("Bearer ".length());
+        final String userName = extractUsername(token);
+        return passengerRepository.getIdByEmail(userName);
     }
 }
