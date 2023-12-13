@@ -18,4 +18,6 @@ public interface PassengerRepository extends JpaRepository<Passenger,Long> {
     void addDistanceFlied(Passenger passenger, Flight flight);
     @Query("SELECT p.id FROM Passenger p WHERE p.email=:email")
     int getIdByEmail(String email);
+    @Query("SELECT p.email FROM Passenger p WHERE p.contactNo=:contactNo")
+    String findEmailByContactNo(String contactNo);
 }

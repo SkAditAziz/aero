@@ -79,14 +79,23 @@ public class PassengerService {
     }
 
     public AuthenticationResponse authenticate(Map<String, Object> request) {
-        String pEmail = (String) request.get("email");
+        String username = (String) request.get("username");
         String pPassword = (String) request.get("password");
+        // temporarily accepting both email and contact no! but how to enable both using PassengerDetails?
+        if (isContactNo(username)) {
+            username = passengerRepository.findEmailByContactNo(username);
+        }
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(pEmail, pPassword));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, pPassword));
         } catch (UsernameNotFoundException | BadCredentialsException e) {
             throw e;
         }
-        Passenger passenger = passengerRepository.findByEmail(pEmail);
+        Passenger passenger = passengerRepository.findByEmail(username);
         return new AuthenticationResponse(jwtService.generateToken(new PassengerDetails(passenger)));
+    }
+
+    private boolean isContactNo(String username) {
+        String contactNoRegex = "^(01\\d{9})$";
+        return username.matches(contactNoRegex);
     }
 }
