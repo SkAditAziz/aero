@@ -2,7 +2,9 @@ package dev.example.aero.controller;
 
 
 import dev.example.aero.dto.TicketDetailsResponseDTO;
+import dev.example.aero.security.service.JwtService;
 import dev.example.aero.service.TicketService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,10 +21,16 @@ import java.util.Map;
 public class TicketRESTController {
     @Autowired
     private TicketService ticketService;
+    @Autowired
+    private JwtService jwtService;
     @PostMapping("/confirm")
-    public ResponseEntity<byte[]> confirmTicket (@RequestBody Map<String, Object> req) {
+    public ResponseEntity<byte[]> confirmTicket (HttpServletRequest request, @RequestBody Map<String, Object> req) {
+        int passengerId = jwtService.getUserIdFromRequest(request);
+        if (passengerId == 0) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
         try {
-            byte[] pdfTicket = ticketService.issueTicket(req);
+            byte[] pdfTicket = ticketService.issueTicket(req, passengerId);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
             headers.setContentDispositionFormData("attachment", "ticket.pdf");

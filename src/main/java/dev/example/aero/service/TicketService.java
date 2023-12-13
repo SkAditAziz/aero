@@ -38,9 +38,8 @@ public class TicketService {
     private JmsTemplate jmsTemplate;
 
     @Transactional
-    public byte[] issueTicket(Map<String,Object> req) {
-        // TODO use jwt authToken to retrieve passenger
-        Passenger p = passengerService.getPassengerById(((Integer) req.get("userId")).longValue());
+    public byte[] issueTicket(Map<String,Object> req, int passengerId) {
+        Passenger p = passengerService.getPassengerById(passengerId);
         FlightSchedule fs = flightScheduleRepository.findById(((Integer) req.get("scheduleId")).longValue()).orElse(null);
         int totalSeats = (int) req.get("noPassengers");
 

@@ -16,4 +16,6 @@ public interface PassengerRepository extends JpaRepository<Passenger,Long> {
     @Modifying
     @Query("UPDATE Passenger p SET p.distanceFlied = p.distanceFlied + (SELECT f.distance FROM Flight f WHERE f=:flight) WHERE p=:passenger")
     void addDistanceFlied(Passenger passenger, Flight flight);
+    @Query("SELECT p.id FROM Passenger p WHERE p.email=:email")
+    int getIdByEmail(String email);
 }
