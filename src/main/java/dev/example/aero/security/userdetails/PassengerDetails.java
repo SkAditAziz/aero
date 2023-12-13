@@ -17,7 +17,7 @@ public class PassengerDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("PASSENGER"));
+        return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + passenger.getRole().name()));
     }
 
     @Override
