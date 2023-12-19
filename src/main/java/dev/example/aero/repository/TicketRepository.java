@@ -18,4 +18,10 @@ public interface TicketRepository extends JpaRepository<Ticket,String> {
     @Modifying
     @Query("UPDATE Ticket t SET ticketStatus = 'COMPLETED' WHERE t =:ticket")
     void updateToComplete(Ticket ticket);
+
+    @Query("SELECT COALESCE(SUM(t.totalSeats), 0)\n" +
+            "FROM Ticket t\n" +
+            "WHERE t.flightSchedule.id = :scheduleId\n" +
+            "  AND t.passenger.id = :passengerId")
+    int alreadyBoughtSeats(long scheduleId, long passengerId);
 }

@@ -11,8 +11,10 @@ import dev.example.aero.repository.TicketRepository;
 import dev.example.aero.util.TicketPDFGenerator;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Map;
@@ -36,6 +38,8 @@ public class TicketService {
     private PassengerService passengerService;
     @Autowired
     private JmsTemplate jmsTemplate;
+    static final int TOTAL_PASSENGER = 4;
+
 
     @Transactional
     public byte[] issueTicket(Map<String,Object> req, int passengerId) {
@@ -43,13 +47,18 @@ public class TicketService {
         FlightSchedule fs = flightScheduleRepository.findById(((Integer) req.get("scheduleId")).longValue()).orElse(null);
         int totalSeats = (int) req.get("noPassengers");
 
+        int alreadyBoughtSeats = ticketRepository.alreadyBoughtSeats(fs.getId(), p.getId());
+        if ((totalSeats + alreadyBoughtSeats) > TOTAL_PASSENGER) {
+            System.out.println("A passenger cannot bought more than " + TOTAL_PASSENGER + " tickets on a flight!");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A passenger cannot bought more than " + TOTAL_PASSENGER + " tickets on a flight!");
+        }
+
         Flight f = flightRepository.findById(fs.getFlightID()).orElse(null);
         SeatClassType sct = fs.getSeatClassType();
         double totalFare = fs.getTotalFare(totalSeats);
         TicketStatus ts = TicketStatus.UPCOMING;
         Ticket ticket = new Ticket("",f,p,fs,sct,totalSeats,totalFare,ts);
 
-        //TODO check if the passenger has already bought 4 tickets on the same flight on the same schedule
         byte[] pdfTicket = new byte[0];
         try {
             ticketRepository.save(ticket);
