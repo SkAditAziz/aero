@@ -1,10 +1,9 @@
-package dev.example.aero.controller;
+package dev.example.aero.restcontroller;
 
 import dev.example.aero.dto.FlightDetailsResponseDTO;
 import dev.example.aero.service.FlightScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;

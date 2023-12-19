@@ -1,4 +1,4 @@
-package dev.example.aero.controller;
+package dev.example.aero.restcontroller;
 
 import dev.example.aero.model.Flight;
 import dev.example.aero.service.FlightService;
