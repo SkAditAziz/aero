@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "aero",
-    "dateExported": "2023-11-12T16:10:54.668Z",
+    "dateExported": "2023-12-20T17:00:40.286Z",
     "version": "1.1",
     "folders": [
         {
@@ -24,6 +24,27 @@
             "containerId": "",
             "created": "2023-11-10T22:08:08.476Z",
             "sortNum": 30000
+        },
+        {
+            "_id": "4a7debc1-adfd-424b-85bc-a0c7d3682544",
+            "name": "passenger",
+            "containerId": "",
+            "created": "2023-11-15T11:57:41.400Z",
+            "sortNum": 40000
+        },
+        {
+            "_id": "404fc919-ab33-472f-af84-f6a35d104c4f",
+            "name": "ticket",
+            "containerId": "",
+            "created": "2023-11-17T19:06:33.114Z",
+            "sortNum": 50000
+        },
+        {
+            "_id": "df19325f-1620-4bc6-8715-24e53ef688ba",
+            "name": "auth",
+            "containerId": "",
+            "created": "2023-12-12T13:32:06.137Z",
+            "sortNum": 60000
         }
     ],
     "requests": [
@@ -32,13 +53,17 @@
             "colId": "b1ac7054-c271-427d-a620-f8f0e78bd7df",
             "containerId": "adaf7fd2-53ca-4f69-b253-7b126195ca4e",
             "name": "an Airport with Code",
-            "url": "http://localhost:8080/airports/CCU",
+            "url": "http://localhost:8080/airports/RJH",
             "method": "GET",
             "sortNum": 10000,
             "created": "2023-11-09T17:23:18.188Z",
-            "modified": "2023-11-12T16:06:41.925Z",
+            "modified": "2023-12-18T07:39:55.898Z",
             "headers": [],
             "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJza2FkaXRheml6QGdtYWlsLmNvbSIsImlhdCI6MTcwMjg4NTE3MywiZXhwIjoxNzAyODg2NjEzfQ.VDpQtNSGXV3jftRrtquJu5Df-9U8GzmYsCKPuBp3NMo"
+            },
             "tests": []
         },
         {
@@ -46,21 +71,21 @@
             "colId": "b1ac7054-c271-427d-a620-f8f0e78bd7df",
             "containerId": "caf26294-b646-46e7-972b-e05d2638edc0",
             "name": "available flights from to to",
-            "url": "http://localhost:8080/flights?from=DAC&to=CXB",
+            "url": "http://localhost:8080/flights?from=RJH&to=DAC",
             "method": "GET",
             "sortNum": 10000,
             "created": "2023-11-09T17:51:28.362Z",
-            "modified": "2023-11-10T17:59:10.347Z",
+            "modified": "2023-11-18T08:11:06.607Z",
             "headers": [],
             "params": [
                 {
                     "name": "from",
-                    "value": "DAC",
+                    "value": "RJH",
                     "isPath": false
                 },
                 {
                     "name": "to",
-                    "value": "CXB",
+                    "value": "DAC",
                     "isPath": false
                 }
             ],
@@ -97,6 +122,25 @@
             "tests": []
         },
         {
+            "_id": "4a948518-0a8b-499f-a81d-29edf88e7c63",
+            "colId": "b1ac7054-c271-427d-a620-f8f0e78bd7df",
+            "containerId": "df19325f-1620-4bc6-8715-24e53ef688ba",
+            "name": "authenticate",
+            "url": "http://localhost:8080/auth/login",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-12-12T13:31:59.225Z",
+            "modified": "2023-12-18T07:39:33.921Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"username\" : \"skaditaziz@gmail.com\",\n  \"password\" : \"123_abcXYZ!\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
             "_id": "4f7f4309-3220-494d-8693-739828ca72c2",
             "colId": "b1ac7054-c271-427d-a620-f8f0e78bd7df",
             "containerId": "adaf7fd2-53ca-4f69-b253-7b126195ca4e",
@@ -105,9 +149,13 @@
             "method": "GET",
             "sortNum": 20000,
             "created": "2023-11-09T17:24:01.595Z",
-            "modified": "2023-11-10T17:59:21.581Z",
+            "modified": "2023-12-13T19:52:04.776Z",
             "headers": [],
             "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1bmRlcnRha2VyQHd3ZS5jb20iLCJpYXQiOjE3MDI0OTcxMTYsImV4cCI6MTcwMjQ5ODU1Nn0.WE2d3qxczRrq-K6Fz5iyLQx0xnmqa5fWldmK9TGfYYY"
+            },
             "tests": []
         },
         {
@@ -192,13 +240,17 @@
             "method": "POST",
             "sortNum": 50000,
             "created": "2023-11-11T18:46:37.379Z",
-            "modified": "2023-11-11T18:46:37.379Z",
+            "modified": "2023-12-19T13:54:57.782Z",
             "headers": [],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"flightDate\": \"2023-11-30\",\n  \"flightIds\": [\"CCU-DAC-001\",\"CGP-CCU-001\",\"CXB-DAC-001\",\"CXB-DAC-002\",\"DAC-CXB-001\",\"DAC-CXB-002\",\"DAC-CXB-003\"]\n}\n\n",
+                "raw": "{\n  \"flightDate\": \"2023-12-20\",\n  \"flightIds\": [\"CCU-DAC-001\",\"CGP-CCU-001\",\"CXB-DAC-001\",\"CXB-DAC-002\",\"DAC-CXB-001\",\"DAC-CXB-002\",\"DAC-CXB-003\",\"DAC-RJH-001\",\"DAC-ZYL-001\", \"DAC-CXB-004\", \"DAC-CXB-005\", \"RJH-DAC-001\"]\n}\n\n",
                 "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJza2FkaXRheml6QGdtYWlsLmNvbSIsImlhdCI6MTcwMjk5NDA1OSwiZXhwIjoxNzAyOTk1NDk5fQ.2-XXakAuSaaLJKruzm663UGc1fvzrgM1fDqkpgaUbaY"
             },
             "tests": []
         },
@@ -207,11 +259,11 @@
             "colId": "b1ac7054-c271-427d-a620-f8f0e78bd7df",
             "containerId": "d8ffd462-e4fc-44df-a6c4-8c527cd674aa",
             "name": "(***) Schedule with ALL the params",
-            "url": "http://localhost:8080/schedule?from=DAC&to=CXB&date=2023-11-26&classType=ECO&noPassengers=2",
+            "url": "http://localhost:8080/schedule?from=DAC&to=CXB&date=2023-12-20&classType=BUS&noPassengers=2",
             "method": "GET",
             "sortNum": 60000,
             "created": "2023-11-12T16:05:44.955Z",
-            "modified": "2023-11-12T16:10:42.484Z",
+            "modified": "2023-12-19T13:55:04.456Z",
             "headers": [],
             "params": [
                 {
@@ -226,12 +278,12 @@
                 },
                 {
                     "name": "date",
-                    "value": "2023-11-26",
+                    "value": "2023-12-20",
                     "isPath": false
                 },
                 {
                     "name": "classType",
-                    "value": "ECO",
+                    "value": "BUS",
                     "isPath": false
                 },
                 {
@@ -240,6 +292,104 @@
                     "isPath": false
                 }
             ],
+            "tests": []
+        },
+        {
+            "_id": "efb8a979-9b4c-4968-bb77-334a9bbb314a",
+            "colId": "b1ac7054-c271-427d-a620-f8f0e78bd7df",
+            "containerId": "4a7debc1-adfd-424b-85bc-a0c7d3682544",
+            "name": "login",
+            "url": "http://localhost:8080/passenger/login",
+            "method": "POST",
+            "sortNum": 70000,
+            "created": "2023-11-16T07:27:39.681Z",
+            "modified": "2023-12-11T15:28:46.879Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\" : \"skaditaziz@gmail.com\",\n  \"password\" : \"123_abcXYZ!\"\n}\n\n",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "e5cf0884-57fb-4554-9da5-8ed3a2d6244e",
+            "colId": "b1ac7054-c271-427d-a620-f8f0e78bd7df",
+            "containerId": "4a7debc1-adfd-424b-85bc-a0c7d3682544",
+            "name": "sign up",
+            "url": "http://localhost:8080/passenger",
+            "method": "POST",
+            "sortNum": 80000,
+            "created": "2023-11-15T11:57:26.819Z",
+            "modified": "2023-12-06T19:09:04.401Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"firstName\" : \"Abdullah\",\n  \"lastName\" : \"Al Towsif\",\n  \"contactNo\" : \"01770270798\",\n  \"email\" : \"abdullah.aziz@dsinnovators.com\",\n  \"password\" : \"towSif123!\"\n}\n\n",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "32c6e0e8-8ac9-4185-94d6-08b6f054dd0f",
+            "colId": "b1ac7054-c271-427d-a620-f8f0e78bd7df",
+            "containerId": "404fc919-ab33-472f-af84-f6a35d104c4f",
+            "name": "all tickets of a passenger",
+            "url": "http://localhost:8080/ticket/23",
+            "method": "GET",
+            "sortNum": 80000,
+            "created": "2023-11-17T19:06:48.366Z",
+            "modified": "2023-12-13T11:08:33.200Z",
+            "headers": [],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJza2FkaXRheml6QGdtYWlsLmNvbSIsImlhdCI6MTcwMjQ2NTU4MywiZXhwIjoxNzAyNDY3MDIzfQ.NIwdwcbENUjmrhFu0fVoZQCWir6wOcystwZYqk9aTxI"
+            },
+            "tests": []
+        },
+        {
+            "_id": "9110a966-0263-457f-9fac-c8b0817ae3ed",
+            "colId": "b1ac7054-c271-427d-a620-f8f0e78bd7df",
+            "containerId": "404fc919-ab33-472f-af84-f6a35d104c4f",
+            "name": "confirm Ticket",
+            "url": "http://localhost:8080/ticket/confirm",
+            "method": "POST",
+            "sortNum": 90000,
+            "created": "2023-11-23T13:10:27.573Z",
+            "modified": "2023-12-19T13:56:29.907Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"scheduleId\" : 271,\n  \"noPassengers\" : 1\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJza2FkaXRheml6QGdtYWlsLmNvbSIsImlhdCI6MTcwMjk5NDA1OSwiZXhwIjoxNzAyOTk1NDk5fQ.2-XXakAuSaaLJKruzm663UGc1fvzrgM1fDqkpgaUbaY"
+            },
+            "tests": []
+        },
+        {
+            "_id": "f82d113e-9628-4765-b249-cd8d125bb33d",
+            "colId": "b1ac7054-c271-427d-a620-f8f0e78bd7df",
+            "containerId": "df19325f-1620-4bc6-8715-24e53ef688ba",
+            "name": "register",
+            "url": "http://localhost:8080/auth/register",
+            "method": "POST",
+            "sortNum": 100000,
+            "created": "2023-12-12T13:40:42.956Z",
+            "modified": "2023-12-15T15:34:08.179Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"firstName\" : \"Randy\",\n  \"lastName\" : \"   \",\n  \"contactNo\" : \"01234567890\",\n  \"email\" : \"randy@wwe.com\",\n  \"password\" : \"RandyOrton123!\"\n}",
+                "form": []
+            },
             "tests": []
         }
     ]
