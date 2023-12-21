@@ -1,5 +1,6 @@
 package dev.example.aero.viewcontroller;
 
+import dev.example.aero.dto.FlightDetailsResponseDTO;
 import dev.example.aero.dto.FlightSearchReqDTO;
 import dev.example.aero.model.Enumaration.SeatClassType;
 import dev.example.aero.service.AirportService;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class HomeController {
@@ -28,6 +31,13 @@ public class HomeController {
 
     @PostMapping("/search")
     public String searchFlight(@ModelAttribute("flightSearchReqDTO") @NotNull FlightSearchReqDTO flightSearchReqDTO, Model model) {
+        List<FlightDetailsResponseDTO> flightSchedules = flightScheduleService.getFlightDetailsOnDate(
+                flightSearchReqDTO.getFromCode(),
+                flightSearchReqDTO.getToCode(),
+                flightSearchReqDTO.getJourneyDate().toString(),
+                flightSearchReqDTO.getSeatClass().getCode(),
+                flightSearchReqDTO.getNoPassengers());
+        model.addAttribute("flightSchedules", flightSchedules);
         return "flight_schedule";
     }
 }
