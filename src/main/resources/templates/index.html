@@ -9,7 +9,41 @@
 </head>
     <body>
 
-        <h1>Welcome to AERO!!</h1>
+    <h1>Welcome to AERO!!</h1>
+
+    <form th:action="@{/search}" method="post" th:object="${flightSearchReqDTO}">
+        <!-- From Airport Selection -->
+        <label for="fromCode">From</label>
+        <select id="fromCode" name="fromCode" th:field="*{fromCode}">
+            <option th:each="airport : ${airports}" th:value="${airport.code}" th:text="${airport.code + ' | ' + airport.name + ' - ' + airport.city}"></option>
+        </select>
+<br><br>
+
+        <!-- To Airport Select -->
+        <label for="toCode">To:</label>
+        <select id="toCode" name="toCode" th:field="*{toCode}">
+            <option th:each="airport : ${airports}" th:value="${airport.code}" th:text="${airport.code + ' | ' + airport.name + ' - ' + airport.city}"></option>
+        </select>
+<br><br>
+        <!-- Journey Date -->
+        <label for="journeyDate">Journey Date:</label>
+        <input type="date" id="journeyDate" name="journeyDate" th:field="*{journeyDate}">
+<br><br>
+        <!-- Class Select -->
+        <label for="seatClass">Class:</label>
+        <select id="seatClass" name="seatClass" th:field="*{seatClass}">
+            <option th:each="classType : ${seatClasses}" th:value="${classType}" th:text="${classType}"></option>
+        </select>
+<br><br>
+        <!-- Number of Travelers -->
+        <label for="noPassengers">Travelers:</label>
+        <select id="noPassengers" name="noPassengers" th:field="*{noPassengers}">
+            <option th:each="i : ${#numbers.sequence(1, highestPassenger)}" th:value="${i}" th:text="${i}"></option>
+        </select>
+
+        <br>
+        <button type="submit">Search</button>
+    </form>
 
     </body>
 </html>
