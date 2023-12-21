@@ -1,6 +1,7 @@
 package dev.example.aero.service;
 
 import dev.example.aero.dto.FlightDetailsResponseDTO;
+import dev.example.aero.dto.FlightSearchReqDTO;
 import dev.example.aero.dto.mapper.FlightDetailsResponseDTOMapper;
 import dev.example.aero.model.Flight;
 import dev.example.aero.model.FlightSchedule;
@@ -56,5 +57,15 @@ public class FlightScheduleService {
                 .collect(Collectors.toList());
 
         return result.isEmpty() ? Collections.emptyList() : result;
+    }
+
+    public List<FlightDetailsResponseDTO> getFlightDetailsOnDate(FlightSearchReqDTO flightSearchReqDTO) {
+        return getFlightDetailsOnDate(
+                flightSearchReqDTO.getFromCode(),
+                flightSearchReqDTO.getToCode(),
+                flightSearchReqDTO.getJourneyDate().toString(),
+                flightSearchReqDTO.getSeatClass().getCode(),
+                flightSearchReqDTO.getNoPassengers()
+        );
     }
 }

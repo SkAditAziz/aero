@@ -31,12 +31,7 @@ public class HomeController {
 
     @PostMapping("/search")
     public String searchFlight(@ModelAttribute("flightSearchReqDTO") @NotNull FlightSearchReqDTO flightSearchReqDTO, Model model) {
-        List<FlightDetailsResponseDTO> flightSchedules = flightScheduleService.getFlightDetailsOnDate(
-                flightSearchReqDTO.getFromCode(),
-                flightSearchReqDTO.getToCode(),
-                flightSearchReqDTO.getJourneyDate().toString(),
-                flightSearchReqDTO.getSeatClass().getCode(),
-                flightSearchReqDTO.getNoPassengers());
+        List<FlightDetailsResponseDTO> flightSchedules = flightScheduleService.getFlightDetailsOnDate(flightSearchReqDTO);
         model.addAttribute("flightSchedules", flightSchedules);
         return "flight_schedule";
     }
