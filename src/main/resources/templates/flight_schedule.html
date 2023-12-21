@@ -1,10 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Aero</title>
 </head>
 <body>
-<h2>Available Flights</h2>
+    <h2>Available Flights</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Flight</th>
+            <th>Airline</th>
+            <th>Departure</th>
+            <th>Duration</th>
+            <th>Class</th>
+            <th>Fare</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="flightSchedule : ${flightSchedules}" th:if="${flightSchedule.seatAvailable}">
+            <td th:text="${flightSchedule.id}"></td>
+            <td th:text="${flightSchedule.airlineName}"></td>
+            <td th:text="${flightSchedule.departureTime}"></td>
+            <td th:text="${flightSchedule.duration}"></td>
+            <td th:text="${flightSchedule.seatClassType}"></td>
+            <td th:text="${flightSchedule.totalFare}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Store scheduleId for further requests (can be hidden) -->
+    <input type="hidden" th:each="flightSchedule : ${flightSchedules}" th:if="${flightSchedule.seatAvailable}" th:attr="data-schedule-id=${flightSchedule.scheduleId}"/>
+
 </body>
 </html>
