@@ -1,5 +1,8 @@
 package dev.example.aero.model.Enumaration;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum SeatClassType {
@@ -21,5 +24,11 @@ public enum SeatClassType {
                 .filter(classType -> classType.getCode().equals(code))
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new);
+    }
+
+    public static List<String> getAllSeatClassType() {
+        return Arrays.stream(SeatClassType.values())
+                .map(Enum::name)
+                .collect(Collectors.toList());
     }
 }
