@@ -38,7 +38,7 @@ public class TicketService {
     private PassengerService passengerService;
     @Autowired
     private JmsTemplate jmsTemplate;
-    static final int TOTAL_PASSENGER = 4;
+    public static final int HIGHEST_PERMISSIBLE_SEATS = 4;
 
 
     @Transactional
@@ -48,9 +48,9 @@ public class TicketService {
         int totalSeats = (int) req.get("noPassengers");
 
         int alreadyBoughtSeats = ticketRepository.alreadyBoughtSeats(fs.getId(), p.getId());
-        if ((totalSeats + alreadyBoughtSeats) > TOTAL_PASSENGER) {
-            System.out.println("A passenger cannot bought more than " + TOTAL_PASSENGER + " tickets on a flight!");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A passenger cannot bought more than " + TOTAL_PASSENGER + " tickets on a flight!");
+        if ((totalSeats + alreadyBoughtSeats) > HIGHEST_PERMISSIBLE_SEATS) {
+            System.out.println("A passenger cannot bought more than " + HIGHEST_PERMISSIBLE_SEATS + " tickets on a flight!");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A passenger cannot bought more than " + HIGHEST_PERMISSIBLE_SEATS + " tickets on a flight!");
         }
 
         Flight f = flightRepository.findById(fs.getFlightID()).orElse(null);
