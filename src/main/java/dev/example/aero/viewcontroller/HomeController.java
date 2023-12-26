@@ -32,6 +32,9 @@ public class HomeController {
     @PostMapping("/search")
     public String searchFlight(@ModelAttribute("flightSearchReqDTO") @NotNull FlightSearchReqDTO flightSearchReqDTO, Model model) {
         List<FlightDetailsResponseDTO> flightSchedules = flightScheduleService.getFlightDetailsOnDate(flightSearchReqDTO);
+        if(flightSchedules.isEmpty()) {
+            return "no_flights";
+        }
         model.addAttribute("flightSchedules", flightSchedules);
         return "flight_schedule";
     }
