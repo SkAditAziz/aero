@@ -3,9 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Aero</title>
+    <script th:inline="javascript">
+        function selectFlight(scheduleId) {
+            var formData = new FormData();
+            formData.append('scheduleId', scheduleId);
+
+            fetch('/selectFlight', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response data as needed
+                console.log('Response from server:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
 </head>
 <body>
     <h2>Available Flights</h2>
+    <form th:action="@{/confirmFlight}" method="post">
     <table>
         <thead>
         <tr>
@@ -25,12 +45,10 @@
             <td th:text="${flightSchedule.duration}"></td>
             <td th:text="${flightSchedule.seatClassType}"></td>
             <td th:text="${flightSchedule.totalFare}"></td>
+            <td> <button type="button" id="scheduleId" th:onclick="'selectFlight(\'' + ${flightSchedule.scheduleId} + '\')'">Select</button></td>
         </tr>
         </tbody>
     </table>
-
-    <!-- Store scheduleId for further requests (can be hidden) -->
-    <input type="hidden" th:each="flightSchedule : ${flightSchedules}" th:if="${flightSchedule.seatAvailable}" th:attr="data-schedule-id=${flightSchedule.scheduleId}"/>
-
+    </form>
 </body>
 </html>
