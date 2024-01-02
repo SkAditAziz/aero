@@ -10,7 +10,11 @@
     <body>
 
     <h1>Welcome to AERO!!</h1>
+    <form th:action="@{/login}" method="get">
+        <button type="submit">Login</button>
+    </form>
 
+<br><br>
     <form th:action="@{/search}" method="post" th:object="${flightSearchReqDTO}">
         <!-- From Airport Selection -->
         <label for="fromCode">From</label>
