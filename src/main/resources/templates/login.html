@@ -7,16 +7,14 @@
 </head>
 <body>
     <h2>Login</h2>
+
+    <th:block th:if="${errMsg}" th:text="${errMsg}"></th:block>
+
     <form th:action="@{/login}" th:object="${loginReqDTO}" method="post">
         <input type="text" th:field="*{username}" placeholder="Username">
         <input type="password" th:field="*{password}" placeholder="Password">
         <button type="submit">Login</button>
     </form>
 
-    <!-- Display error messages if authentication fails -->
-<!--    <div th:if="${param.error}">-->
-<!--        <p th:if="${#request.getAttribute('javax.servlet.error.message') == 'Bad credentials'}">Incorrect username or password!</p>-->
-<!--        <p th:if="${#request.getAttribute('javax.servlet.error.message') == 'UserDetailsService returned null'}">User not found!</p>-->
-<!--    </div>-->
 </body>
 </html>
