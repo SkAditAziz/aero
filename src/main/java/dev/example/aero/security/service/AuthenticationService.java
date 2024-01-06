@@ -29,9 +29,7 @@ public class AuthenticationService {
         return new AuthenticationResponse(jwtService.generateToken(new PassengerDetails(passenger)));
     }
 
-    public AuthenticationResponse authenticate(Map<String, Object> request) {
-        String username = (String) request.get("username");
-        String pPassword = (String) request.get("password");
+    public AuthenticationResponse authenticate(String username, String pPassword) {
         // temporarily accepting both email and contact no! but how to enable both using PassengerDetails?
         if (passengerService.isContactNo(username)) {
             username = passengerRepository.findEmailByContactNo(username);

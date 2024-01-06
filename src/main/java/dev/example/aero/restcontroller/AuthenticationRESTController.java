@@ -31,7 +31,7 @@ public class AuthenticationRESTController {
     @PostMapping("/login")
     public AuthenticationResponse login(@RequestBody Map<String, Object> loginRequest) {
         try {
-            return authenticationService.authenticate(loginRequest);
+            return authenticationService.authenticate((String) loginRequest.get("username"), (String) loginRequest.get("password"));
         } catch (Exception e) {
             // TODO why these message is not being sent as response?
             if (e instanceof UsernameNotFoundException) {
