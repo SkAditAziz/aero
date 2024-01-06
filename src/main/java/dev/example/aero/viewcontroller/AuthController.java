@@ -3,8 +3,6 @@ package dev.example.aero.viewcontroller;
 import dev.example.aero.dto.LoginReqDTO;
 import dev.example.aero.security.dto.AuthenticationResponse;
 import dev.example.aero.security.service.AuthenticationService;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -44,6 +42,7 @@ public class AuthController {
             redirectAttributes.addFlashAttribute("errMsg", errMsg);
             return "redirect:/login";
         }
-        return "no_flights";
+
+        return "login_success";
     }
 }
