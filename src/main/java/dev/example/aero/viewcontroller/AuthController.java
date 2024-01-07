@@ -5,12 +5,16 @@ import dev.example.aero.dto.RegisterReqDTO;
 import dev.example.aero.security.dto.AuthenticationResponse;
 import dev.example.aero.security.service.AuthenticationService;
 import dev.example.aero.service.PassengerService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -54,5 +58,15 @@ public class AuthController {
     public String showRegisterForm(@NotNull Model model) {
         model.addAttribute("registerReqDTO", new RegisterReqDTO());
         return "register";
+    }
+
+    @PostMapping("/register")
+    public String registerUser(@ModelAttribute("registerReqDTO") @Valid RegisterReqDTO registerReqDTO, @NotNull BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "redirect:/register";
+        }
+        System.out.println(registerReqDTO.toString());
+        model.addAttribute("passengerName", registerReqDTO.getLastName());
+        return "login_success";
     }
 }
