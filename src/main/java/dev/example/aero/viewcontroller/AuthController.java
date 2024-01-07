@@ -1,6 +1,7 @@
 package dev.example.aero.viewcontroller;
 
 import dev.example.aero.dto.LoginReqDTO;
+import dev.example.aero.dto.RegisterReqDTO;
 import dev.example.aero.security.dto.AuthenticationResponse;
 import dev.example.aero.security.service.AuthenticationService;
 import dev.example.aero.service.PassengerService;
@@ -46,7 +47,12 @@ public class AuthController {
             redirectAttributes.addFlashAttribute("errMsg", errMsg);
             return "redirect:/login";
         }
-
         return "login_success";
+    }
+
+    @GetMapping("/register")
+    public String showRegisterForm(@NotNull Model model) {
+        model.addAttribute("registerReqDTO", new RegisterReqDTO());
+        return "register";
     }
 }
