@@ -66,4 +66,8 @@ public class PassengerService {
         String contactNoRegex = "^(01\\d{9})$";
         return username.matches(contactNoRegex);
     }
+
+    public String getName(String username) {
+        return passengerRepository.getLastNameByContactOrEmail(username);
+    }
 }

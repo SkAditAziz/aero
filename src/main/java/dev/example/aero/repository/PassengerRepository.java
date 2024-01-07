@@ -20,4 +20,7 @@ public interface PassengerRepository extends JpaRepository<Passenger,Long> {
     int getIdByEmail(String email);
     @Query("SELECT p.email FROM Passenger p WHERE p.contactNo=:contactNo")
     String findEmailByContactNo(String contactNo);
+
+    @Query("SELECT p.lastName from Passenger p WHERE p.contactNo = :username OR p.email = :username")
+    String getLastNameByContactOrEmail(String username);
 }
