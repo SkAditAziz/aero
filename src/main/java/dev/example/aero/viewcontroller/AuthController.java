@@ -3,6 +3,7 @@ package dev.example.aero.viewcontroller;
 import dev.example.aero.dto.LoginReqDTO;
 import dev.example.aero.security.dto.AuthenticationResponse;
 import dev.example.aero.security.service.AuthenticationService;
+import dev.example.aero.service.PassengerService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -18,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AuthController {
     @Autowired
     private AuthenticationService authenticationService;
+    @Autowired
+    private PassengerService passengerService;
     @GetMapping("/login")
     public String showLoginForm (@NotNull Model model) {
         model.addAttribute("loginReqDTO", new LoginReqDTO());
@@ -28,7 +31,8 @@ public class AuthController {
     public String loginUser (@ModelAttribute("LoginReqDTO") @NotNull LoginReqDTO loginReqDTO, Model model, RedirectAttributes redirectAttributes) {
         try {
             AuthenticationResponse authenticationResponse = authenticationService.authenticate(loginReqDTO.getUsername(), loginReqDTO.getPassword());
-            System.out.println(authenticationResponse.getToken());
+            String passengerName = passengerService.getName(loginReqDTO.getUsername());
+            model.addAttribute("passengerName", passengerName);
         } catch (Exception e) {
             String errMsg;
             if (e instanceof UsernameNotFoundException) {
