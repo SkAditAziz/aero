@@ -10,10 +10,8 @@ public class UserProvider {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = null;
         if (authentication != null && authentication.isAuthenticated()) {
-            System.out.println("User Authed...");
             Object principal = authentication.getPrincipal();
             if (principal instanceof UserDetails userDetails) {
-                System.out.println("Getting username...");
                 username = userDetails.getUsername();
             }
         }
