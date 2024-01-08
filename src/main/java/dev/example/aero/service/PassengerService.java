@@ -39,7 +39,7 @@ public class PassengerService {
         } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Provide correct Contact no or Email");
         }
-        return (passwordEncoder.matches(rawPassword,encodedPassword));
+        return (passwordEncoder.matches(rawPassword, encodedPassword));
     }
 
     public String getPassengerPasswordByContact(String contactNo) {
@@ -69,5 +69,9 @@ public class PassengerService {
 
     public String getName(String username) {
         return passengerRepository.getLastNameByContactOrEmail(username);
+    }
+
+    public Long getIdByUsername(String currentUsername) {
+        return passengerRepository.findByUsername(currentUsername).getId();
     }
 }
