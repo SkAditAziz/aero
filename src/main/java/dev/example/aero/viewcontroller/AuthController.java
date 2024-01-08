@@ -33,11 +33,15 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String loginUser (@ModelAttribute("LoginReqDTO") @NotNull LoginReqDTO loginReqDTO, Model model, RedirectAttributes redirectAttributes) {
+    public String loginUser (@ModelAttribute("LoginReqDTO") @NotNull LoginReqDTO loginReqDTO, Model model, RedirectAttributes redirectAttributes, HttpServletResponse response) {
         try {
             AuthenticationResponse authenticationResponse = authenticationService.authenticate(loginReqDTO.getUsername(), loginReqDTO.getPassword());
             String passengerName = passengerService.getName(loginReqDTO.getUsername());
             model.addAttribute("passengerName", passengerName);
+
+            Cookie cookie = new Cookie("Bearer", authenticationResponse.getToken());
+            response.addCookie(cookie);
+
         } catch (Exception e) {
             String errMsg;
             if (e instanceof UsernameNotFoundException) {
