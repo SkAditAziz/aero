@@ -21,11 +21,13 @@ import java.util.function.Function;
 @Service
 public class JwtService {
     private final String SECRET_KEY;
+    private final long jwtExpirationTime;
     @Autowired
     private PassengerRepository passengerRepository;
 
-    public JwtService(@Value("${jwt.secretkey}") String secretKey) {
+    public JwtService(@Value("${jwt.secretkey}") String secretKey, @Value("${jwt.expirationTimeInMills}") Long jwtExpirationTime) {
         SECRET_KEY = secretKey;
+        this.jwtExpirationTime = jwtExpirationTime;
     }
 
     public String extractUsername(String token) {
@@ -41,7 +43,7 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationTime))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
