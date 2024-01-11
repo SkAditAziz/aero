@@ -18,7 +18,7 @@ public class FlightScheduleRESTController {
     @Autowired
     private FlightScheduleService flightScheduleService;
 
-    @GetMapping
+    @GetMapping("/find")
     public List<FlightDetailsResponseDTO> getFlightDetailsOnDate(
             @RequestParam String from, @RequestParam String to, @RequestParam String date,
             @RequestParam String classType, @RequestParam int noPassengers) {
@@ -28,7 +28,7 @@ public class FlightScheduleRESTController {
         return flightResponseDTOList;
     }
 
-    @PostMapping
+    @PostMapping("/insert")
     public String addFlightSchedule(@RequestBody Map<String,Object> req) {
         try {
             flightScheduleService.addOrUpdateFlightSchedule(req);
