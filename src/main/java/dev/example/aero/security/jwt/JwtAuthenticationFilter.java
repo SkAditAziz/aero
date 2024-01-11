@@ -1,5 +1,6 @@
 package dev.example.aero.security.jwt;
 
+import dev.example.aero.config.SecurityConfig;
 import dev.example.aero.security.service.JwtService;
 import dev.example.aero.security.service.PassengerDetailsService;
 import jakarta.servlet.FilterChain;
@@ -15,9 +16,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
+
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -67,5 +71,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(@NotNull HttpServletRequest request) {
+        return Arrays.stream(SecurityConfig.excludedEndpoints)
+                .anyMatch( e -> new AntPathMatcher().match(e, request.getServletPath()));
     }
 }

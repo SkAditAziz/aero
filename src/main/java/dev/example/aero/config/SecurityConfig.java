@@ -25,6 +25,10 @@ import java.util.List;
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
+
+    public static String[] excludedEndpoints = new String[] {
+            "/", "/login", "/register", "/search/**", "/auth/**", "/schedule/**"
+    };
     @Bean
     public SecurityFilterChain filterChain(@NotNull HttpSecurity http) throws Exception {
         http
