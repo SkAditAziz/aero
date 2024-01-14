@@ -1,5 +1,6 @@
 package dev.example.aero.security.service;
 
+import dev.example.aero.model.Passenger;
 import dev.example.aero.repository.PassengerRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -80,13 +81,13 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public int getUserIdFromRequest(HttpServletRequest request) {
+    public Passenger getPassengerFromRequest(HttpServletRequest request) {
         final String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return 0;
+            return null;
         }
         final String token = authHeader.substring("Bearer ".length());
         final String userName = extractUsername(token);
-        return passengerRepository.getIdByEmail(userName);
+        return passengerRepository.findByEmail(userName);
     }
 }

@@ -42,7 +42,7 @@ public class TicketService {
 
 
     @Transactional
-    public byte[] issueTicket(Map<String,Object> req, int passengerId) {
+    public byte[] issueTicket(Map<String,Object> req, Long passengerId) {
         Passenger p = passengerService.getPassengerById(passengerId);
         FlightSchedule fs = flightScheduleRepository.findById(((Integer) req.get("scheduleId")).longValue()).orElse(null);
         int totalSeats = (int) req.get("noPassengers");

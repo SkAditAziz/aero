@@ -2,6 +2,7 @@ package dev.example.aero.restcontroller;
 
 
 import dev.example.aero.dto.TicketDetailsResponseDTO;
+import dev.example.aero.model.Passenger;
 import dev.example.aero.security.service.JwtService;
 import dev.example.aero.service.TicketService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,12 +28,12 @@ public class TicketRESTController {
     @PostMapping("/confirm")
     @PreAuthorize("hasRole('ROLE_PASSENGER')")
     public ResponseEntity<byte[]> confirmTicket (HttpServletRequest request, @RequestBody Map<String, Object> req) {
-        int passengerId = jwtService.getUserIdFromRequest(request);
-        if (passengerId == 0) {
+        Passenger p = jwtService.getPassengerFromRequest(request);
+        if (p == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
         try {
-            byte[] pdfTicket = ticketService.issueTicket(req, passengerId);
+            byte[] pdfTicket = ticketService.issueTicket(req, p.getId());
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
             headers.setContentDispositionFormData("attachment", "ticket.pdf");
