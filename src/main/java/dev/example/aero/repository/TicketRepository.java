@@ -15,9 +15,6 @@ public interface TicketRepository extends JpaRepository<Ticket,String> {
             "WHERE (t.status = 'UPCOMING') " +
             "AND (fs.flight_date < CONVERT_TZ(now(), 'UTC', f.arrival_time_zone))" , nativeQuery = true)
     List<Ticket> completedFlightTickets();
-    @Modifying
-    @Query("UPDATE Ticket t SET ticketStatus = 'COMPLETED' WHERE t =:ticket")
-    void updateToComplete(Ticket ticket);
 
     @Query("SELECT COALESCE(SUM(t.totalSeats), 0)\n" +
             "FROM Ticket t\n" +
