@@ -31,23 +31,17 @@ public class PassengerService {
         String email = passenger.getEmail();
         String rawPassword = passenger.getPassword();
         String encodedPassword = "";
+        Passenger passengerByContactNo = getPassengerByContact(contactNo);
+        Passenger passengerByEmail = getPassengerByEmail(email);
 
-        if ((contactNo != null) && (getPassengerByContact(contactNo) != null)) {
-            encodedPassword = getPassengerPasswordByContact(contactNo);
-        } else if ((email != null) && (getPassengerByEmail(email) != null)) {
-            encodedPassword = getPassengerPasswordByEmail(email);
+        if ((contactNo != null) && (passengerByContactNo != null)) {
+            encodedPassword = passengerByContactNo.getPassword();
+        } else if ((email != null) && (passengerByEmail != null)) {
+            encodedPassword = passengerByEmail.getPassword();
         } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Provide correct Contact no or Email");
         }
         return (passwordEncoder.matches(rawPassword, encodedPassword));
-    }
-
-    public String getPassengerPasswordByContact(String contactNo) {
-        return passengerRepository.findPasswordByContactNo(contactNo);
-    }
-
-    public String getPassengerPasswordByEmail(String email) {
-        return passengerRepository.findPasswordByEmail(email);
     }
 
     public Passenger getPassengerByContact(String contactNo) {
