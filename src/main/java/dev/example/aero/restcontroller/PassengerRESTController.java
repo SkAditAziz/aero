@@ -41,13 +41,9 @@ public class PassengerRESTController {
 
     @PostMapping("/login")
     public String loginPassenger(@RequestBody Passenger passenger) {
-        try {
-            if (passengerService.login(passenger)) {
-                return "logged in successfully";
-            } else
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect Password! Login Failed!");
-        } catch (ResponseStatusException e) {
-            throw new RuntimeException(e);
-        }
+        if (passengerService.login(passenger)) {
+            return "logged in successfully";
+        } else
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect Password! Login Failed!");
     }
 }
