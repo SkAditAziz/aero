@@ -1,4 +1,4 @@
-package dev.example.aero.viewcontroller;
+package dev.example.aero.controller;
 
 import dev.example.aero.dto.FlightDetailsResponseDTO;
 import dev.example.aero.dto.FlightSearchReqDTO;

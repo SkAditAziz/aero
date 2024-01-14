@@ -1,4 +1,4 @@
-package dev.example.aero.viewcontroller;
+package dev.example.aero.controller;
 
 import dev.example.aero.security.service.UserProvider;
 import dev.example.aero.service.PassengerService;
