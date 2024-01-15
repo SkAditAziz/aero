@@ -1,16 +1,21 @@
 package dev.example.aero.controller;
 
+import dev.example.aero.dto.FlightSearchReqDTO;
 import dev.example.aero.dto.LoginReqDTO;
 import dev.example.aero.dto.RegisterReqDTO;
+import dev.example.aero.model.Enumaration.SeatClassType;
 import dev.example.aero.security.dto.AuthenticationResponse;
 import dev.example.aero.security.service.AuthenticationService;
+import dev.example.aero.service.AirportService;
 import dev.example.aero.service.PassengerService;
+import dev.example.aero.service.TicketService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +31,9 @@ public class AuthController {
     private AuthenticationService authenticationService;
     @Autowired
     private PassengerService passengerService;
+    @Autowired
+    private AirportService airportService;
+
     @GetMapping("/login")
     public String showLoginForm (@NotNull Model model) {
         model.addAttribute("loginReqDTO", new LoginReqDTO());
@@ -72,5 +80,20 @@ public class AuthController {
         System.out.println(registerReqDTO.toString());
         model.addAttribute("passengerName", registerReqDTO.getLastName());
         return "login_success";
+    }
+
+    @GetMapping("/logoutUser")
+    public String logoutUser(@NotNull HttpServletResponse response, Model model) {
+        Cookie cookie = new Cookie("Bearer", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
+        SecurityContextHolder.clearContext();
+        model.addAttribute("airports", airportService.getAllAirports());
+        model.addAttribute("seatClasses", SeatClassType.getAllSeatClassType());
+        model.addAttribute("flightSearchReqDTO", new FlightSearchReqDTO());
+        model.addAttribute("highestPassenger", TicketService.HIGHEST_PERMISSIBLE_SEATS);
+
+        return "index";
     }
 }

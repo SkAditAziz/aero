@@ -27,7 +27,7 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
 
     public static String[] excludedEndpoints = new String[] {
-            "/", "/login", "/register", "/search/**", "/auth/**", "/schedule/find"
+            "/", "/login", "/logout", "/logoutUser", "/register", "/search/**", "/auth/**", "/schedule/find"
     };
     @Bean
     public SecurityFilterChain filterChain(@NotNull HttpSecurity http) throws Exception {
@@ -51,7 +51,11 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/logoutUser")
+                        .permitAll());
         return http.build();
     }
 }
