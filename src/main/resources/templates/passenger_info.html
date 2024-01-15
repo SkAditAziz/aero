@@ -5,6 +5,34 @@
     <title>My Profile</title>
 </head>
 <body>
-
+<h1 th:text="'Hello ' + ${passengerName}"></h1>
+<h3>Your journey with us....</h3>
+<br>
+<table>
+    <thead>
+    <tr>
+        <th>Ticket#</th>
+        <th>Journey Date</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Class</th>
+        <th>Seats</th>
+        <th>Fare</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="ticket : ${myTickets}">
+        <td th:text="${ticket.id}"></td>
+        <td th:text="${ticket.date}"></td>
+        <td th:text="${ticket.from}"></td>
+        <td th:text="${ticket.to}"></td>
+        <td th:text="${ticket.seatClassType}"></td>
+        <td th:text="${ticket.seats}"></td>
+        <td th:text="${ticket.totalFare}"></td>
+        <td th:text="${ticket.ticketStatus}"></td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>

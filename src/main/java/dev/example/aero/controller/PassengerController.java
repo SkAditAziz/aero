@@ -27,7 +27,8 @@ public class PassengerController {
         String currentUsername = UserProvider.getCurrentUsername();
         Passenger currentPassenger = passengerService.getPassengerByUsername(currentUsername);
         List<TicketDetailsResponseDTO> ticketsOfCurrentPassenger = ticketService.getTicketsByPassengerId(currentPassenger.getId());
-        model.addAttribute("mytickets", ticketsOfCurrentPassenger);
+        model.addAttribute("passengerName", currentPassenger.getFirstName() + " " + currentPassenger.getLastName());
+        model.addAttribute("myTickets", ticketsOfCurrentPassenger);
         return "passenger_info";
     }
 }
