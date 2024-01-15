@@ -3,6 +3,7 @@ package dev.example.aero.controller;
 import dev.example.aero.dto.TicketDetailsResponseDTO;
 import dev.example.aero.model.Passenger;
 import dev.example.aero.security.service.UserProvider;
+import dev.example.aero.service.PassengerService;
 import dev.example.aero.service.TicketService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,13 @@ import java.util.List;
 public class PassengerController {
     @Autowired
     private TicketService ticketService;
+    @Autowired
+    private PassengerService passengerService;
 
     @GetMapping("/info")
     public String showPassengerInfo(@NotNull Model model) {
-        Passenger currentPassenger = UserProvider.getCurrentPassenger();
+        String currentUsername = UserProvider.getCurrentUsername();
+        Passenger currentPassenger = passengerService.getPassengerByUsername(currentUsername);
         List<TicketDetailsResponseDTO> ticketsOfCurrentPassenger = ticketService.getTicketsByPassengerId(currentPassenger.getId());
         model.addAttribute("mytickets", ticketsOfCurrentPassenger);
         return "passenger_info";
