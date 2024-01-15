@@ -21,6 +21,11 @@
     </form>
 <br><br>
 
+    <form th:action="@{/passenger/info}" method="get">
+        <button type="submit">My Profile</button>
+    </form>
+    <br><br>
+
     <form th:action="@{/search}" method="post" th:object="${flightSearchReqDTO}">
         <!-- From Airport Selection -->
         <label for="fromCode">From</label>
