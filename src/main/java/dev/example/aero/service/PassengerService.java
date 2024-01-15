@@ -68,4 +68,8 @@ public class PassengerService {
     public Long getIdByUsername(String currentUsername) {
         return passengerRepository.findByUsername(currentUsername).getId();
     }
+
+    public Passenger getPassengerByUsername(String username) {
+        return passengerRepository.findById(getIdByUsername(username)).orElse(null);
+    }
 }
