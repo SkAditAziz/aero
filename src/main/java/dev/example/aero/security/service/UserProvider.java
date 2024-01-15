@@ -27,4 +27,8 @@ public class UserProvider {
         String username = getCurrentUsername();
         return passengerService.getPassengerByUsername(username);
     }
+
+    public static boolean isLoggedIn() {
+        return getCurrentUsername() != null;
+    }
 }
