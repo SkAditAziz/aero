@@ -33,7 +33,9 @@ public class TicketRESTController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
         try {
-            byte[] pdfTicket = ticketService.issueTicket(req, p.getId());
+            long scheduleId = ((Integer) req.get("scheduleId")).longValue();
+            int totalSeats = (int) req.get("noPassengers");
+            byte[] pdfTicket = ticketService.issueTicket(scheduleId, totalSeats, p.getId());
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
             headers.setContentDispositionFormData("attachment", "ticket.pdf");

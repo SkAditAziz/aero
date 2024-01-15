@@ -42,10 +42,9 @@ public class TicketService {
 
 
     @Transactional
-    public byte[] issueTicket(Map<String,Object> req, Long passengerId) {
+    public byte[] issueTicket(long scheduleId, int totalSeats, Long passengerId) {
         Passenger p = passengerService.getPassengerById(passengerId);
-        FlightSchedule fs = flightScheduleRepository.findById(((Integer) req.get("scheduleId")).longValue()).orElse(null);
-        int totalSeats = (int) req.get("noPassengers");
+        FlightSchedule fs = flightScheduleRepository.findById(scheduleId).orElse(null);
 
         int alreadyBoughtSeats = ticketRepository.alreadyBoughtSeats(fs.getId(), p.getId());
         if ((totalSeats + alreadyBoughtSeats) > HIGHEST_PERMISSIBLE_SEATS) {
