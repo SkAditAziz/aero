@@ -94,6 +94,12 @@ public class TicketService {
         return null;
     }
 
+    public String getTicketPath(String ticketId) {
+        String resourcesDirectory = getClass().getClassLoader().getResource("").getPath();
+        String ticketsDirectoryPath = resourcesDirectory + "tickets";
+        return ticketsDirectoryPath + "/" + ticketId + ".pdf";
+    }
+
     private void updateSeatAllocation(Ticket ticket) {
         FlightSchedule desiredSchedule = ticket.getFlightSchedule();
         desiredSchedule.setAvailableSeats(desiredSchedule.getAvailableSeats() - ticket.getTotalSeats());
