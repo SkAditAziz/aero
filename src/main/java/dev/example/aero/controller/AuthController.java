@@ -77,17 +77,12 @@ public class AuthController {
         if (bindingResult.hasErrors()) {
             return "redirect:/register";
         }
-        System.out.println(registerReqDTO.toString());
         model.addAttribute("passengerName", registerReqDTO.getLastName());
         return "login_success";
     }
 
     @GetMapping("/logoutUser")
     public String logoutUser(@NotNull HttpServletResponse response, Model model) {
-        Cookie cookie = new Cookie("Bearer", null);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-
         SecurityContextHolder.clearContext();
         model.addAttribute("airports", airportService.getAllAirports());
         model.addAttribute("seatClasses", SeatClassType.getAllSeatClassType());
