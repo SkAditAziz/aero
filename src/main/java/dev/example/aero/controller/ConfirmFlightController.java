@@ -2,23 +2,34 @@ package dev.example.aero.controller;
 
 import dev.example.aero.security.service.UserProvider;
 import dev.example.aero.service.PassengerService;
+import dev.example.aero.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 public class ConfirmFlightController {
     @Autowired
     private PassengerService passengerService;
+    @Autowired
+    private TicketService ticketService;
+
     @PostMapping("/confirmFlight")
     public String confirmFlight(@RequestParam(name = "scheduleId") Long scheduleId, Model model) {
-        Long currentUserId = null;
+        Long currentPassengerId = null;
         String currentUsername = UserProvider.getCurrentUsername();
         if (currentUsername != null) {
-            currentUserId = passengerService.getIdByUsername(currentUsername);
+            currentPassengerId = passengerService.getIdByUsername(currentUsername);
         }
-        return "confirm_flight";
+        try {
+            ticketService.issueTicket(scheduleId, ticketService.getSelectedSeats(), currentPassengerId);
+            return "confirm_flight";
+        } catch (ResponseStatusException e) {
+            model.addAttribute("errMsg", e.getReason());
+            return "ticket_confirmation_fail";
+        }
     }
 }
