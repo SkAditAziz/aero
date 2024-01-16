@@ -20,6 +20,8 @@ public class HomeController {
     private AirportService airportService;
     @Autowired
     private FlightScheduleService flightScheduleService;
+    @Autowired
+    private TicketService ticketService;
     @GetMapping("/")
     public String showIndexPage(@NotNull Model model) {
         model.addAttribute("airports", airportService.getAllAirports());
@@ -32,6 +34,7 @@ public class HomeController {
     @PostMapping("/search")
     public String searchFlight(@ModelAttribute("flightSearchReqDTO") @NotNull FlightSearchReqDTO flightSearchReqDTO, Model model) {
         List<FlightDetailsResponseDTO> flightSchedules = flightScheduleService.getFlightDetailsOnDate(flightSearchReqDTO);
+        ticketService.setSelectedSeats(flightSearchReqDTO.getNoPassengers());
         if(flightSchedules.isEmpty()) {
             return "no_flights";
         }

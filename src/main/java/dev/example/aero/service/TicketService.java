@@ -10,6 +10,8 @@ import dev.example.aero.repository.FlightScheduleRepository;
 import dev.example.aero.repository.TicketRepository;
 import dev.example.aero.util.TicketPDFGenerator;
 import jakarta.transaction.Transactional;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.jms.core.JmsTemplate;
@@ -27,6 +29,8 @@ import java.nio.file.Paths;
 
 
 @Service
+@Getter
+@Setter
 public class TicketService {
     @Autowired
     private TicketRepository ticketRepository;
@@ -39,6 +43,7 @@ public class TicketService {
     @Autowired
     private JmsTemplate jmsTemplate;
     public static final int HIGHEST_PERMISSIBLE_SEATS = 4;
+    private int selectedSeats = 0;
 
 
     @Transactional
