@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -27,7 +28,7 @@ public class HomeController {
         model.addAttribute("airports", airportService.getAllAirports());
         model.addAttribute("seatClasses", SeatClassType.getAllSeatClassType());
         model.addAttribute("highestPassenger", TicketService.HIGHEST_PERMISSIBLE_SEATS);
-        model.addAttribute("flightSearchReqDTO", new FlightSearchReqDTO());
+        model.addAttribute("flightSearchReqDTO", new FlightSearchReqDTO(LocalDate.now()));
         return "index";
     }
 
