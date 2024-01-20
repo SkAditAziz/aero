@@ -30,6 +30,7 @@
 <br><br>
 
     <form th:action="@{/search}" method="post" th:object="${flightSearchReqDTO}">
+<!--        <p th:if="${#fields.hasErrors('isFormToCodeDifferent')}" th:errors="*{isFormToCodeDifferent}"></p><br>-->
         <!-- From Airport Selection -->
         <label for="fromCode">From</label>
         <select id="fromCode" name="fromCode" th:field="*{fromCode}">
@@ -46,6 +47,7 @@
         <!-- Journey Date -->
         <label for="journeyDate">Journey Date:</label>
         <input type="date" id="journeyDate" name="journeyDate" th:field="*{journeyDate}" th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+<!--        <p th:if="${#fields.hasErrors('journeyDate')}" th:errors="*{journeyDate}"></p><br>-->
 <br><br>
         <!-- Class Select -->
         <label for="seatClass">Class:</label>

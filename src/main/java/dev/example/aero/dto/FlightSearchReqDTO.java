@@ -15,15 +15,15 @@ import java.time.LocalDate;
 public class FlightSearchReqDTO {
     private String fromCode;
     private String toCode;
-    @NotNull
+//    @NotNull
     private LocalDate journeyDate;
     private SeatClassType seatClass;
     private int noPassengers;
-
-    @AssertTrue(message = "Cannot fly to the same place!")
-    public boolean isFormToCodeDifferent() {
-        return !fromCode.equals(toCode);
-    }
+// why not work?
+//    @AssertTrue(message = "Cannot fly to the same place!")
+//    public boolean isFormToCodeDifferent() {
+//        return !fromCode.equals(toCode);
+//    }
 
     public FlightSearchReqDTO(@NotNull LocalDate date) {
         journeyDate = date;

@@ -6,10 +6,12 @@ import dev.example.aero.model.Enumaration.SeatClassType;
 import dev.example.aero.service.AirportService;
 import dev.example.aero.service.FlightScheduleService;
 import dev.example.aero.service.TicketService;
+import jakarta.validation.Valid;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -33,7 +35,10 @@ public class HomeController {
     }
 
     @PostMapping("/search")
-    public String searchFlight(@ModelAttribute("flightSearchReqDTO") @NotNull FlightSearchReqDTO flightSearchReqDTO, Model model) {
+    public String searchFlight(@ModelAttribute("flightSearchReqDTO") FlightSearchReqDTO flightSearchReqDTO, Model model, BindingResult bindingResult) {
+//        if (bindingResult.hasErrors()) {
+//            return "redirect:/index";
+//        }
         List<FlightDetailsResponseDTO> flightSchedules = flightScheduleService.getFlightDetailsOnDate(flightSearchReqDTO);
         ticketService.setSelectedSeats(flightSearchReqDTO.getNoPassengers());
         if(flightSchedules.isEmpty()) {
