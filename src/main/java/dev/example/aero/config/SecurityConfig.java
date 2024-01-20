@@ -1,6 +1,8 @@
 package dev.example.aero.config;
 
 import dev.example.aero.security.jwt.JwtAuthenticationFilter;
+import dev.example.aero.security.service.CustomAuthenticationSuccessHandler;
+import dev.example.aero.security.service.CustomRedirectFilter;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +26,7 @@ import java.util.List;
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
+    private final CustomRedirectFilter customRedirectFilter;
 
     public static String[] excludedEndpoints = new String[] {
             "/", "/login", "/logout", "/logoutUser", "/register", "/search/**", "/auth/**", "/schedule/find"
@@ -45,7 +48,12 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
+                .addFilterBefore(customRedirectFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .successHandler(new CustomAuthenticationSuccessHandler()))
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .deleteCookies("Bearer")

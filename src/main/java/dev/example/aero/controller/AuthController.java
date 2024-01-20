@@ -10,6 +10,7 @@ import dev.example.aero.service.AirportService;
 import dev.example.aero.service.PassengerService;
 import dev.example.aero.service.TicketService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.jetbrains.annotations.NotNull;
@@ -41,12 +42,12 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String loginUser (@ModelAttribute("LoginReqDTO") @NotNull LoginReqDTO loginReqDTO, Model model, RedirectAttributes redirectAttributes, HttpServletResponse response) {
+    public String login (@ModelAttribute("LoginReqDTO") @NotNull LoginReqDTO loginReqDTO, Model model, RedirectAttributes redirectAttributes, HttpServletResponse response) {
         try {
             AuthenticationResponse authenticationResponse = authenticationService.authenticate(loginReqDTO.getUsername(), loginReqDTO.getPassword());
             String passengerName = passengerService.getName(loginReqDTO.getUsername());
             model.addAttribute("passengerName", passengerName);
-
+            System.out.println("Adding the Bearer cookie..." + authenticationResponse.getToken());
             Cookie cookie = new Cookie("Bearer", authenticationResponse.getToken());
             response.addCookie(cookie);
 
@@ -64,6 +65,39 @@ public class AuthController {
             return "redirect:/login";
         }
         return "login_success";
+    }
+
+    @GetMapping("/userLogin")
+    public String loginUser (Model model, RedirectAttributes redirectAttributes, HttpServletResponse response, HttpServletRequest request) {
+        try {
+            System.out.println("In /loginUser" + request.getParameter("redirectUrl"));
+//            AuthenticationResponse authenticationResponse = authenticationService.authenticate(loginReqDTO.getUsername(), loginReqDTO.getPassword());
+//            String passengerName = passengerService.getName(loginReqDTO.getUsername());
+//            model.addAttribute("passengerName", passengerName);
+//            System.out.println("Adding the Bearer cookie..." + authenticationResponse.getToken());
+//            Cookie cookie = new Cookie("Bearer", authenticationResponse.getToken());
+//            response.addCookie(cookie);
+            String redirectUrl = request.getParameter("redirectUrl");
+
+            if (redirectUrl != null) {
+                return "redirect:" + redirectUrl;
+            } else {
+                return "login_success";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            String errMsg;
+            if (e instanceof UsernameNotFoundException) {
+                errMsg = "User not found!";
+            } else if (e instanceof BadCredentialsException) {
+                errMsg = "Bad Credential!";
+            } else {
+                errMsg = "Internal Error";
+            }
+            redirectAttributes.addFlashAttribute("errMsg", errMsg);
+            return "redirect:/login";
+        }
     }
 
     @GetMapping("/register")

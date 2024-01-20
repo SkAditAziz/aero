@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,6 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NotNull HttpServletResponse response,
             @NotNull FilterChain filterChain
     ) throws ServletException, IOException {
+        System.out.println("(2)Inside JwtAuthenticationFilter...");
         final String authHeader = request.getHeader("Authorization");
         final String userEmail;
 
@@ -51,6 +53,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         if (jwt == null) {
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                System.out.println("No auth found, sending to login...");
                 response.sendRedirect("/login");
                 return;
             }
@@ -72,6 +75,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if (!shouldNotFilter(request) && SecurityContextHolder.getContext().getAuthentication() == null) {
+            System.out.println("User not logged in, sending to login...");
             response.sendRedirect("/login");
             return;
         }
