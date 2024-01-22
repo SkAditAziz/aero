@@ -9,6 +9,7 @@ import dev.example.aero.service.TicketService;
 import jakarta.validation.Valid;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,12 +26,19 @@ public class HomeController {
     private FlightScheduleService flightScheduleService;
     @Autowired
     private TicketService ticketService;
+    @Value("${whatsapp.number}")
+    private String whatsappNumber;
+
+    @Value(("${whatsapp.api}"))
+    private String whatsappAPI;
+
     @GetMapping("/")
     public String showIndexPage(@NotNull Model model) {
         model.addAttribute("airports", airportService.getAllAirports());
         model.addAttribute("seatClasses", SeatClassType.getAllSeatClassType());
         model.addAttribute("highestPassenger", TicketService.HIGHEST_PERMISSIBLE_SEATS);
         model.addAttribute("flightSearchReqDTO", new FlightSearchReqDTO(LocalDate.now()));
+        model.addAttribute("whatsappURL", whatsappAPI + whatsappNumber);
         return "index";
     }
 
