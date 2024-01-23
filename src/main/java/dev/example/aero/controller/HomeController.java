@@ -5,6 +5,7 @@ import dev.example.aero.dto.FlightSearchReqDTO;
 import dev.example.aero.model.Enumaration.SeatClassType;
 import dev.example.aero.service.AirportService;
 import dev.example.aero.service.FlightScheduleService;
+import dev.example.aero.service.FlightService;
 import dev.example.aero.service.TicketService;
 import jakarta.validation.Valid;
 import org.jetbrains.annotations.NotNull;
@@ -26,9 +27,10 @@ public class HomeController {
     private FlightScheduleService flightScheduleService;
     @Autowired
     private TicketService ticketService;
+    @Autowired
+    private FlightService flightService;
     @Value("${whatsapp.number}")
     private String whatsappNumber;
-
     @Value(("${whatsapp.api}"))
     private String whatsappAPI;
 
@@ -58,6 +60,7 @@ public class HomeController {
 
     @GetMapping("/admin")
     public String showAdmin(Model model) {
+        model.addAttribute("flightIDs", flightService.getAllFlightIDs());
         return "admin";
     }
 }
