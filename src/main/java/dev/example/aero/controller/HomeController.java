@@ -55,4 +55,9 @@ public class HomeController {
         model.addAttribute("flightSchedules", flightSchedules);
         return "flight_schedule";
     }
+
+    @GetMapping("/admin")
+    public String showAdmin(Model model) {
+        return "admin";
+    }
 }

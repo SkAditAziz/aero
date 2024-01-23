@@ -68,5 +68,10 @@
 <br><br>
     <button th:onclick="window.open([[${whatsappURL}]])">Chat with us on WhatsApp Web</button>
 
+<br><br>
+    <form th:action="@{/admin}" method="get">
+        <button type="submit">Admin</button>
+    </form>
+
     </body>
 </html>
