@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +32,9 @@ public class FlightScheduleRESTController {
     @PostMapping("/insert")
     public String addFlightSchedule(@RequestBody Map<String,Object> req) {
         try {
-            flightScheduleService.addOrUpdateFlightSchedule(req);
+            LocalDate flightDate = LocalDate.parse((String) req.get("flightDate"));
+            List<String> flightIDs = (List<String>) req.get("flightIds");
+            flightScheduleService.addOrUpdateFlightSchedule(flightDate, flightIDs);
             return "Schedule Updated Successfully!";
         } catch (DataIntegrityViolationException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT,"Already have the Flight(s) On the day");

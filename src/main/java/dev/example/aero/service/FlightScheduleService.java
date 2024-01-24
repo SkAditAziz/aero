@@ -31,10 +31,7 @@ public class FlightScheduleService {
     @Autowired
     private PassengerRepository passengerRepository;
 
-    public void addOrUpdateFlightSchedule(Map<String,Object> req) {
-        LocalDate flightDate = LocalDate.parse((String) req.get("flightDate"));
-        List<String> flightIDs = (List<String>) req.get("flightIds");
-
+    public void addOrUpdateFlightSchedule(LocalDate flightDate, List<String> flightIDs) {
         if (flightIDs == null || flightIDs.isEmpty() || flightIDs.stream().anyMatch(String::isEmpty))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Flight Inserted");
 
