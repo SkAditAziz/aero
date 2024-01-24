@@ -5,6 +5,19 @@
     <title>Admin</title>
 </head>
 <body>
-<h2>Welcome to ADMIN</h2>
+    <h2>Welcome to ADMIN</h2>
+    <br><br>
+    <h3>Add Flight</h3>
+    <form th:action="@{/admin/add_flight}" method="post" th:object="${addFlightReqDTO}">
+        <label for="journeyDate">Date:</label>
+        <input type="date" id="journeyDate" name="journeyDate" th:field="*{journeyDate}" th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+
+        <label for="flightIDs">Select Flight IDs:</label>
+        <select id="flightIDs" name="flightIDs" multiple="multiple" th:field="*{flightIDs}">
+            <option th:each="flightID : ${flightIDs}" th:value="${flightID}" th:text="${flightID}"></option>
+        </select>
+
+        <button type="submit">Confirm</button>
+    </form>
 </body>
 </html>
