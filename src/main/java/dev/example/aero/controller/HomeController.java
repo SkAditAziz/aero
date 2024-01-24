@@ -1,5 +1,6 @@
 package dev.example.aero.controller;
 
+import dev.example.aero.dto.AddFlightReqDTO;
 import dev.example.aero.dto.FlightDetailsResponseDTO;
 import dev.example.aero.dto.FlightSearchReqDTO;
 import dev.example.aero.model.Enumaration.SeatClassType;
@@ -59,8 +60,9 @@ public class HomeController {
     }
 
     @GetMapping("/admin")
-    public String showAdmin(Model model) {
+    public String showAdmin(@NotNull Model model) {
         model.addAttribute("flightIDs", flightService.getAllFlightIDs());
+        model.addAttribute("addFlightReqDTO", new AddFlightReqDTO());
         return "admin";
     }
 }
