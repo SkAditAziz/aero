@@ -12,6 +12,10 @@ import dev.example.aero.repository.PassengerRepository;
 import dev.example.aero.repository.TicketRepository;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -73,7 +77,7 @@ public class FlightScheduleService {
                 for (CSVRecord record : records) {
                     String dateString = record.get(0);
                     if (dateString.equals("Date")) {
-                        continue;
+                        continue; // skipping the header row
                     }
                     LocalDate flightDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
@@ -94,9 +98,33 @@ public class FlightScheduleService {
             }
         } else if (contentType.startsWith("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") ||
                 fileName.endsWith(".xlsx") || fileName.endsWith(".xls")) {
-            // TODO add functionality of processing excel files
-        }
+            try(Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
+                Sheet sheet = workbook.getSheetAt(0);
 
+                Iterator<Row> rowIterator = sheet.iterator();
+                rowIterator.next(); // skipping the header row
+
+                while (rowIterator.hasNext()) {
+                    Row row = rowIterator.next();
+                    String dateString = row.getCell(0).getStringCellValue();
+                    LocalDate flightDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
+                    if (flightDate.isBefore(LocalDate.now())) {
+                        continue;
+                    }
+
+                    String flightID = row.getCell(1).getStringCellValue();
+                    String status = row.getCell(2).getStringCellValue();
+
+                    if (status == null || status.isEmpty()) {
+                        addOrUpdateFlightSchedule(flightDate, flightID);
+                    } else if (status.equalsIgnoreCase(String.valueOf(TicketStatus.CANCELLED))) {
+                        // TODO cancel this schedule
+                        //cancelFlight(flightDate, flightID);
+                    }
+                }
+            }
+        }
     }
 
     public List<FlightDetailsResponseDTO> getFlightDetailsOnDate(String from, String to, String date, String classType, int noPassengers) {
