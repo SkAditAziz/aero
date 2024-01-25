@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/admin")
@@ -24,4 +26,16 @@ public class AdminController {
         }
         return "confirm_add_flight";
     }
+
+    @PostMapping("/upload")
+    public String addFlightByUploadingFile(@RequestParam MultipartFile file, Model model) {
+        try {
+            flightScheduleService.addOrUpdateFlightScheduleWithFile(file);
+        } catch (Exception e) {
+            model.addAttribute("errMsg", "Can not upload file");
+            return "flight_add_fail";
+        }
+        return "confirm_add_flight";
+    }
+
 }
