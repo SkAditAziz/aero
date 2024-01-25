@@ -103,6 +103,8 @@ public class FlightScheduleService {
                 while (rowIterator.hasNext()) {
                     Row row = rowIterator.next();
                     String dateString = row.getCell(0).getStringCellValue();
+                    if (dateString == null || dateString.isEmpty()) break; // end of the file
+
                     LocalDate flightDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
                     if (flightDate.isBefore(LocalDate.now())) {
