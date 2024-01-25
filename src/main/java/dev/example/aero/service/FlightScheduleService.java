@@ -63,6 +63,35 @@ public class FlightScheduleService {
         }
     }
 
+    public void addOrUpdateFlightScheduleWithFile(MultipartFile file) throws IOException {
+        System.out.println(file.getOriginalFilename());
+        try (Reader reader = new InputStreamReader(file.getInputStream())) {
+            Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(reader);
+
+            for (CSVRecord record : records) {
+                String dateString = record.get(0);
+                if (dateString.equals("Date")) {
+                    continue;
+                }
+                LocalDate flightDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
+                if (flightDate.isBefore(LocalDate.now())) {
+                    continue;
+                }
+
+                String flightID = record.get(1);
+                String status = record.get(2);
+
+                if (status == null || status.isEmpty()) {
+                    addOrUpdateFlightSchedule(flightDate, flightID);
+                } else if (status.equalsIgnoreCase(String.valueOf(TicketStatus.CANCELLED))) {
+                    // TODO cancel this schedule
+                    //cancelFlight(flightDate, flightID);
+                }
+            }
+        }
+    }
+
     public List<FlightDetailsResponseDTO> getFlightDetailsOnDate(String from, String to, String date, String classType, int noPassengers) {
         List<FlightDetailsResponseDTO> result = flightScheduleRepository.findAllByFlightDateAndFromAndToAndClass(
                         LocalDate.parse(date), from, to, classType).stream()
