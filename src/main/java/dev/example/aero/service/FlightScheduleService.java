@@ -64,7 +64,6 @@ public class FlightScheduleService {
     }
 
     public void addOrUpdateFlightScheduleWithFile(MultipartFile file) throws IOException {
-        System.out.println(file.getOriginalFilename());
         try (Reader reader = new InputStreamReader(file.getInputStream())) {
             Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(reader);
 
