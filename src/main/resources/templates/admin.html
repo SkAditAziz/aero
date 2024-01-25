@@ -19,5 +19,11 @@
 
         <button type="submit">Confirm</button>
     </form>
+<hr>
+    <h4>Add flights by uploading file</h4>
+    <form th:action="@{/admin/upload}" method="post" enctype="multipart/form-data">
+        <input id="input-file" type="file" name="file" />
+        <button type="submit">Upload</button>
+    </form>
 </body>
 </html>
