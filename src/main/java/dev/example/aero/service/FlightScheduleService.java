@@ -64,31 +64,39 @@ public class FlightScheduleService {
     }
 
     public void addOrUpdateFlightScheduleWithFile(MultipartFile file) throws IOException {
-        try (Reader reader = new InputStreamReader(file.getInputStream())) {
-            Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(reader);
+        String contentType = file.getContentType();
+        String fileName = file.getOriginalFilename();
+        if (contentType.startsWith("text/csv") || fileName.endsWith(".csv")) {
+            try (Reader reader = new InputStreamReader(file.getInputStream())) {
+                Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(reader);
 
-            for (CSVRecord record : records) {
-                String dateString = record.get(0);
-                if (dateString.equals("Date")) {
-                    continue;
-                }
-                LocalDate flightDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                for (CSVRecord record : records) {
+                    String dateString = record.get(0);
+                    if (dateString.equals("Date")) {
+                        continue;
+                    }
+                    LocalDate flightDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
-                if (flightDate.isBefore(LocalDate.now())) {
-                    continue;
-                }
+                    if (flightDate.isBefore(LocalDate.now())) {
+                        continue;
+                    }
 
-                String flightID = record.get(1);
-                String status = record.get(2);
+                    String flightID = record.get(1);
+                    String status = record.get(2);
 
-                if (status == null || status.isEmpty()) {
-                    addOrUpdateFlightSchedule(flightDate, flightID);
-                } else if (status.equalsIgnoreCase(String.valueOf(TicketStatus.CANCELLED))) {
-                    // TODO cancel this schedule
-                    //cancelFlight(flightDate, flightID);
+                    if (status == null || status.isEmpty()) {
+                        addOrUpdateFlightSchedule(flightDate, flightID);
+                    } else if (status.equalsIgnoreCase(String.valueOf(TicketStatus.CANCELLED))) {
+                        // TODO cancel this schedule
+                        //cancelFlight(flightDate, flightID);
+                    }
                 }
             }
+        } else if (contentType.startsWith("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") ||
+                fileName.endsWith(".xlsx") || fileName.endsWith(".xls")) {
+            // TODO add functionality of processing excel files
         }
+
     }
 
     public List<FlightDetailsResponseDTO> getFlightDetailsOnDate(String from, String to, String date, String classType, int noPassengers) {
