@@ -12,10 +12,7 @@ import dev.example.aero.repository.PassengerRepository;
 import dev.example.aero.repository.TicketRepository;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -62,7 +59,6 @@ public class FlightScheduleService {
             List<FlightSchedule> flightSchedules = flight.getSeatInfoList().stream()
                     .map(seatInfo -> new FlightSchedule(flightDate, flightID, seatInfo.getSeatClassType(), seatInfo.getAvailableSeats(), seatInfo.getFare()))
                     .collect(Collectors.toList());
-            System.out.println("Saving schedules...");
             flightScheduleRepository.saveAll(flightSchedules);
         }
     }
@@ -114,7 +110,13 @@ public class FlightScheduleService {
                     }
 
                     String flightID = row.getCell(1).getStringCellValue();
-                    String status = row.getCell(2).getStringCellValue();
+
+                    Cell statusCell = row.getCell(2);
+                    String status = null;
+
+                    if (statusCell != null) if (statusCell.getCellType() == CellType.STRING) {
+                        status = statusCell.getStringCellValue();
+                    }
 
                     if (status == null || status.isEmpty()) {
                         addOrUpdateFlightSchedule(flightDate, flightID);
