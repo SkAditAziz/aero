@@ -64,10 +64,22 @@ public class FlightScheduleService {
                         .collect(Collectors.toList());
                 flightScheduleRepository.saveAll(flightSchedules);
             } catch (DataIntegrityViolationException e) {
-                System.out.println("Flight already added! " + e.getMessage());
+                String errMsg = e.getRootCause().getMessage();
+                System.out.println(extractFlightDetails(errMsg));
             }
         }
     }
+
+    private String extractFlightDetails(String errorMessage) {
+        int startIndex = errorMessage.indexOf("Duplicate entry '") + "Duplicate entry '".length();
+        int endIndex = errorMessage.indexOf("'", startIndex);
+        errorMessage = errorMessage.substring(startIndex, endIndex);
+        String[] parts = errorMessage.split("-");
+        String flightID = parts[3] + "-" + parts[4] + "-" + parts[5];
+        String flightDate = parts[2] + "-" + parts[1] + "-" + parts[0];
+        return "Flight " + flightID + " on " + flightDate + " has already been added";
+    }
+
 
     public void addOrUpdateFlightScheduleWithFile(MultipartFile file) throws IOException {
         String contentType = file.getContentType();
