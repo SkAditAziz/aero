@@ -15,6 +15,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -57,10 +58,14 @@ public class FlightScheduleService {
         Flight flight = flightRepository.findById(flightID).orElse(null);
 
         if (flight != null) {
-            List<FlightSchedule> flightSchedules = flight.getSeatInfoList().stream()
-                    .map(seatInfo -> new FlightSchedule(flightDate, flightID, seatInfo.getSeatClassType(), seatInfo.getAvailableSeats(), seatInfo.getFare()))
-                    .collect(Collectors.toList());
-            flightScheduleRepository.saveAll(flightSchedules);
+            try {
+                List<FlightSchedule> flightSchedules = flight.getSeatInfoList().stream()
+                        .map(seatInfo -> new FlightSchedule(flightDate, flightID, seatInfo.getSeatClassType(), seatInfo.getAvailableSeats(), seatInfo.getFare()))
+                        .collect(Collectors.toList());
+                flightScheduleRepository.saveAll(flightSchedules);
+            } catch (DataIntegrityViolationException e) {
+                System.out.println("Flight already added! " + e.getMessage());
+            }
         }
     }
 
