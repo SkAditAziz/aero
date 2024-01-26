@@ -6,6 +6,7 @@ import dev.example.aero.dto.mapper.FlightDetailsResponseDTOMapper;
 import dev.example.aero.model.Enumaration.TicketStatus;
 import dev.example.aero.model.Flight;
 import dev.example.aero.model.FlightSchedule;
+import dev.example.aero.model.Ticket;
 import dev.example.aero.repository.FlightRepository;
 import dev.example.aero.repository.FlightScheduleRepository;
 import dev.example.aero.repository.PassengerRepository;
@@ -87,8 +88,7 @@ public class FlightScheduleService {
                     if (status == null || status.isEmpty()) {
                         addOrUpdateFlightSchedule(flightDate, flightID);
                     } else if (status.equalsIgnoreCase(String.valueOf(TicketStatus.CANCELLED))) {
-                        // TODO cancel this schedule
-                        //cancelFlight(flightDate, flightID);
+                        cancelFlight(flightDate, flightID);
                     }
                 }
             }
@@ -123,12 +123,26 @@ public class FlightScheduleService {
                     if (status == null || status.isEmpty()) {
                         addOrUpdateFlightSchedule(flightDate, flightID);
                     } else if (status.equalsIgnoreCase(String.valueOf(TicketStatus.CANCELLED))) {
-                        // TODO cancel this schedule
-                        //cancelFlight(flightDate, flightID);
+                        cancelFlight(flightDate, flightID);
                     }
                 }
             }
         }
+    }
+
+    private void cancelFlight(LocalDate flightDate, String flightID) {
+        List<FlightSchedule> schedulesToCancel = flightScheduleRepository.findIdByflightDateAndflightID(flightDate, flightID);
+        List<Ticket> ticketsToCancel = new ArrayList<>();
+        for (FlightSchedule schedule : schedulesToCancel) {
+            ticketsToCancel.addAll(ticketRepository.findByflightSchedule(schedule));
+        }
+        // TODO close the schedule
+        for (Ticket t : ticketsToCancel) {
+            t.setTicketStatus(TicketStatus.CANCELLED);
+            ticketRepository.save(t);
+            // TODO notify the passengers
+        }
+
     }
 
     public List<FlightDetailsResponseDTO> getFlightDetailsOnDate(String from, String to, String date, String classType, int noPassengers) {
