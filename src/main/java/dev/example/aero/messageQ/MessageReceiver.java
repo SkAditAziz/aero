@@ -3,6 +3,7 @@ package dev.example.aero.messageQ;
 import dev.example.aero.model.TicketWrapper;
 import dev.example.aero.service.TicketService;
 import dev.example.aero.service.utilService.EmailService;
+import dev.example.aero.util.EmailBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,7 @@ public class MessageReceiver {
     public void saveTicketAndSendMail(TicketWrapper ticketWrapper) {
         String filePath = ticketService.saveTicketPdf(ticketWrapper.getTicket(), ticketWrapper.getPdfTicket());
 
-        Map<String, String> emailDetails = ticketService.getEmailDetails(ticketWrapper.getTicket());
+        Map<String, String> emailDetails = EmailBuilder.getConfirmationEmailDetails(ticketWrapper.getTicket());
         emailService.sendEmailWithAttachment(emailDetails.get("to"), emailDetails.get("sub"), emailDetails.get("body"), filePath);
     }
 }
