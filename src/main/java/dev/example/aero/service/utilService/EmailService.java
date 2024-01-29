@@ -16,7 +16,10 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    public void sendEmailWithAttachment(String to, String sub, String body, String filePath) {
+    public void sendEmail(String to, String sub, String body) {
+        sendEmail(to, sub, body, null);
+    }
+    public void sendEmail(String to, String sub, String body, String filePath) {
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -24,12 +27,12 @@ public class EmailService {
             helper.setTo(to);
             helper.setSubject(sub);
             helper.setText(body);
+            if (filePath != null) {
+                FileSystemResource file = new FileSystemResource(new File(filePath));
 
-            FileSystemResource file = new FileSystemResource(new File(filePath));
-
-            String[] fileNames = filePath.split("/");
-            helper.addAttachment(fileNames[fileNames.length - 1], file);
-
+                String[] fileNames = filePath.split("/");
+                helper.addAttachment(fileNames[fileNames.length - 1], file);
+            }
             javaMailSender.send(message);
 
         } catch (MailException | MessagingException me) {
