@@ -17,6 +17,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -41,6 +42,8 @@ public class FlightScheduleService {
     private TicketRepository ticketRepository;
     @Autowired
     private PassengerRepository passengerRepository;
+    @Autowired
+    private JmsTemplate jmsTemplate;
 
     public void addOrUpdateFlightSchedule(LocalDate flightDate, List<String> flightIDs) {
         if (flightIDs == null || flightIDs.isEmpty() || flightIDs.stream().anyMatch(String::isEmpty))
@@ -157,9 +160,8 @@ public class FlightScheduleService {
         for (Ticket t : ticketsToCancel) {
             t.setTicketStatus(TicketStatus.CANCELLED);
             ticketRepository.save(t);
-            // TODO notify the passengers
-        }
-
+            jmsTemplate.convertAndSend("messagequeue.q", t);
+            }
     }
 
     public List<FlightDetailsResponseDTO> getFlightDetailsOnDate(String from, String to, String date, String classType, int noPassengers) {
