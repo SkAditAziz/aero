@@ -16,4 +16,18 @@ public class EmailBuilder {
                         "-Team Aero"
         );
     }
+
+    public static Map<String, String> getCancelEmailDetails(Ticket ticket) {
+        return Map.of(
+                "to", ticket.getPassenger().getEmail(),
+                "sub", "Aero Flight Cancelled",
+                "body", "Dear " + ticket.getPassenger().getFirstName() + " " +
+                        ticket.getPassenger().getLastName() + ",\n\n" +
+                        "Your Flight from " + ticket.getFlight().getFromAirport().getName() +
+                        " to " + ticket.getFlight().getToAirport().getName() +
+                        " on " + ticket.getFlightSchedule().getFlightDate() + " has been cancelled for unwanted reason.\n\n" +
+                        "Sorry for the unintentional inconvenience!\n\n" +
+                        "-Team Aero"
+        );
+    }
 }
