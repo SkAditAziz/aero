@@ -151,17 +151,19 @@ public class FlightScheduleService {
     }
 
     private void cancelFlight(LocalDate flightDate, String flightID) {
-        List<FlightSchedule> schedulesToCancel = flightScheduleRepository.findIdByflightDateAndflightID(flightDate, flightID);
+            List<FlightSchedule> schedulesToCancel = flightScheduleRepository.findIdByflightDateAndflightID(flightDate, flightID);
         List<Ticket> ticketsToCancel = new ArrayList<>();
         for (FlightSchedule schedule : schedulesToCancel) {
             ticketsToCancel.addAll(ticketRepository.findByflightSchedule(schedule));
+            // disabling schedule by making no available seat, adding a flag in the FlightSchedule class is a better solution
+            schedule.setAvailableSeats(0);
+            flightScheduleRepository.save(schedule);
         }
-        // TODO close the schedule
         for (Ticket t : ticketsToCancel) {
             t.setTicketStatus(TicketStatus.CANCELLED);
             ticketRepository.save(t);
             jmsTemplate.convertAndSend("messagequeue.q", t);
-            }
+        }
     }
 
     public List<FlightDetailsResponseDTO> getFlightDetailsOnDate(String from, String to, String date, String classType, int noPassengers) {
