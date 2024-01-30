@@ -51,6 +51,11 @@ public class HomeController {
 //            return "redirect:/index";
 //        }
         List<FlightDetailsResponseDTO> flightSchedules = flightScheduleService.getFlightDetailsOnDate(flightSearchReqDTO);
+        // issues with multiple tab!
+        // a user select x numbers of seat in one tab, go to another tab and select y numbers of seat
+        // then comes back to the first tab and confirm the ticket
+        // he will buy y tickets (NOT x) through this approach!
+        // TODO fix this issue
         ticketService.setSelectedSeats(flightSearchReqDTO.getNoPassengers());
         if(flightSchedules.isEmpty()) {
             return "no_flights";
