@@ -37,8 +37,6 @@ public class FlightScheduleService {
     @Autowired
     private FlightRepository flightRepository;
     @Autowired
-    private FlightService flightService;
-    @Autowired
     private TicketRepository ticketRepository;
     @Autowired
     private PassengerRepository passengerRepository;
@@ -169,7 +167,7 @@ public class FlightScheduleService {
     public List<FlightDetailsResponseDTO> getFlightDetailsOnDate(String from, String to, String date, String classType, int noPassengers) {
         List<FlightDetailsResponseDTO> result = flightScheduleRepository.findAllByFlightDateAndFromAndToAndClass(
                         LocalDate.parse(date), from, to, classType).stream()
-                .map(new FlightDetailsResponseDTOMapper(noPassengers, flightService))
+                .map(new FlightDetailsResponseDTOMapper(noPassengers, flightRepository))
                 .collect(Collectors.toList());
 
         return result.isEmpty() ? Collections.emptyList() : result;
