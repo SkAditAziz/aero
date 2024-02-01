@@ -28,6 +28,7 @@ public class SecurityConfig {
     public static String[] excludedEndpoints = new String[] {
             "/", "/login", "/logout", "/logoutUser", "/register", "/search/**", "/auth/**", "/schedule/find"
     };
+
     @Bean
     public SecurityFilterChain filterChain(@NotNull HttpSecurity http) throws Exception {
         http

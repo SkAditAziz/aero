@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/admin")
 public class AdminController {
     private final FlightScheduleService flightScheduleService;
+
     public AdminController(FlightScheduleService flightScheduleService) {
         this.flightScheduleService = flightScheduleService;
     }
@@ -39,5 +40,4 @@ public class AdminController {
         }
         return "confirm_add_flight";
     }
-
 }

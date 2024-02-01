@@ -51,6 +51,7 @@ public class FlightScheduleService {
             addOrUpdateFlightSchedule(flightDate, flightId);
         }
     }
+
     @Transactional
     private void addOrUpdateFlightSchedule(LocalDate flightDate, String flightID) {
         if (flightID == null || flightID.isEmpty())
@@ -147,6 +148,7 @@ public class FlightScheduleService {
             }
         }
     }
+
     @Transactional
     private void cancelFlight(LocalDate flightDate, String flightID) {
             List<FlightSchedule> schedulesToCancel = flightScheduleRepository.findIdByflightDateAndflightID(flightDate, flightID);

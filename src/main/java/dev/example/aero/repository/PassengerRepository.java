@@ -7,8 +7,11 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface PassengerRepository extends JpaRepository<Passenger,Long> {
+
     Passenger findByContactNo(String contactNo);
+
     Passenger findByEmail(String email);
+
     @Modifying
     @Query("UPDATE Passenger p SET p.distanceFlied = p.distanceFlied + (SELECT f.distance FROM Flight f WHERE f=:flight) WHERE p=:passenger")
     void addDistanceFlied(Passenger passenger, Flight flight);
@@ -18,6 +21,7 @@ public interface PassengerRepository extends JpaRepository<Passenger,Long> {
 
     @Query("SELECT p.lastName from Passenger p WHERE p.contactNo = :username OR p.email = :username")
     String getLastNameByContactOrEmail(String username);
+
     @Query("SELECT p from Passenger p WHERE p.contactNo = :currentUsername OR p.email = :currentUsername")
     Passenger findByUsername(String currentUsername);
 }

@@ -21,6 +21,7 @@ public class EmailService {
     public void sendEmail(String to, String sub, String body) {
         sendEmail(to, sub, body, null);
     }
+
     public void sendEmail(String to, String sub, String body, String filePath) {
         try {
             MimeMessage message = javaMailSender.createMimeMessage();

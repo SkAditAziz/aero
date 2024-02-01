@@ -46,7 +46,6 @@ public class PassengerService {
         return (passwordEncoder.matches(rawPassword, encodedPassword));
     }
 
-
     public boolean isContactNo(String username) {
         String contactNoRegex = "^(01\\d{9})$";
         return username.matches(contactNoRegex);

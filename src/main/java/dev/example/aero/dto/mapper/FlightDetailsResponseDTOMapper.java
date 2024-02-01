@@ -11,10 +11,12 @@ import java.util.function.Function;
 public class FlightDetailsResponseDTOMapper implements Function<FlightSchedule, FlightDetailsResponseDTO> {
     private final int noPassengers;
     private final FlightRepository flightRepository;  // is there any better way?
+
     public FlightDetailsResponseDTOMapper(int noPassengers, FlightRepository flightRepository) {
         this.noPassengers = noPassengers;
         this.flightRepository = flightRepository;
     }
+
     @Override
     public FlightDetailsResponseDTO apply(FlightSchedule flightSchedule) {
         Flight flight = flightRepository.findById(flightSchedule.getFlightID()).orElse(null);
