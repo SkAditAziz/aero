@@ -7,6 +7,7 @@ import dev.example.aero.model.Enumaration.SeatClassType;
 import dev.example.aero.model.Enumaration.TicketStatus;
 import dev.example.aero.repository.FlightRepository;
 import dev.example.aero.repository.FlightScheduleRepository;
+import dev.example.aero.repository.PassengerRepository;
 import dev.example.aero.repository.TicketRepository;
 import dev.example.aero.util.TicketPDFGenerator;
 import jakarta.transaction.Transactional;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import java.io.FileOutputStream;
@@ -39,7 +39,7 @@ public class TicketService {
     @Autowired
     private FlightRepository flightRepository;
     @Autowired
-    private PassengerService passengerService;
+    private PassengerRepository passengerRepository;
     @Autowired
     private JmsTemplate jmsTemplate;
     public static final int HIGHEST_PERMISSIBLE_SEATS = 4;
@@ -48,7 +48,7 @@ public class TicketService {
 
     @Transactional
     public byte[] issueTicket(long scheduleId, int totalSeats, Long passengerId) {
-        Passenger p = passengerService.getPassengerById(passengerId);
+        Passenger p = passengerRepository.findById(passengerId).orElse(null);
         FlightSchedule fs = flightScheduleRepository.findById(scheduleId).orElse(null);
 
         int alreadyBoughtSeats = ticketRepository.alreadyBoughtSeats(fs.getId(), p.getId());

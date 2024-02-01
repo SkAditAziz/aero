@@ -1,7 +1,7 @@
 package dev.example.aero.controller;
 
+import dev.example.aero.repository.PassengerRepository;
 import dev.example.aero.security.service.UserProvider;
-import dev.example.aero.service.PassengerService;
 import dev.example.aero.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -13,7 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 @Controller
 public class ConfirmFlightController {
     @Autowired
-    private PassengerService passengerService;
+    private PassengerRepository passengerRepository;
     @Autowired
     private TicketService ticketService;
 
@@ -22,7 +22,7 @@ public class ConfirmFlightController {
         Long currentPassengerId = null;
         String currentUsername = UserProvider.getCurrentUsername();
         if (currentUsername != null) {
-            currentPassengerId = passengerService.getIdByUsername(currentUsername);
+            currentPassengerId = passengerRepository.findByUsername(currentUsername).getId();
         }
         try {
             ticketService.issueTicket(scheduleId, ticketService.getSelectedSeats(), currentPassengerId);

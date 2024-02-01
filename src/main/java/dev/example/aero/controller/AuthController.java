@@ -5,9 +5,9 @@ import dev.example.aero.dto.LoginReqDTO;
 import dev.example.aero.dto.RegisterReqDTO;
 import dev.example.aero.model.Enumaration.SeatClassType;
 import dev.example.aero.repository.AirportRepository;
+import dev.example.aero.repository.PassengerRepository;
 import dev.example.aero.security.dto.AuthenticationResponse;
 import dev.example.aero.security.service.AuthenticationService;
-import dev.example.aero.service.PassengerService;
 import dev.example.aero.service.TicketService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,7 +30,7 @@ public class AuthController {
     @Autowired
     private AuthenticationService authenticationService;
     @Autowired
-    private PassengerService passengerService;
+    private PassengerRepository passengerRepository;
     @Autowired
     private AirportRepository airportRepository;
 
@@ -44,7 +44,7 @@ public class AuthController {
     public String loginUser (@ModelAttribute("LoginReqDTO") @NotNull LoginReqDTO loginReqDTO, Model model, RedirectAttributes redirectAttributes, HttpServletResponse response) {
         try {
             AuthenticationResponse authenticationResponse = authenticationService.authenticate(loginReqDTO.getUsername(), loginReqDTO.getPassword());
-            String passengerName = passengerService.getName(loginReqDTO.getUsername());
+            String passengerName = passengerRepository.getLastNameByContactOrEmail(loginReqDTO.getUsername());
             model.addAttribute("passengerName", passengerName);
 
             Cookie cookie = new Cookie("Bearer", authenticationResponse.getToken());
