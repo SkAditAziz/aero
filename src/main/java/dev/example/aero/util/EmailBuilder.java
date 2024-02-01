@@ -5,7 +5,6 @@ import dev.example.aero.model.Ticket;
 import java.util.Map;
 
 public class EmailBuilder {
-
     public static Map<String, String> getConfirmationEmailDetails(Ticket ticket) {
         return Map.of(
                 "to", ticket.getPassenger().getEmail(),

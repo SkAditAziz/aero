@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface TicketRepository extends JpaRepository<Ticket,String> {
-
     List<Ticket> getTicketsByPassengerId(long passengerId);
 
     @Query(value = "SELECT t.* FROM ticket t " +

@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public class CustomFlightIDGenerator implements IdentifierGenerator {
-
     @Override
     public Object generate(SharedSessionContractImplementor sharedSessionContractImplementor, Object o) {
         Flight currentFlight = (Flight) o;

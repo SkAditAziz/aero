@@ -5,7 +5,6 @@ import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
 
 public class CustomTicketIDGenerator implements IdentifierGenerator {
-
     @Override
     public Object generate(SharedSessionContractImplementor sharedSessionContractImplementor, Object o) {
         TypedQuery<String> getMaxIDQuery = sharedSessionContractImplementor.createQuery(

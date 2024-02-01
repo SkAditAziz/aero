@@ -6,7 +6,6 @@ import dev.example.aero.model.Ticket;
 import java.util.function.Function;
 
 public class TicketDetailsResponseDTOMapper implements Function<Ticket,TicketDetailsResponseDTO> {
-
     @Override
     public TicketDetailsResponseDTO apply(Ticket ticket) {
         return new TicketDetailsResponseDTO(

@@ -7,7 +7,6 @@ import java.util.stream.Stream;
 
 @Converter(autoApply = true)
 public class SeatClassTypeConverter implements AttributeConverter<SeatClassType, String> {
-
     @Override
     public String convertToDatabaseColumn(SeatClassType seatClassType) {
         return (seatClassType == null) ? null : seatClassType.getCode();

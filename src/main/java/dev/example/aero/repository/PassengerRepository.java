@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface PassengerRepository extends JpaRepository<Passenger,Long> {
-
     Passenger findByContactNo(String contactNo);
 
     Passenger findByEmail(String email);

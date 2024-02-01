@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface FlightScheduleRepository extends JpaRepository<FlightSchedule,Long> {
-
     FlightSchedule findByFlightDate(LocalDate flightDate);
 
     @Query(value = "SELECT fs.* FROM flight_schedule fs " +
