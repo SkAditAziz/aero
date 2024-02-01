@@ -9,8 +9,12 @@ import org.springframework.jms.core.JmsTemplate;
 
 @Configuration
 public class MessageSenderConfig {
-    @Value("${activemq.broker-url}")
-    private String brokerUrl;
+
+    private final String brokerUrl;
+
+    public MessageSenderConfig(@Value("${activemq.broker-url}") String brokerUrl) {
+        this.brokerUrl = brokerUrl;
+    }
 
     public ActiveMQConnectionFactory senderActiveMQConnectionFactory() {
         ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory();
