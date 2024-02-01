@@ -14,8 +14,12 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+    private final FlightScheduleService flightScheduleService;
     @Autowired
-    private FlightScheduleService flightScheduleService;
+    public AdminController(FlightScheduleService flightScheduleService) {
+        this.flightScheduleService = flightScheduleService;
+    }
+
     @PostMapping("/add_flight")
     public String addFlight(AddFlightReqDTO addFlightReqDTO, Model model) {
         try {

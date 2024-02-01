@@ -12,10 +12,14 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class PassengerService {
+    private final PassengerRepository passengerRepository;
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    PassengerRepository passengerRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public PassengerService(PassengerRepository passengerRepository, PasswordEncoder passwordEncoder) {
+        this.passengerRepository = passengerRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public void insertPassenger(Passenger passenger) throws DataIntegrityViolationException {
         String encodedPassword = passwordEncoder.encode(passenger.getPassword());

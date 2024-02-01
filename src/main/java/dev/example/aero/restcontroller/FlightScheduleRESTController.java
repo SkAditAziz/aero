@@ -15,9 +15,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/schedule")
 public class FlightScheduleRESTController {
+    private final FlightScheduleService flightScheduleService;
 
     @Autowired
-    private FlightScheduleService flightScheduleService;
+    public FlightScheduleRESTController(FlightScheduleService flightScheduleService) {
+        this.flightScheduleService = flightScheduleService;
+    }
 
     @GetMapping("/find")
     public List<FlightDetailsResponseDTO> getFlightDetailsOnDate(

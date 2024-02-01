@@ -15,10 +15,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@RequiredArgsConstructor
 public class ApplicationConfig {
-    @Autowired
     private final PassengerRepository passengerRepository;
+    @Autowired
+    public ApplicationConfig(PassengerRepository passengerRepository) {
+        this.passengerRepository = passengerRepository;
+    }
 
     @Bean
     public UserDetailsService userDetailsService() {

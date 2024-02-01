@@ -23,12 +23,12 @@ import java.util.function.Function;
 public class JwtService {
     private final String SECRET_KEY;
     private final long jwtExpirationTime;
-    @Autowired
-    private PassengerRepository passengerRepository;
+    private final PassengerRepository passengerRepository;
 
-    public JwtService(@Value("${jwt.secretkey}") String secretKey, @Value("${jwt.expirationTimeInMills}") Long jwtExpirationTime) {
+    public JwtService(@Value("${jwt.secretkey}") String secretKey, @Value("${jwt.expirationTimeInMills}") Long jwtExpirationTime, PassengerRepository passengerRepository) {
         SECRET_KEY = secretKey;
         this.jwtExpirationTime = jwtExpirationTime;
+        this.passengerRepository = passengerRepository;
     }
 
     public String extractUsername(String token) {

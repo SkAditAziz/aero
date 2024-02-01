@@ -22,18 +22,22 @@ import java.util.List;
 
 @Controller
 public class HomeController {
-    @Autowired
-    private AirportRepository airportRepository;
-    @Autowired
-    private FlightScheduleService flightScheduleService;
-    @Autowired
-    private TicketService ticketService;
-    @Autowired
-    private FlightRepository flightRepository;
+    private final AirportRepository airportRepository;
+    private final FlightScheduleService flightScheduleService;
+    private final TicketService ticketService;
+    private final FlightRepository flightRepository;
     @Value("${whatsapp.number}")
     private String whatsappNumber;
     @Value(("${whatsapp.api}"))
     private String whatsappAPI;
+
+    @Autowired
+    public HomeController(AirportRepository airportRepository, FlightScheduleService flightScheduleService, TicketService ticketService, FlightRepository flightRepository) {
+        this.airportRepository = airportRepository;
+        this.flightScheduleService = flightScheduleService;
+        this.ticketService = ticketService;
+        this.flightRepository = flightRepository;
+    }
 
     @GetMapping("/")
     public String showIndexPage(@NotNull Model model) {

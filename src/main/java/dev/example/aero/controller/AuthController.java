@@ -27,12 +27,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class AuthController {
+    private final AuthenticationService authenticationService;
+    private final PassengerRepository passengerRepository;
+    private final AirportRepository airportRepository;
+
     @Autowired
-    private AuthenticationService authenticationService;
-    @Autowired
-    private PassengerRepository passengerRepository;
-    @Autowired
-    private AirportRepository airportRepository;
+    public AuthController(AuthenticationService authenticationService, PassengerRepository passengerRepository, AirportRepository airportRepository) {
+        this.authenticationService = authenticationService;
+        this.passengerRepository = passengerRepository;
+        this.airportRepository = airportRepository;
+    }
 
     @GetMapping("/login")
     public String showLoginForm (@NotNull Model model) {

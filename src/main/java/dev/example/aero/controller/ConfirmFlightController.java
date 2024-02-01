@@ -12,10 +12,14 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 public class ConfirmFlightController {
+    private final PassengerRepository passengerRepository;
+    private final TicketService ticketService;
+
     @Autowired
-    private PassengerRepository passengerRepository;
-    @Autowired
-    private TicketService ticketService;
+    public ConfirmFlightController(PassengerRepository passengerRepository, TicketService ticketService) {
+        this.passengerRepository = passengerRepository;
+        this.ticketService = ticketService;
+    }
 
     @PostMapping("/confirmFlight")
     public String confirmFlight(@RequestParam(name = "scheduleId") Long scheduleId, Model model) {

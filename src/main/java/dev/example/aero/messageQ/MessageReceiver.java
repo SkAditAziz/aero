@@ -15,10 +15,14 @@ import java.util.Map;
 
 @Component
 public class MessageReceiver {
+    private final EmailService emailService;
+    private final TicketService ticketService;
+
     @Autowired
-    private EmailService emailService;
-    @Autowired
-    private TicketService ticketService;
+    public MessageReceiver(EmailService emailService, TicketService ticketService) {
+        this.emailService = emailService;
+        this.ticketService = ticketService;
+    }
 
     @JmsListener(destination = "messagequeue.q")
     public void processMessage(Message message) {

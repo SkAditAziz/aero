@@ -14,8 +14,12 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 @RequestMapping("/passenger")
 public class PassengerRESTController {
+    private final PassengerService passengerService;
+
     @Autowired
-    private PassengerService passengerService;
+    public PassengerRESTController(PassengerService passengerService) {
+        this.passengerService = passengerService;
+    }
 
     @PostMapping
     public String registerPassenger(@Valid @RequestBody Passenger passenger, BindingResult bindingResult) {

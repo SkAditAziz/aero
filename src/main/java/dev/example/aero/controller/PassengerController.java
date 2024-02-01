@@ -23,10 +23,14 @@ import java.util.List;
 @Controller
 @RequestMapping("/passenger")
 public class PassengerController {
+    private final TicketService ticketService;
+    private final PassengerService passengerService;
+
     @Autowired
-    private TicketService ticketService;
-    @Autowired
-    private PassengerService passengerService;
+    public PassengerController(TicketService ticketService, PassengerService passengerService) {
+        this.ticketService = ticketService;
+        this.passengerService = passengerService;
+    }
 
     @GetMapping("/info")
     public String showPassengerInfo(@NotNull Model model) {

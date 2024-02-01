@@ -17,8 +17,13 @@ import java.util.Map;
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationRESTController {
+    private final AuthenticationService authenticationService;
+
     @Autowired
-    private AuthenticationService authenticationService;
+    public AuthenticationRESTController(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
+    }
+
     @PostMapping("/register")
     public AuthenticationResponse register(@Valid @RequestBody Passenger passenger, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

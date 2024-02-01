@@ -13,10 +13,14 @@ import java.util.List;
 
 @Component
 public class FlightCompletionTasks {
+    private final TicketRepository ticketRepository;
+    private final PassengerRepository passengerRepository;
+
     @Autowired
-    private TicketRepository ticketRepository;
-    @Autowired
-    private PassengerRepository passengerRepository;
+    public FlightCompletionTasks(TicketRepository ticketRepository, PassengerRepository passengerRepository) {
+        this.ticketRepository = ticketRepository;
+        this.passengerRepository = passengerRepository;
+    }
 
     @Scheduled(cron = "0 1 0 * * *") // run it on every day 00:01 AM
     @Transactional

@@ -33,16 +33,18 @@ import java.util.stream.Collectors;
 
 @Service
 public class FlightScheduleService {
+    private final FlightScheduleRepository flightScheduleRepository;
+    private final FlightRepository flightRepository;
+    private final TicketRepository ticketRepository;
+    private final JmsTemplate jmsTemplate;
+
     @Autowired
-    private FlightScheduleRepository flightScheduleRepository;
-    @Autowired
-    private FlightRepository flightRepository;
-    @Autowired
-    private TicketRepository ticketRepository;
-    @Autowired
-    private PassengerRepository passengerRepository;
-    @Autowired
-    private JmsTemplate jmsTemplate;
+    public FlightScheduleService(FlightScheduleRepository flightScheduleRepository, FlightRepository flightRepository, TicketRepository ticketRepository, JmsTemplate jmsTemplate) {
+        this.flightScheduleRepository = flightScheduleRepository;
+        this.flightRepository = flightRepository;
+        this.ticketRepository = ticketRepository;
+        this.jmsTemplate = jmsTemplate;
+    }
 
     public void addOrUpdateFlightSchedule(LocalDate flightDate, List<String> flightIDs) {
         if (flightIDs == null || flightIDs.isEmpty() || flightIDs.stream().anyMatch(String::isEmpty))

@@ -32,19 +32,22 @@ import java.nio.file.Paths;
 @Getter
 @Setter
 public class TicketService {
-    @Autowired
-    private TicketRepository ticketRepository;
-    @Autowired
-    private FlightScheduleRepository flightScheduleRepository;
-    @Autowired
-    private FlightRepository flightRepository;
-    @Autowired
-    private PassengerRepository passengerRepository;
-    @Autowired
-    private JmsTemplate jmsTemplate;
+    private final TicketRepository ticketRepository;
+    private final FlightScheduleRepository flightScheduleRepository;
+    private final FlightRepository flightRepository;
+    private final PassengerRepository passengerRepository;
+    private final JmsTemplate jmsTemplate;
     public static final int HIGHEST_PERMISSIBLE_SEATS = 4;
     private int selectedSeats = 0;
 
+    @Autowired
+    public TicketService(TicketRepository ticketRepository, FlightScheduleRepository flightScheduleRepository, FlightRepository flightRepository, PassengerRepository passengerRepository, JmsTemplate jmsTemplate) {
+        this.ticketRepository = ticketRepository;
+        this.flightScheduleRepository = flightScheduleRepository;
+        this.flightRepository = flightRepository;
+        this.passengerRepository = passengerRepository;
+        this.jmsTemplate = jmsTemplate;
+    }
 
     @Transactional
     public byte[] issueTicket(long scheduleId, int totalSeats, Long passengerId) {

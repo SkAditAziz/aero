@@ -21,10 +21,15 @@ import java.util.Map;
 @RestController
 @RequestMapping("/ticket")
 public class TicketRESTController {
+    private final TicketService ticketService;
+    private final JwtService jwtService;
+
     @Autowired
-    private TicketService ticketService;
-    @Autowired
-    private JwtService jwtService;
+    public TicketRESTController(TicketService ticketService, JwtService jwtService) {
+        this.ticketService = ticketService;
+        this.jwtService = jwtService;
+    }
+
     @PostMapping("/confirm")
     @PreAuthorize("hasRole('ROLE_PASSENGER')")
     public ResponseEntity<byte[]> confirmTicket (HttpServletRequest request, @RequestBody Map<String, Object> req) {

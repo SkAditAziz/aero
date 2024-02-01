@@ -12,8 +12,12 @@ import java.util.List;
 @RestController
 @RequestMapping({"/airports", "/airports/"})
 public class AirportRESTController {
+    private final AirportRepository airportRepository;
+
     @Autowired
-    private AirportRepository airportRepository;
+    public AirportRESTController(AirportRepository airportRepository) {
+        this.airportRepository = airportRepository;
+    }
 
     @GetMapping
     public List<Airport> airportsList() {

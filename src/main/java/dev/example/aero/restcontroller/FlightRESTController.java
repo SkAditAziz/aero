@@ -15,8 +15,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/flights")
 public class FlightRESTController {
+    private final FlightService flightService;
+
     @Autowired
-    private FlightService flightService;
+    public FlightRESTController(FlightService flightService) {
+        this.flightService = flightService;
+    }
+
     @GetMapping
     public List<Flight> getFlight(@RequestParam String from, @RequestParam String to) {
         List<Flight> availableFlights = flightService.findFlightsToFrom(to,from);

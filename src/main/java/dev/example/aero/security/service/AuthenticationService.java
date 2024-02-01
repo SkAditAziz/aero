@@ -15,14 +15,18 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 @Service
 public class AuthenticationService {
+    private final PassengerService passengerService;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
+    private final PassengerRepository passengerRepository;
+
     @Autowired
-    private PassengerService passengerService;
-    @Autowired
-    private JwtService jwtService;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private PassengerRepository passengerRepository;
+    public AuthenticationService(PassengerService passengerService, JwtService jwtService, AuthenticationManager authenticationManager, PassengerRepository passengerRepository) {
+        this.passengerService = passengerService;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
+        this.passengerRepository = passengerRepository;
+    }
 
     public AuthenticationResponse register(Passenger passenger) {
         passengerService.insertPassenger(passenger);
