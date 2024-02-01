@@ -1,7 +1,7 @@
 package dev.example.aero.restcontroller;
 
 import dev.example.aero.model.Airport;
-import dev.example.aero.service.AirportService;
+import dev.example.aero.repository.AirportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,16 +13,16 @@ import java.util.List;
 @RequestMapping({"/airports", "/airports/"})
 public class AirportRESTController {
     @Autowired
-    private AirportService airportService;
+    private AirportRepository airportRepository;
 
     @GetMapping
     public List<Airport> airportsList() {
-        return airportService.getAllAirports();
+        return airportRepository.findAll();
     }
 
     @GetMapping("/{code}")
     public Airport airportByCode(@PathVariable("code") String code) {
-        Airport a = airportService.findById(code);
+        Airport a = airportRepository.findById(code).orElse(null);
         if (a == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"No airport found by with the code");
         return a;
@@ -30,8 +30,8 @@ public class AirportRESTController {
 
     @DeleteMapping("/{code}")
     public String deleteAirportByCode(@PathVariable("code") String code) {
-        if (airportService.findById(code) != null) {
-            airportService.deleteById(code);
+        if (airportRepository.findById(code).isPresent()) {
+            airportRepository.deleteById(code);
             return "The Airport is deleted!";
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"No airport found by with the code");

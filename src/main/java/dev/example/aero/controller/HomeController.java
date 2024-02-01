@@ -4,11 +4,10 @@ import dev.example.aero.dto.AddFlightReqDTO;
 import dev.example.aero.dto.FlightDetailsResponseDTO;
 import dev.example.aero.dto.FlightSearchReqDTO;
 import dev.example.aero.model.Enumaration.SeatClassType;
-import dev.example.aero.service.AirportService;
+import dev.example.aero.repository.AirportRepository;
 import dev.example.aero.service.FlightScheduleService;
 import dev.example.aero.service.FlightService;
 import dev.example.aero.service.TicketService;
-import jakarta.validation.Valid;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +22,7 @@ import java.util.List;
 @Controller
 public class HomeController {
     @Autowired
-    private AirportService airportService;
+    private AirportRepository airportRepository;
     @Autowired
     private FlightScheduleService flightScheduleService;
     @Autowired
@@ -37,7 +36,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String showIndexPage(@NotNull Model model) {
-        model.addAttribute("airports", airportService.getAllAirports());
+        model.addAttribute("airports", airportRepository.findAll());
         model.addAttribute("seatClasses", SeatClassType.getAllSeatClassType());
         model.addAttribute("highestPassenger", TicketService.HIGHEST_PERMISSIBLE_SEATS);
         model.addAttribute("flightSearchReqDTO", new FlightSearchReqDTO(LocalDate.now()));

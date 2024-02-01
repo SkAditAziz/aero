@@ -4,9 +4,9 @@ import dev.example.aero.dto.FlightSearchReqDTO;
 import dev.example.aero.dto.LoginReqDTO;
 import dev.example.aero.dto.RegisterReqDTO;
 import dev.example.aero.model.Enumaration.SeatClassType;
+import dev.example.aero.repository.AirportRepository;
 import dev.example.aero.security.dto.AuthenticationResponse;
 import dev.example.aero.security.service.AuthenticationService;
-import dev.example.aero.service.AirportService;
 import dev.example.aero.service.PassengerService;
 import dev.example.aero.service.TicketService;
 import jakarta.servlet.http.Cookie;
@@ -32,7 +32,7 @@ public class AuthController {
     @Autowired
     private PassengerService passengerService;
     @Autowired
-    private AirportService airportService;
+    private AirportRepository airportRepository;
 
     @GetMapping("/login")
     public String showLoginForm (@NotNull Model model) {
@@ -84,7 +84,7 @@ public class AuthController {
     @GetMapping("/logoutUser")
     public String logoutUser(@NotNull HttpServletResponse response, Model model) {
         SecurityContextHolder.clearContext();
-        model.addAttribute("airports", airportService.getAllAirports());
+        model.addAttribute("airports", airportRepository.findAll());
         model.addAttribute("seatClasses", SeatClassType.getAllSeatClassType());
         model.addAttribute("flightSearchReqDTO", new FlightSearchReqDTO());
         model.addAttribute("highestPassenger", TicketService.HIGHEST_PERMISSIBLE_SEATS);
