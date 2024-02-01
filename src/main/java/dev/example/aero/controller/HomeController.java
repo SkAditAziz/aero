@@ -24,16 +24,16 @@ public class HomeController {
     private final FlightScheduleService flightScheduleService;
     private final TicketService ticketService;
     private final FlightRepository flightRepository;
-    @Value("${whatsapp.number}")
-    private String whatsappNumber;
-    @Value(("${whatsapp.api}"))
-    private String whatsappAPI;
+    private final String whatsappNumber;
+    private final String whatsappAPI;
 
-    public HomeController(AirportRepository airportRepository, FlightScheduleService flightScheduleService, TicketService ticketService, FlightRepository flightRepository) {
+    public HomeController(AirportRepository airportRepository, FlightScheduleService flightScheduleService, TicketService ticketService, FlightRepository flightRepository, @Value("${whatsapp.number}") String whatsappNumber, @Value(("${whatsapp.api}")) String whatsappAPI) {
         this.airportRepository = airportRepository;
         this.flightScheduleService = flightScheduleService;
         this.ticketService = ticketService;
         this.flightRepository = flightRepository;
+        this.whatsappNumber = whatsappNumber;
+        this.whatsappAPI = whatsappAPI;
     }
 
     @GetMapping("/")
