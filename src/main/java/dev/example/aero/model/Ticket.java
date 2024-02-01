@@ -1,8 +1,8 @@
 package dev.example.aero.model;
 
 import dev.example.aero.custom.CustomTicketIDGenerator;
-import dev.example.aero.model.Enumaration.SeatClassType;
-import dev.example.aero.model.Enumaration.TicketStatus;
+import dev.example.aero.Enumaration.SeatClassType;
+import dev.example.aero.Enumaration.TicketStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;

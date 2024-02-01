@@ -1,4 +1,4 @@
-package dev.example.aero.model.Enumaration;
+package dev.example.aero.Enumaration;
 
 import java.util.Arrays;
 import java.util.List;

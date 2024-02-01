@@ -1,7 +1,7 @@
 package dev.example.aero.dto;
 
-import dev.example.aero.model.Enumaration.SeatClassType;
-import dev.example.aero.model.Enumaration.TicketStatus;
+import dev.example.aero.Enumaration.SeatClassType;
+import dev.example.aero.Enumaration.TicketStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -3,7 +3,7 @@ package dev.example.aero.controller;
 import dev.example.aero.dto.AddFlightReqDTO;
 import dev.example.aero.dto.FlightDetailsResponseDTO;
 import dev.example.aero.dto.FlightSearchReqDTO;
-import dev.example.aero.model.Enumaration.SeatClassType;
+import dev.example.aero.Enumaration.SeatClassType;
 import dev.example.aero.repository.AirportRepository;
 import dev.example.aero.repository.FlightRepository;
 import dev.example.aero.service.FlightScheduleService;

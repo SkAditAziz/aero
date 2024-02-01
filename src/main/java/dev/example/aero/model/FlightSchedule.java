@@ -1,7 +1,7 @@
 package dev.example.aero.model;
 
-import dev.example.aero.model.Enumaration.SeatClassType;
-import dev.example.aero.model.Enumaration.SeatClassTypeConverter;
+import dev.example.aero.Enumaration.SeatClassType;
+import dev.example.aero.Enumaration.SeatClassTypeConverter;
 import jakarta.persistence.*;
 import lombok.*;
 

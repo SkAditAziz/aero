@@ -1,9 +1,8 @@
 package dev.example.aero.dto;
 
-import dev.example.aero.model.Enumaration.SeatClassType;
+import dev.example.aero.Enumaration.SeatClassType;
 import lombok.*;
 
-import java.time.Duration;
 import java.time.LocalTime;
 
 @Getter

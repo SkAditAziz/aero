@@ -1,6 +1,6 @@
 package dev.example.aero.scheduler;
 
-import dev.example.aero.model.Enumaration.TicketStatus;
+import dev.example.aero.Enumaration.TicketStatus;
 import dev.example.aero.model.Ticket;
 import dev.example.aero.repository.PassengerRepository;
 import dev.example.aero.repository.TicketRepository;

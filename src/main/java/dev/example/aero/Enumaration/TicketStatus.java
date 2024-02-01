@@ -1,4 +1,4 @@
-package dev.example.aero.model.Enumaration;
+package dev.example.aero.Enumaration;
 
 public enum TicketStatus {
     UPCOMING,

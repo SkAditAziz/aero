@@ -1,7 +1,6 @@
 package dev.example.aero.dto;
 
-import dev.example.aero.model.Enumaration.SeatClassType;
-import jakarta.validation.constraints.AssertTrue;
+import dev.example.aero.Enumaration.SeatClassType;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
 

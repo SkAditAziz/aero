@@ -1,9 +1,7 @@
-package dev.example.aero.model.Enumaration;
+package dev.example.aero.Enumaration;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-
-import java.util.stream.Stream;
 
 @Converter(autoApply = true)
 public class SeatClassTypeConverter implements AttributeConverter<SeatClassType, String> {

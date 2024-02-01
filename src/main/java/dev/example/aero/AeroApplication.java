@@ -1,24 +1,11 @@
 package dev.example.aero;
 
-import dev.example.aero.model.*;
-import dev.example.aero.model.Enumaration.TicketStatus;
 import dev.example.aero.repository.*;
-import dev.example.aero.model.Enumaration.SeatClassType;
-import org.hibernate.Hibernate;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @SpringBootApplication
 @EnableScheduling
