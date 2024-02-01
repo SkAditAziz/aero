@@ -3,7 +3,6 @@ package dev.example.aero.controller;
 import dev.example.aero.repository.PassengerRepository;
 import dev.example.aero.security.service.UserProvider;
 import dev.example.aero.service.TicketService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +14,6 @@ public class ConfirmFlightController {
     private final PassengerRepository passengerRepository;
     private final TicketService ticketService;
 
-    @Autowired
     public ConfirmFlightController(PassengerRepository passengerRepository, TicketService ticketService) {
         this.passengerRepository = passengerRepository;
         this.ticketService = ticketService;

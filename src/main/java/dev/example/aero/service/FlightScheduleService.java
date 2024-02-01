@@ -9,13 +9,11 @@ import dev.example.aero.model.FlightSchedule;
 import dev.example.aero.model.Ticket;
 import dev.example.aero.repository.FlightRepository;
 import dev.example.aero.repository.FlightScheduleRepository;
-import dev.example.aero.repository.PassengerRepository;
 import dev.example.aero.repository.TicketRepository;
 import jakarta.transaction.Transactional;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.poi.ss.usermodel.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jms.core.JmsTemplate;
@@ -38,7 +36,6 @@ public class FlightScheduleService {
     private final TicketRepository ticketRepository;
     private final JmsTemplate jmsTemplate;
 
-    @Autowired
     public FlightScheduleService(FlightScheduleRepository flightScheduleRepository, FlightRepository flightRepository, TicketRepository ticketRepository, JmsTemplate jmsTemplate) {
         this.flightScheduleRepository = flightScheduleRepository;
         this.flightRepository = flightRepository;

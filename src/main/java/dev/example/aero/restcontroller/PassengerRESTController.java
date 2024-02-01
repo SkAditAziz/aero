@@ -4,7 +4,6 @@ import dev.example.aero.model.Passenger;
 import dev.example.aero.service.PassengerService;
 import jakarta.persistence.PersistenceException;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -16,7 +15,6 @@ import org.springframework.web.server.ResponseStatusException;
 public class PassengerRESTController {
     private final PassengerService passengerService;
 
-    @Autowired
     public PassengerRESTController(PassengerService passengerService) {
         this.passengerService = passengerService;
     }

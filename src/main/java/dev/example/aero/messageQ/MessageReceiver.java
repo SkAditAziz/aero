@@ -7,7 +7,6 @@ import dev.example.aero.service.utilService.EmailService;
 import dev.example.aero.util.EmailBuilder;
 import jakarta.jms.Message;
 import jakarta.jms.ObjectMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +17,6 @@ public class MessageReceiver {
     private final EmailService emailService;
     private final TicketService ticketService;
 
-    @Autowired
     public MessageReceiver(EmailService emailService, TicketService ticketService) {
         this.emailService = emailService;
         this.ticketService = ticketService;

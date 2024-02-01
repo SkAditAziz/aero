@@ -6,7 +6,6 @@ import dev.example.aero.security.service.UserProvider;
 import dev.example.aero.service.PassengerService;
 import dev.example.aero.service.TicketService;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,7 +25,6 @@ public class PassengerController {
     private final TicketService ticketService;
     private final PassengerService passengerService;
 
-    @Autowired
     public PassengerController(TicketService ticketService, PassengerService passengerService) {
         this.ticketService = ticketService;
         this.passengerService = passengerService;

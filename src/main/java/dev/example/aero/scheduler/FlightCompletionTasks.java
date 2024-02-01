@@ -5,7 +5,6 @@ import dev.example.aero.model.Ticket;
 import dev.example.aero.repository.PassengerRepository;
 import dev.example.aero.repository.TicketRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +15,6 @@ public class FlightCompletionTasks {
     private final TicketRepository ticketRepository;
     private final PassengerRepository passengerRepository;
 
-    @Autowired
     public FlightCompletionTasks(TicketRepository ticketRepository, PassengerRepository passengerRepository) {
         this.ticketRepository = ticketRepository;
         this.passengerRepository = passengerRepository;

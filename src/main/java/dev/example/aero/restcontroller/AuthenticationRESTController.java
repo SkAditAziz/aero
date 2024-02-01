@@ -4,7 +4,6 @@ import dev.example.aero.model.Passenger;
 import dev.example.aero.security.dto.AuthenticationResponse;
 import dev.example.aero.security.service.AuthenticationService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,7 +18,6 @@ import java.util.Map;
 public class AuthenticationRESTController {
     private final AuthenticationService authenticationService;
 
-    @Autowired
     public AuthenticationRESTController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }

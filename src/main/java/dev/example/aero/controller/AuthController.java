@@ -13,7 +13,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,7 +30,6 @@ public class AuthController {
     private final PassengerRepository passengerRepository;
     private final AirportRepository airportRepository;
 
-    @Autowired
     public AuthController(AuthenticationService authenticationService, PassengerRepository passengerRepository, AirportRepository airportRepository) {
         this.authenticationService = authenticationService;
         this.passengerRepository = passengerRepository;

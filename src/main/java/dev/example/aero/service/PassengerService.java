@@ -3,7 +3,6 @@ package dev.example.aero.service;
 import dev.example.aero.model.Enumaration.Role;
 import dev.example.aero.model.Passenger;
 import dev.example.aero.repository.PassengerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,7 +14,6 @@ public class PassengerService {
     private final PassengerRepository passengerRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
     public PassengerService(PassengerRepository passengerRepository, PasswordEncoder passwordEncoder) {
         this.passengerRepository = passengerRepository;
         this.passwordEncoder = passwordEncoder;

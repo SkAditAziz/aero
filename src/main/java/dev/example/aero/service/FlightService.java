@@ -3,7 +3,6 @@ package dev.example.aero.service;
 import dev.example.aero.model.Flight;
 import dev.example.aero.repository.AirportRepository;
 import dev.example.aero.repository.FlightRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,7 +12,6 @@ public class FlightService {
     private final FlightRepository flightRepository;
     private final AirportRepository airportRepository;
 
-    @Autowired
     public FlightService(FlightRepository flightRepository, AirportRepository airportRepository) {
         this.flightRepository = flightRepository;
         this.airportRepository = airportRepository;

@@ -2,7 +2,6 @@ package dev.example.aero.service.utilService;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,7 +12,7 @@ import java.io.File;
 
 @Service
 public class EmailService {
-    private JavaMailSender javaMailSender;
+    private final JavaMailSender javaMailSender;
 
     public EmailService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;

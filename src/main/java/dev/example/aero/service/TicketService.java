@@ -13,7 +13,6 @@ import dev.example.aero.util.TicketPDFGenerator;
 import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
@@ -40,7 +39,6 @@ public class TicketService {
     public static final int HIGHEST_PERMISSIBLE_SEATS = 4;
     private int selectedSeats = 0;
 
-    @Autowired
     public TicketService(TicketRepository ticketRepository, FlightScheduleRepository flightScheduleRepository, FlightRepository flightRepository, PassengerRepository passengerRepository, JmsTemplate jmsTemplate) {
         this.ticketRepository = ticketRepository;
         this.flightScheduleRepository = flightScheduleRepository;

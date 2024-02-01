@@ -6,7 +6,6 @@ import dev.example.aero.model.Passenger;
 import dev.example.aero.security.service.JwtService;
 import dev.example.aero.service.TicketService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,7 +23,6 @@ public class TicketRESTController {
     private final TicketService ticketService;
     private final JwtService jwtService;
 
-    @Autowired
     public TicketRESTController(TicketService ticketService, JwtService jwtService) {
         this.ticketService = ticketService;
         this.jwtService = jwtService;

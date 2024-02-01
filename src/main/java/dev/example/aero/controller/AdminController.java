@@ -2,7 +2,6 @@ package dev.example.aero.controller;
 
 import dev.example.aero.dto.AddFlightReqDTO;
 import dev.example.aero.service.FlightScheduleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/admin")
 public class AdminController {
     private final FlightScheduleService flightScheduleService;
-    @Autowired
     public AdminController(FlightScheduleService flightScheduleService) {
         this.flightScheduleService = flightScheduleService;
     }

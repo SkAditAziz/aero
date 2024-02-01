@@ -7,10 +7,8 @@ import dev.example.aero.model.Enumaration.SeatClassType;
 import dev.example.aero.repository.AirportRepository;
 import dev.example.aero.repository.FlightRepository;
 import dev.example.aero.service.FlightScheduleService;
-import dev.example.aero.service.FlightService;
 import dev.example.aero.service.TicketService;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,7 +29,6 @@ public class HomeController {
     @Value(("${whatsapp.api}"))
     private String whatsappAPI;
 
-    @Autowired
     public HomeController(AirportRepository airportRepository, FlightScheduleService flightScheduleService, TicketService ticketService, FlightRepository flightRepository) {
         this.airportRepository = airportRepository;
         this.flightScheduleService = flightScheduleService;

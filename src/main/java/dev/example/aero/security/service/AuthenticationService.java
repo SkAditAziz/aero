@@ -5,14 +5,12 @@ import dev.example.aero.repository.PassengerRepository;
 import dev.example.aero.security.dto.AuthenticationResponse;
 import dev.example.aero.security.userdetails.PassengerDetails;
 import dev.example.aero.service.PassengerService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 @Service
 public class AuthenticationService {
     private final PassengerService passengerService;
@@ -20,7 +18,6 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final PassengerRepository passengerRepository;
 
-    @Autowired
     public AuthenticationService(PassengerService passengerService, JwtService jwtService, AuthenticationManager authenticationManager, PassengerRepository passengerRepository) {
         this.passengerService = passengerService;
         this.jwtService = jwtService;

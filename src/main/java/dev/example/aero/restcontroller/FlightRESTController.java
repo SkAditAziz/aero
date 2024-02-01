@@ -2,7 +2,6 @@ package dev.example.aero.restcontroller;
 
 import dev.example.aero.model.Flight;
 import dev.example.aero.service.FlightService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +16,6 @@ import java.util.List;
 public class FlightRESTController {
     private final FlightService flightService;
 
-    @Autowired
     public FlightRESTController(FlightService flightService) {
         this.flightService = flightService;
     }
