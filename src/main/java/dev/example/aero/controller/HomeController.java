@@ -5,6 +5,7 @@ import dev.example.aero.dto.FlightDetailsResponseDTO;
 import dev.example.aero.dto.FlightSearchReqDTO;
 import dev.example.aero.model.Enumaration.SeatClassType;
 import dev.example.aero.repository.AirportRepository;
+import dev.example.aero.repository.FlightRepository;
 import dev.example.aero.service.FlightScheduleService;
 import dev.example.aero.service.FlightService;
 import dev.example.aero.service.TicketService;
@@ -28,7 +29,7 @@ public class HomeController {
     @Autowired
     private TicketService ticketService;
     @Autowired
-    private FlightService flightService;
+    private FlightRepository flightRepository;
     @Value("${whatsapp.number}")
     private String whatsappNumber;
     @Value(("${whatsapp.api}"))
@@ -65,7 +66,7 @@ public class HomeController {
 
     @GetMapping("/admin")
     public String showAdmin(@NotNull Model model) {
-        model.addAttribute("flightIDs", flightService.getAllFlightIDs());
+        model.addAttribute("flightIDs", flightRepository.findAllIds());
         model.addAttribute("addFlightReqDTO", new AddFlightReqDTO());
         return "admin";
     }

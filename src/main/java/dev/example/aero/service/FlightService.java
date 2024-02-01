@@ -18,12 +18,4 @@ public class FlightService {
     public List<Flight> findFlightsToFrom(String to, String from) {
         return flightRepository.findByFromAirportAndToAirport(airportRepository.findById(from).orElse(null), airportRepository.findById(to).orElse(null));
     }
-
-    public Flight getFlightById(String flightId) {
-        return flightRepository.findById(flightId).orElse(null);
-    }
-
-    public List<String> getAllFlightIDs() {
-        return flightRepository.findAllIds();
-    }
 }
