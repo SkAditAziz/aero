@@ -11,6 +11,7 @@ import dev.example.aero.repository.FlightRepository;
 import dev.example.aero.repository.FlightScheduleRepository;
 import dev.example.aero.repository.PassengerRepository;
 import dev.example.aero.repository.TicketRepository;
+import jakarta.transaction.Transactional;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.poi.ss.usermodel.*;
@@ -51,7 +52,7 @@ public class FlightScheduleService {
             addOrUpdateFlightSchedule(flightDate, flightId);
         }
     }
-
+    @Transactional
     private void addOrUpdateFlightSchedule(LocalDate flightDate, String flightID) {
         if (flightID == null || flightID.isEmpty())
             return;
@@ -147,7 +148,7 @@ public class FlightScheduleService {
             }
         }
     }
-
+    @Transactional
     private void cancelFlight(LocalDate flightDate, String flightID) {
             List<FlightSchedule> schedulesToCancel = flightScheduleRepository.findIdByflightDateAndflightID(flightDate, flightID);
         List<Ticket> ticketsToCancel = new ArrayList<>();
