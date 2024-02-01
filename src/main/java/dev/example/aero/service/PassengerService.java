@@ -1,6 +1,6 @@
 package dev.example.aero.service;
 
-import dev.example.aero.Enumaration.Role;
+import dev.example.aero.enumeration.Role;
 import dev.example.aero.model.Passenger;
 import dev.example.aero.repository.PassengerRepository;
 import org.springframework.dao.DataIntegrityViolationException;

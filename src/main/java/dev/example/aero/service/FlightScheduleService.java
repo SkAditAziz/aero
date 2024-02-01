@@ -3,7 +3,7 @@ package dev.example.aero.service;
 import dev.example.aero.dto.FlightDetailsResponseDTO;
 import dev.example.aero.dto.FlightSearchReqDTO;
 import dev.example.aero.dto.mapper.FlightDetailsResponseDTOMapper;
-import dev.example.aero.Enumaration.TicketStatus;
+import dev.example.aero.enumeration.TicketStatus;
 import dev.example.aero.model.Flight;
 import dev.example.aero.model.FlightSchedule;
 import dev.example.aero.model.Ticket;

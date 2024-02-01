@@ -1,6 +1,6 @@
 package dev.example.aero.dto;
 
-import dev.example.aero.Enumaration.SeatClassType;
+import dev.example.aero.enumeration.SeatClassType;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
