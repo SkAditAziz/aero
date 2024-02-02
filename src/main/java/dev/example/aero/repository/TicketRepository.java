@@ -1,6 +1,7 @@
 package dev.example.aero.repository;
 
 import dev.example.aero.model.FlightSchedule;
+import dev.example.aero.model.Passenger;
 import dev.example.aero.model.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,9 +20,9 @@ public interface TicketRepository extends JpaRepository<Ticket,String> {
 
     @Query("SELECT COALESCE(SUM(t.totalSeats), 0) " +
             "FROM Ticket t " +
-            "WHERE t.flightSchedule.id = :scheduleId " +
-            "AND t.passenger.id = :passengerId")
-    int alreadyBoughtSeats(long scheduleId, long passengerId);
+            "WHERE t.flightSchedule = :schedule " +
+            "AND t.passenger = :passenger")
+    int alreadyBoughtSeats(FlightSchedule schedule, Passenger passenger);
 
     List<Ticket> findByflightSchedule(FlightSchedule schedule);
 }

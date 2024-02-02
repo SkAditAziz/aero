@@ -52,7 +52,7 @@ public class TicketService {
         Passenger p = passengerRepository.findById(passengerId).orElse(null);
         FlightSchedule fs = flightScheduleRepository.findById(scheduleId).orElse(null);
 
-        int alreadyBoughtSeats = ticketRepository.alreadyBoughtSeats(fs.getId(), p.getId());
+        int alreadyBoughtSeats = ticketRepository.alreadyBoughtSeats(fs, p);
         if ((totalSeats + alreadyBoughtSeats) > HIGHEST_PERMISSIBLE_SEATS) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A passenger cannot bought more than " + HIGHEST_PERMISSIBLE_SEATS + " tickets on a flight!");
         }
