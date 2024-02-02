@@ -21,7 +21,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -43,7 +42,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String loginUser (@ModelAttribute("LoginReqDTO") @NotNull LoginReqDTO loginReqDTO, Model model, RedirectAttributes redirectAttributes, HttpServletResponse response) {
+    public String loginUser (@NotNull LoginReqDTO loginReqDTO, Model model, RedirectAttributes redirectAttributes, HttpServletResponse response) {
         try {
             AuthenticationResponse authenticationResponse = authenticationService.authenticate(loginReqDTO.getUsername(), loginReqDTO.getPassword());
             String passengerName = passengerRepository.getLastNameByContactOrEmail(loginReqDTO.getUsername());
@@ -75,7 +74,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute("registerReqDTO") @Valid RegisterReqDTO registerReqDTO, @NotNull BindingResult bindingResult, Model model) {
+    public String registerUser(@Valid RegisterReqDTO registerReqDTO, @NotNull BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "redirect:/register";
         }

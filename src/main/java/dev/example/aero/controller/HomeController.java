@@ -47,10 +47,10 @@ public class HomeController {
     }
 
     @PostMapping("/search")
-    public String searchFlight(@ModelAttribute("flightSearchReqDTO") FlightSearchReqDTO flightSearchReqDTO, Model model, BindingResult bindingResult) {
-//        if (bindingResult.hasErrors()) {
-//            return "redirect:/index";
-//        }
+    public String searchFlight(FlightSearchReqDTO flightSearchReqDTO, Model model, BindingResult bindingResult) {
+        //if (bindingResult.hasErrors()) {
+        //    return "redirect:/index";
+        //}
         List<FlightDetailsResponseDTO> flightSchedules = flightScheduleService.getFlightDetailsOnDate(flightSearchReqDTO);
         // issues with multiple tab!
         // a user select x numbers of seat in one tab, go to another tab and select y numbers of seat

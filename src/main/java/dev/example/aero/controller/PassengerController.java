@@ -2,8 +2,8 @@ package dev.example.aero.controller;
 
 import dev.example.aero.dto.TicketDetailsResponseDTO;
 import dev.example.aero.model.Passenger;
+import dev.example.aero.repository.PassengerRepository;
 import dev.example.aero.security.service.UserProvider;
-import dev.example.aero.service.PassengerService;
 import dev.example.aero.service.TicketService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.io.InputStreamResource;
@@ -23,17 +23,17 @@ import java.util.List;
 @RequestMapping("/passenger")
 public class PassengerController {
     private final TicketService ticketService;
-    private final PassengerService passengerService;
+    private final PassengerRepository passengerRepository;
 
-    public PassengerController(TicketService ticketService, PassengerService passengerService) {
+    public PassengerController(TicketService ticketService, PassengerRepository passengerRepository) {
         this.ticketService = ticketService;
-        this.passengerService = passengerService;
+        this.passengerRepository = passengerRepository;
     }
 
     @GetMapping("/info")
     public String showPassengerInfo(@NotNull Model model) {
-        String currentUsername = UserProvider.getCurrentUsername();
-        Passenger currentPassenger = passengerService.getPassengerByUsername(currentUsername);
+//        String currentUsername = UserProvider.getCurrentUsername();
+        Passenger currentPassenger = UserProvider.getCurrentPassenger();
         List<TicketDetailsResponseDTO> ticketsOfCurrentPassenger = ticketService.getTicketsByPassengerId(currentPassenger.getId());
         model.addAttribute("passengerName", currentPassenger.getFirstName() + " " + currentPassenger.getLastName());
         model.addAttribute("myTickets", ticketsOfCurrentPassenger);
