@@ -1,20 +1,17 @@
 package dev.example.aero.controller;
 
-import dev.example.aero.dto.FlightSearchReqDTO;
 import dev.example.aero.dto.LoginReqDTO;
-import dev.example.aero.dto.RegisterReqDTO;
-import dev.example.aero.enumeration.SeatClassType;
-import dev.example.aero.repository.AirportRepository;
+import dev.example.aero.model.Passenger;
 import dev.example.aero.repository.PassengerRepository;
 import dev.example.aero.security.dto.AuthenticationResponse;
 import dev.example.aero.security.service.AuthenticationService;
-import dev.example.aero.service.TicketService;
+import dev.example.aero.service.PassengerService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,12 +24,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AuthController {
     private final AuthenticationService authenticationService;
     private final PassengerRepository passengerRepository;
-    private final AirportRepository airportRepository;
+    private final PassengerService passengerService;
 
-    public AuthController(AuthenticationService authenticationService, PassengerRepository passengerRepository, AirportRepository airportRepository) {
+    public AuthController(AuthenticationService authenticationService, PassengerRepository passengerRepository, PassengerService passengerService) {
         this.authenticationService = authenticationService;
         this.passengerRepository = passengerRepository;
-        this.airportRepository = airportRepository;
+        this.passengerService = passengerService;
     }
 
     @GetMapping("/login")
@@ -69,16 +66,21 @@ public class AuthController {
 
     @GetMapping("/register")
     public String showRegisterForm(@NotNull Model model) {
-        model.addAttribute("registerReqDTO", new RegisterReqDTO());
+        model.addAttribute("passenger", new Passenger());
         return "register";
     }
 
     @PostMapping("/register")
-    public String registerUser(@Valid RegisterReqDTO registerReqDTO, @NotNull BindingResult bindingResult, Model model) {
+    public String registerUser(@Valid Passenger passenger, @NotNull BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "redirect:/register";
         }
-        model.addAttribute("passengerName", registerReqDTO.getLastName());
+        try {
+            passengerService.insertPassenger(passenger);
+        } catch (DataIntegrityViolationException e) {
+            return "redirect:/register";
+        }
+        model.addAttribute("passengerName", passenger.getLastName());
         return "login_success";
     }
 }
