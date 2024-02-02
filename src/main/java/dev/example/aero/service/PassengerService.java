@@ -19,39 +19,41 @@ public class PassengerService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void insertPassenger(Passenger passenger) throws DataIntegrityViolationException {
+    public void insertPassenger(Passenger inputPassenger) throws DataIntegrityViolationException {
+        Passenger passenger = setPassengerProperties(inputPassenger);
+        passengerRepository.save(passenger);
+    }
+
+    private Passenger setPassengerProperties(Passenger passenger) {
         String encodedPassword = passwordEncoder.encode(passenger.getPassword());
         passenger.setPassword(encodedPassword);
         passenger.setRole(Role.PASSENGER);
         if (passenger.getContactNo().startsWith("1"))
-           passenger.setContactNo("0" + passenger.getContactNo());
-        passengerRepository.save(passenger);
+            passenger.setContactNo("0" + passenger.getContactNo());
+        return passenger;
     }
 
-    public boolean login(Passenger passenger) {
-        String contactNo = passenger.getContactNo();
-        String email = passenger.getEmail();
-        String rawPassword = passenger.getPassword();
-        String encodedPassword = "";
-        Passenger passengerByContactNo = passengerRepository.findByContactNo(contactNo);
-        Passenger passengerByEmail = passengerRepository.findByEmail(email);
+    public boolean login(Passenger inputPassenger) {
+        String inputPassengerContactNo = inputPassenger.getContactNo();
+        String inputPassengerEmail = inputPassenger.getEmail();
+        String inputPassengerPassword = inputPassenger.getPassword();
 
-        if ((contactNo != null) && (passengerByContactNo != null)) {
-            encodedPassword = passengerByContactNo.getPassword();
-        } else if ((email != null) && (passengerByEmail != null)) {
-            encodedPassword = passengerByEmail.getPassword();
-        } else {
+        Passenger passenger = null;
+        if (inputPassengerContactNo != null) {
+            passenger = passengerRepository.findByContactNo(inputPassengerContactNo);
+        } else if (inputPassengerEmail != null) {
+            passenger = passengerRepository.findByEmail(inputPassengerEmail);
+        }
+
+        if (passenger == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Provide correct Contact no or Email");
         }
-        return (passwordEncoder.matches(rawPassword, encodedPassword));
+
+        return (passwordEncoder.matches(inputPassengerPassword, passenger.getPassword()));
     }
 
     public boolean isContactNo(String username) {
         String contactNoRegex = "^(01\\d{9})$";
         return username.matches(contactNoRegex);
-    }
-
-    public Passenger getPassengerByUsername(String username) {
-        return passengerRepository.findById(passengerRepository.findByUsername(username).getId()).orElse(null);
     }
 }
