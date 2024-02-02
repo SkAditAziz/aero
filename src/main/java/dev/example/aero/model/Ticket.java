@@ -49,4 +49,14 @@ public class Ticket implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS")
     private TicketStatus ticketStatus;
+
+    public Ticket(Flight flight, Passenger passenger, FlightSchedule flightSchedule, SeatClassType seatClassType, int totalSeats, double totalFare, TicketStatus ticketStatus) {
+        this.flight = flight;
+        this.passenger = passenger;
+        this.flightSchedule = flightSchedule;
+        this.seatClassType = seatClassType;
+        this.totalSeats = totalSeats;
+        this.totalFare = totalFare;
+        this.ticketStatus = ticketStatus;
+    }
 }

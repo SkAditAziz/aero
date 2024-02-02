@@ -48,19 +48,15 @@ public class TicketService {
     }
 
     @Transactional
-    public byte[] issueTicket(long scheduleId, int totalSeats, Passenger p) {
-        FlightSchedule fs = flightScheduleRepository.findById(scheduleId).orElse(null);
+    public byte[] issueTicket(long scheduleId, int totalSeats, Passenger passenger) {
+        FlightSchedule flightSchedule = flightScheduleRepository.findById(scheduleId).orElse(null);
 
-        int alreadyBoughtSeats = ticketRepository.alreadyBoughtSeats(fs, p);
+        int alreadyBoughtSeats = ticketRepository.alreadyBoughtSeats(flightSchedule, passenger);
         if ((totalSeats + alreadyBoughtSeats) > HIGHEST_PERMISSIBLE_SEATS) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A passenger cannot bought more than " + HIGHEST_PERMISSIBLE_SEATS + " tickets on a flight!");
         }
 
-        Flight f = flightRepository.findById(fs.getFlightID()).orElse(null);
-        SeatClassType sct = fs.getSeatClassType();
-        double totalFare = fs.getTotalFare(totalSeats);
-        TicketStatus ts = TicketStatus.UPCOMING;
-        Ticket ticket = new Ticket("",f,p,fs,sct,totalSeats,totalFare,ts);
+        Ticket ticket = initializeTicket(flightSchedule, totalSeats, passenger);
 
         byte[] pdfTicket = new byte[0];
         try {
@@ -74,6 +70,14 @@ public class TicketService {
             e.printStackTrace();
         }
         return pdfTicket;
+    }
+
+    private Ticket initializeTicket(FlightSchedule flightSchedule, int totalSeats, Passenger passenger) {
+        Flight f = flightRepository.findById(flightSchedule.getFlightID()).orElse(null);
+        SeatClassType seatClassType = flightSchedule.getSeatClassType();
+        double totalFare = flightSchedule.getTotalFare(totalSeats);
+        TicketStatus ticketStatus = TicketStatus.UPCOMING;
+        return new Ticket(f,passenger,flightSchedule,seatClassType,totalSeats,totalFare,ticketStatus);
     }
 
     public String saveTicketPdf(Ticket ticket, byte[] pdfTicket) {
