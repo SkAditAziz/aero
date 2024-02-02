@@ -30,7 +30,7 @@ public class PassengerController {
     @GetMapping("/info")
     public String showPassengerInfo(@NotNull Model model) {
         Passenger currentPassenger = UserProvider.getCurrentPassenger();
-        List<TicketDetailsResponseDTO> ticketsOfCurrentPassenger = ticketService.getTicketsByPassengerId(currentPassenger.getId());
+        List<TicketDetailsResponseDTO> ticketsOfCurrentPassenger = ticketService.getTicketsByPassenger(currentPassenger);
         model.addAttribute("passengerName", currentPassenger.getFirstName() + " " + currentPassenger.getLastName());
         model.addAttribute("myTickets", ticketsOfCurrentPassenger);
         return "passenger_info";

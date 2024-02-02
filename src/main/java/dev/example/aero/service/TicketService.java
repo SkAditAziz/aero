@@ -119,8 +119,8 @@ public class TicketService {
         flightScheduleRepository.save(desiredSchedule);
     }
 
-    public List<TicketDetailsResponseDTO> getTicketsByPassengerId(long passengerId) {
-        List<Ticket> tickets = ticketRepository.getTicketsByPassengerId(passengerId);
+    public List<TicketDetailsResponseDTO> getTicketsByPassenger(Passenger passenger) {
+        List<Ticket> tickets = ticketRepository.findTicketsByPassenger(passenger);
         return tickets.stream()
                 .map(new TicketDetailsResponseDTOMapper())
                 .collect(Collectors.toList());

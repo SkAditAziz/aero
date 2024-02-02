@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface TicketRepository extends JpaRepository<Ticket,String> {
-    List<Ticket> getTicketsByPassengerId(long passengerId);
+    List<Ticket> findTicketsByPassenger(Passenger passenger);
 
     @Query(value = "SELECT t.* FROM ticket t " +
             "JOIN flight_schedule fs ON t.schedule_id = fs.schedule_id " +

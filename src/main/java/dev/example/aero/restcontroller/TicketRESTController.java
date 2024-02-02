@@ -3,6 +3,7 @@ package dev.example.aero.restcontroller;
 
 import dev.example.aero.dto.TicketDetailsResponseDTO;
 import dev.example.aero.model.Passenger;
+import dev.example.aero.repository.PassengerRepository;
 import dev.example.aero.security.service.JwtService;
 import dev.example.aero.service.TicketService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,10 +23,12 @@ import java.util.Map;
 public class TicketRESTController {
     private final TicketService ticketService;
     private final JwtService jwtService;
+    private final PassengerRepository passengerRepository;
 
-    public TicketRESTController(TicketService ticketService, JwtService jwtService) {
+    public TicketRESTController(TicketService ticketService, JwtService jwtService, PassengerRepository passengerRepository) {
         this.ticketService = ticketService;
         this.jwtService = jwtService;
+        this.passengerRepository = passengerRepository;
     }
 
     @PostMapping("/confirm")
@@ -50,6 +53,6 @@ public class TicketRESTController {
 
     @GetMapping("/{passengerid}")
     public List<TicketDetailsResponseDTO> getTickets(@PathVariable("passengerid") long passengerId) {
-        return ticketService.getTicketsByPassengerId(passengerId);
+        return ticketService.getTicketsByPassenger(passengerRepository.findById(passengerId).orElse(null));
     }
 }
