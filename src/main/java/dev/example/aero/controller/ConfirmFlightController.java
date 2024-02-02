@@ -21,7 +21,7 @@ public class ConfirmFlightController {
     public String confirmFlight(@RequestParam(name = "scheduleId") Long scheduleId, Model model) {
         Passenger currentPassenger = UserProvider.getCurrentPassenger();
         try {
-            ticketService.issueTicket(scheduleId, ticketService.getSelectedSeats(), currentPassenger.getId());
+            ticketService.issueTicket(scheduleId, ticketService.getSelectedSeats(), currentPassenger);
             return "confirm_flight";
         } catch (ResponseStatusException e) {
             model.addAttribute("errMsg", e.getReason());

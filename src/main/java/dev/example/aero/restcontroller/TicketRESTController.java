@@ -38,7 +38,7 @@ public class TicketRESTController {
         try {
             long scheduleId = ((Integer) req.get("scheduleId")).longValue();
             int totalSeats = (int) req.get("noPassengers");
-            byte[] pdfTicket = ticketService.issueTicket(scheduleId, totalSeats, p.getId());
+            byte[] pdfTicket = ticketService.issueTicket(scheduleId, totalSeats, p);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
             headers.setContentDispositionFormData("attachment", "ticket.pdf");

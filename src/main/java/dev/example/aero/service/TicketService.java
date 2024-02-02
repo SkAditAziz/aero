@@ -48,8 +48,7 @@ public class TicketService {
     }
 
     @Transactional
-    public byte[] issueTicket(long scheduleId, int totalSeats, Long passengerId) {
-        Passenger p = passengerRepository.findById(passengerId).orElse(null);
+    public byte[] issueTicket(long scheduleId, int totalSeats, Passenger p) {
         FlightSchedule fs = flightScheduleRepository.findById(scheduleId).orElse(null);
 
         int alreadyBoughtSeats = ticketRepository.alreadyBoughtSeats(fs, p);
