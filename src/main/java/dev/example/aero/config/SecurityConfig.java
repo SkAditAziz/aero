@@ -50,7 +50,7 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .deleteCookies("Bearer")
-                        .logoutSuccessUrl("/logoutUser")
+                        .logoutSuccessUrl("/")
                         .permitAll());
         return http.build();
     }

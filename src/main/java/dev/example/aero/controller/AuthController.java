@@ -81,15 +81,4 @@ public class AuthController {
         model.addAttribute("passengerName", registerReqDTO.getLastName());
         return "login_success";
     }
-
-    @GetMapping("/logoutUser")
-    public String logoutUser(@NotNull HttpServletResponse response, Model model) {
-        SecurityContextHolder.clearContext();
-        model.addAttribute("airports", airportRepository.findAll());
-        model.addAttribute("seatClasses", SeatClassType.getAllSeatClassType());
-        model.addAttribute("flightSearchReqDTO", new FlightSearchReqDTO());
-        model.addAttribute("highestPassenger", TicketService.HIGHEST_PERMISSIBLE_SEATS);
-
-        return "index";
-    }
 }
