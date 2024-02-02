@@ -1,5 +1,6 @@
 package dev.example.aero.service;
 
+import com.itextpdf.text.DocumentException;
 import dev.example.aero.dto.TicketDetailsResponseDTO;
 import dev.example.aero.dto.mapper.TicketDetailsResponseDTOMapper;
 import dev.example.aero.model.*;
@@ -18,6 +19,7 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,25 +53,33 @@ public class TicketService {
     public byte[] issueTicket(long scheduleId, int totalSeats, Passenger passenger) {
         FlightSchedule flightSchedule = flightScheduleRepository.findById(scheduleId).orElse(null);
 
-        int alreadyBoughtSeats = ticketRepository.alreadyBoughtSeats(flightSchedule, passenger);
-        if ((totalSeats + alreadyBoughtSeats) > HIGHEST_PERMISSIBLE_SEATS) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A passenger cannot bought more than " + HIGHEST_PERMISSIBLE_SEATS + " tickets on a flight!");
-        }
+        checkPassengersAbilityToBuyTicket(flightSchedule, totalSeats, passenger);
 
         Ticket ticket = initializeTicket(flightSchedule, totalSeats, passenger);
 
         byte[] pdfTicket = new byte[0];
         try {
-            ticketRepository.save(ticket);
-            updateSeatAllocation(ticket);
-            TicketPDFGenerator ticketPDFGenerator = new TicketPDFGenerator(ticket);
-            pdfTicket = ticketPDFGenerator.generatePDF();
-            jmsTemplate.convertAndSend("messagequeue.q", new TicketWrapper(ticket, pdfTicket));
+            saveTicketAndSendConfirmationMail(ticket, pdfTicket);
         } catch (Exception e) {
-            System.out.println("Exception in generating pdf..................");
             e.printStackTrace();
         }
+
         return pdfTicket;
+    }
+
+    private void saveTicketAndSendConfirmationMail(Ticket ticket, byte[] pdfTicket) throws DocumentException, URISyntaxException, IOException {
+        ticketRepository.save(ticket);
+        updateSeatAllocation(ticket);
+        TicketPDFGenerator ticketPDFGenerator = new TicketPDFGenerator(ticket);
+        pdfTicket = ticketPDFGenerator.generatePDF();
+        jmsTemplate.convertAndSend("messagequeue.q", new TicketWrapper(ticket, pdfTicket));
+    }
+
+    private void checkPassengersAbilityToBuyTicket(FlightSchedule flightSchedule,int totalSeats, Passenger passenger) {
+        int alreadyBoughtSeats = ticketRepository.alreadyBoughtSeats(flightSchedule, passenger);
+        if ((totalSeats + alreadyBoughtSeats) > HIGHEST_PERMISSIBLE_SEATS) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A passenger cannot bought more than " + HIGHEST_PERMISSIBLE_SEATS + " tickets on a flight!");
+        }
     }
 
     private Ticket initializeTicket(FlightSchedule flightSchedule, int totalSeats, Passenger passenger) {
