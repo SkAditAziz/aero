@@ -2,7 +2,6 @@ package dev.example.aero.controller;
 
 import dev.example.aero.dto.TicketDetailsResponseDTO;
 import dev.example.aero.model.Passenger;
-import dev.example.aero.repository.PassengerRepository;
 import dev.example.aero.security.service.UserProvider;
 import dev.example.aero.service.TicketService;
 import org.jetbrains.annotations.NotNull;
@@ -23,16 +22,13 @@ import java.util.List;
 @RequestMapping("/passenger")
 public class PassengerController {
     private final TicketService ticketService;
-    private final PassengerRepository passengerRepository;
 
-    public PassengerController(TicketService ticketService, PassengerRepository passengerRepository) {
+    public PassengerController(TicketService ticketService) {
         this.ticketService = ticketService;
-        this.passengerRepository = passengerRepository;
     }
 
     @GetMapping("/info")
     public String showPassengerInfo(@NotNull Model model) {
-//        String currentUsername = UserProvider.getCurrentUsername();
         Passenger currentPassenger = UserProvider.getCurrentPassenger();
         List<TicketDetailsResponseDTO> ticketsOfCurrentPassenger = ticketService.getTicketsByPassengerId(currentPassenger.getId());
         model.addAttribute("passengerName", currentPassenger.getFirstName() + " " + currentPassenger.getLastName());

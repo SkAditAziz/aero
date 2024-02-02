@@ -54,9 +54,6 @@ public class FlightScheduleService {
 
     @Transactional
     private void addOrUpdateFlightSchedule(LocalDate flightDate, String flightID) {
-        if (flightID == null || flightID.isEmpty())
-            return;
-
         Flight flight = flightRepository.findById(flightID).orElse(null);
 
         if (flight != null) {

@@ -58,6 +58,7 @@ public class HomeController {
         // he will buy y tickets (NOT x) through this approach!
         // TODO fix this issue
         ticketService.setSelectedSeats(flightSearchReqDTO.getNoPassengers());
+
         if(flightSchedules.isEmpty()) {
             return "no_flights";
         }
