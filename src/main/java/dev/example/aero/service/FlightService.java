@@ -1,5 +1,6 @@
 package dev.example.aero.service;
 
+import dev.example.aero.model.Airport;
 import dev.example.aero.model.Flight;
 import dev.example.aero.repository.AirportRepository;
 import dev.example.aero.repository.FlightRepository;
@@ -18,6 +19,8 @@ public class FlightService {
     }
 
     public List<Flight> findFlightsToFrom(String to, String from) {
-        return flightRepository.findByFromAirportAndToAirport(airportRepository.findById(from).orElse(null), airportRepository.findById(to).orElse(null));
+        Airport fromAirport = airportRepository.findById(from).orElse(null);
+        Airport toAirport = airportRepository.findById(to).orElse(null);
+        return flightRepository.findByFromAirportAndToAirport(fromAirport, toAirport);
     }
 }
