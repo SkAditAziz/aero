@@ -19,7 +19,7 @@ public class EmailService {
     }
 
     public void sendEmail(String to, String sub, String body) {
-        sendEmail(to, sub, body, null);
+        sendEmail(to, sub, body, "none");
     }
 
     public void sendEmail(String to, String sub, String body, String filePath) {
@@ -30,7 +30,7 @@ public class EmailService {
             helper.setTo(to);
             helper.setSubject(sub);
             helper.setText(body);
-            if (filePath != null) {
+            if (!filePath.equals("none")) {
                 FileSystemResource file = new FileSystemResource(new File(filePath));
 
                 String[] fileNames = filePath.split("/");
