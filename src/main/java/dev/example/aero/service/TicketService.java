@@ -50,20 +50,15 @@ public class TicketService {
     }
 
     @Transactional
-    public byte[] issueTicket(long scheduleId, int totalSeats, Passenger passenger) {
-        FlightSchedule flightSchedule = flightScheduleRepository.findById(scheduleId).orElse(null);
-
-        checkPassengersAbilityToBuyTicket(flightSchedule, totalSeats, passenger);
-
-        Ticket ticket = initializeTicket(flightSchedule, totalSeats, passenger);
-
+    public byte[] issueTicket(FlightScheduleRequest flightScheduleRequest) {
+        checkPassengersAbilityToBuyTicket(flightScheduleRequest);
+        Ticket ticket = initializeTicket(flightScheduleRequest);
         byte[] pdfTicket = new byte[0];
         try {
             saveTicketAndSendConfirmationMail(ticket, pdfTicket);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return pdfTicket;
     }
 
@@ -75,19 +70,20 @@ public class TicketService {
         jmsTemplate.convertAndSend("messagequeue.q", new TicketWrapper(ticket, pdfTicket));
     }
 
-    private void checkPassengersAbilityToBuyTicket(FlightSchedule flightSchedule,int totalSeats, Passenger passenger) {
-        int alreadyBoughtSeats = ticketRepository.alreadyBoughtSeats(flightSchedule, passenger);
-        if ((totalSeats + alreadyBoughtSeats) > HIGHEST_PERMISSIBLE_SEATS) {
+    private void checkPassengersAbilityToBuyTicket(FlightScheduleRequest flightScheduleRequest) {
+        int alreadyBoughtSeats = ticketRepository.alreadyBoughtSeats(flightScheduleRequest.getFlightSchedule(), flightScheduleRequest.getPassenger());
+        if ((flightScheduleRequest.getTotalSeats() + alreadyBoughtSeats) > HIGHEST_PERMISSIBLE_SEATS) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A passenger cannot bought more than " + HIGHEST_PERMISSIBLE_SEATS + " tickets on a flight!");
         }
     }
 
-    private Ticket initializeTicket(FlightSchedule flightSchedule, int totalSeats, Passenger passenger) {
-        Flight f = flightRepository.findById(flightSchedule.getFlightID()).orElse(null);
+    private Ticket initializeTicket(FlightScheduleRequest flightScheduleRequest) {
+        FlightSchedule flightSchedule = flightScheduleRequest.getFlightSchedule();
+        Flight flight = flightRepository.findById(flightSchedule.getFlightID()).orElse(null);
         SeatClassType seatClassType = flightSchedule.getSeatClassType();
-        double totalFare = flightSchedule.getTotalFare(totalSeats);
+        double totalFare = flightSchedule.getTotalFare(flightScheduleRequest.getTotalSeats());
         TicketStatus ticketStatus = TicketStatus.UPCOMING;
-        return new Ticket(f,passenger,flightSchedule,seatClassType,totalSeats,totalFare,ticketStatus);
+        return new Ticket(flight, flightScheduleRequest.getPassenger(), flightSchedule,seatClassType, flightScheduleRequest.getTotalSeats(), totalFare,ticketStatus);
     }
 
     public String saveTicketPdf(Ticket ticket, byte[] pdfTicket) {
