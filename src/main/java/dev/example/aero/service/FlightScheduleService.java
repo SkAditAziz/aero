@@ -48,12 +48,12 @@ public class FlightScheduleService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Flight Inserted");
 
         for (String flightId : flightIDs) {
-            addOrUpdateFlightSchedule(flightDate, flightId);
+            addOrUpdateSingleFlightSchedule(flightDate, flightId);
         }
     }
 
     @Transactional
-    private void addOrUpdateFlightSchedule(LocalDate flightDate, String flightID) {
+    private void addOrUpdateSingleFlightSchedule(LocalDate flightDate, String flightID) {
         Flight flight = flightRepository.findById(flightID).orElse(null);
 
         if (flight != null) {
@@ -102,7 +102,7 @@ public class FlightScheduleService {
                     String status = record.get(2);
 
                     if (status == null || status.isEmpty()) {
-                        addOrUpdateFlightSchedule(flightDate, flightID);
+                        addOrUpdateSingleFlightSchedule(flightDate, flightID);
                     } else if (status.equalsIgnoreCase(String.valueOf(TicketStatus.CANCELLED))) {
                         cancelFlight(flightDate, flightID);
                     }
@@ -137,7 +137,7 @@ public class FlightScheduleService {
                     }
 
                     if (status == null || status.isEmpty()) {
-                        addOrUpdateFlightSchedule(flightDate, flightID);
+                        addOrUpdateSingleFlightSchedule(flightDate, flightID);
                     } else if (status.equalsIgnoreCase(String.valueOf(TicketStatus.CANCELLED))) {
                         cancelFlight(flightDate, flightID);
                     }
