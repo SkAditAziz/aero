@@ -79,68 +79,78 @@ public class FlightScheduleService {
         return "Flight " + flightID + " on " + flightDate + " has already been added";
     }
 
-
     public void addOrUpdateFlightScheduleWithFile(MultipartFile file) throws IOException {
-        String contentType = file.getContentType();
-        String fileName = file.getOriginalFilename();
-        if (contentType.startsWith("text/csv") || fileName.endsWith(".csv")) {
-            try (Reader reader = new InputStreamReader(file.getInputStream())) {
-                Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(reader);
+        if (isCSV(file)) {
+            addOrUpdateWithCSV(file);
+        } else if (isEXCEL(file)) {
+            addOrUpdateWithXCEL(file);
+        }
+    }
 
-                for (CSVRecord record : records) {
-                    String dateString = record.get(0);
-                    if (dateString.equals("Date")) {
-                        continue; // skipping the header row
-                    }
-                    LocalDate flightDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+    private boolean isEXCEL(MultipartFile file) {
+        return file.getContentType().startsWith("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") ||
+                file.getOriginalFilename().endsWith(".xlsx") || file.getOriginalFilename().endsWith(".xls");
+    }
 
-                    if (flightDate.isBefore(LocalDate.now())) {
-                        continue;
-                    }
+    private boolean isCSV(MultipartFile file) {
+        return file.getContentType().startsWith("text/csv") || file.getOriginalFilename().endsWith(".csv");
+    }
 
-                    String flightID = record.get(1);
-                    String status = record.get(2);
+    private void addOrUpdateWithXCEL(MultipartFile file) throws IOException{
+        try(Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+            rowIterator.next(); // skipping the header row
 
-                    if (status == null || status.isEmpty()) {
-                        addOrUpdateSingleFlightSchedule(flightDate, flightID);
-                    } else if (status.equalsIgnoreCase(String.valueOf(TicketStatus.CANCELLED))) {
-                        cancelFlight(flightDate, flightID);
-                    }
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+
+                String dateString = row.getCell(0).getStringCellValue();
+                if (dateString == null || dateString.isEmpty()) break; // end of the file
+
+                LocalDate flightDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                if (flightDate.isBefore(LocalDate.now())) {
+                    continue;
+                }
+
+                String flightID = row.getCell(1).getStringCellValue();
+                Cell statusCell = row.getCell(2);
+
+                String status = null;
+                if (statusCell != null) if (statusCell.getCellType() == CellType.STRING) {
+                    status = statusCell.getStringCellValue();
+                }
+
+                if (status == null || status.isEmpty()) {
+                    addOrUpdateSingleFlightSchedule(flightDate, flightID);
+                } else if (status.equalsIgnoreCase(String.valueOf(TicketStatus.CANCELLED))) {
+                    cancelFlight(flightDate, flightID);
                 }
             }
-        } else if (contentType.startsWith("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") ||
-                fileName.endsWith(".xlsx") || fileName.endsWith(".xls")) {
-            try(Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
-                Sheet sheet = workbook.getSheetAt(0);
+        }
+    }
 
-                Iterator<Row> rowIterator = sheet.iterator();
-                rowIterator.next(); // skipping the header row
+    private void addOrUpdateWithCSV(MultipartFile file) throws IOException{
+        try (Reader reader = new InputStreamReader(file.getInputStream())) {
+            Iterable<CSVRecord> records = CSVFormat.DEFAULT.parse(reader);
 
-                while (rowIterator.hasNext()) {
-                    Row row = rowIterator.next();
-                    String dateString = row.getCell(0).getStringCellValue();
-                    if (dateString == null || dateString.isEmpty()) break; // end of the file
+            for (CSVRecord record : records) {
+                String dateString = record.get(0);
+                if (dateString.equals("Date")) {
+                    continue; // skipping the header row
+                }
 
-                    LocalDate flightDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                LocalDate flightDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                if (flightDate.isBefore(LocalDate.now())) {
+                    continue;
+                }
 
-                    if (flightDate.isBefore(LocalDate.now())) {
-                        continue;
-                    }
-
-                    String flightID = row.getCell(1).getStringCellValue();
-
-                    Cell statusCell = row.getCell(2);
-                    String status = null;
-
-                    if (statusCell != null) if (statusCell.getCellType() == CellType.STRING) {
-                        status = statusCell.getStringCellValue();
-                    }
-
-                    if (status == null || status.isEmpty()) {
-                        addOrUpdateSingleFlightSchedule(flightDate, flightID);
-                    } else if (status.equalsIgnoreCase(String.valueOf(TicketStatus.CANCELLED))) {
-                        cancelFlight(flightDate, flightID);
-                    }
+                String flightID = record.get(1);
+                String status = record.get(2);
+                if (status == null || status.isEmpty()) {
+                    addOrUpdateSingleFlightSchedule(flightDate, flightID);
+                } else if (status.equalsIgnoreCase(String.valueOf(TicketStatus.CANCELLED))) {
+                    cancelFlight(flightDate, flightID);
                 }
             }
         }
