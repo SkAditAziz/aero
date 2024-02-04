@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -28,5 +29,5 @@ public class SeatInfo implements Serializable {
     private int availableSeats;
 
     @Column(name = "FARE", nullable = false)
-    private double fare;
+    private BigDecimal fare;
 }

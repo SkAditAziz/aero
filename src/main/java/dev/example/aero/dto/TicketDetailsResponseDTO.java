@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -20,6 +21,6 @@ public class TicketDetailsResponseDTO {
     private String to;
     private SeatClassType seatClassType;
     private int seats;
-    private double totalFare;
+    private BigDecimal totalFare;
     private TicketStatus ticketStatus;
 }

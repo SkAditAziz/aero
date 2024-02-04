@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -35,9 +36,9 @@ public class FlightSchedule implements Serializable {
     private int availableSeats;
 
     @Column(name = "FARE", nullable = false)
-    private double fare;
+    private BigDecimal fare;
 
-    public FlightSchedule(LocalDate flightDate, String flightID, SeatClassType seatClassType, int availableSeats, double fare) {
+    public FlightSchedule(LocalDate flightDate, String flightID, SeatClassType seatClassType, int availableSeats, BigDecimal fare) {
         this.flightDate = flightDate;
         this.flightID = flightID;
         this.seatClassType = seatClassType;
@@ -45,8 +46,8 @@ public class FlightSchedule implements Serializable {
         this.fare = fare;
     }
 
-    public double getTotalFare(int noPassenger) {
-        return isSeatAvailable(noPassenger) ? noPassenger * fare : 0.0;
+    public BigDecimal getTotalFare(int noPassenger) {
+        return isSeatAvailable(noPassenger) ? fare.multiply(BigDecimal.valueOf(noPassenger)) : BigDecimal.valueOf(0);
     }
 
     public boolean isSeatAvailable(int noPassenger) {

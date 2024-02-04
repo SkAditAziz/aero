@@ -19,6 +19,7 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -81,9 +82,9 @@ public class TicketService {
         FlightSchedule flightSchedule = flightScheduleRequest.getFlightSchedule();
         Flight flight = flightRepository.findById(flightSchedule.getFlightID()).orElse(null);
         SeatClassType seatClassType = flightSchedule.getSeatClassType();
-        double totalFare = flightSchedule.getTotalFare(flightScheduleRequest.getTotalSeats());
+        BigDecimal totalFare = flightSchedule.getTotalFare(flightScheduleRequest.getTotalSeats());
         TicketStatus ticketStatus = TicketStatus.UPCOMING;
-        return new Ticket(flight, flightScheduleRequest.getPassenger(), flightSchedule,seatClassType, flightScheduleRequest.getTotalSeats(), totalFare,ticketStatus);
+        return new Ticket(flight, flightScheduleRequest.getPassenger(), flightSchedule,seatClassType, flightScheduleRequest.getTotalSeats(), totalFare, ticketStatus);
     }
 
     public String saveTicketPdf(Ticket ticket, byte[] pdfTicket) {

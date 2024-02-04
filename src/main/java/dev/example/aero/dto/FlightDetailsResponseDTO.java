@@ -3,6 +3,7 @@ package dev.example.aero.dto;
 import dev.example.aero.enumeration.SeatClassType;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalTime;
 
 @Getter
@@ -16,6 +17,6 @@ public class FlightDetailsResponseDTO {
     private String duration;
     private SeatClassType seatClassType;
     private boolean seatAvailable;
-    private Double totalFare;
+    private BigDecimal totalFare;
     private long scheduleId;
 }

@@ -8,6 +8,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -44,13 +45,13 @@ public class Ticket implements Serializable {
     private int totalSeats;
 
     @Column(name = "TOTAL_FARE", nullable = false)
-    private double totalFare;
+    private BigDecimal totalFare;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS")
     private TicketStatus ticketStatus;
 
-    public Ticket(Flight flight, Passenger passenger, FlightSchedule flightSchedule, SeatClassType seatClassType, int totalSeats, double totalFare, TicketStatus ticketStatus) {
+    public Ticket(Flight flight, Passenger passenger, FlightSchedule flightSchedule, SeatClassType seatClassType, int totalSeats, BigDecimal totalFare, TicketStatus ticketStatus) {
         this.flight = flight;
         this.passenger = passenger;
         this.flightSchedule = flightSchedule;
