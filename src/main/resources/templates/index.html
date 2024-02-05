@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AERO</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 </head>
     <body>
 
@@ -73,5 +74,13 @@
         <button type="submit">Admin</button>
     </form>
 
+    <script>
+        $(document).ready(function() {
+            $('#fromCode').on('change', function() {
+                var selectedAirportCode = $(this).val();
+                $('#toCode option[value="' + selectedAirportCode + '"]').remove();
+            });
+        });
+    </script>
     </body>
 </html>
