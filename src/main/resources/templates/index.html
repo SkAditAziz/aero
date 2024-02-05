@@ -76,6 +76,8 @@
 
     <script>
         $(document).ready(function() {
+            $('#journeyDate').val(new Date().toISOString().slice(0, 10));
+
             $('#fromCode').on('change', function() {
                 var selectedAirportCode = $(this).val();
                 $('#toCode option[value="' + selectedAirportCode + '"]').remove();
