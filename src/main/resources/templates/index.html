@@ -1,88 +1,52 @@
 <!DOCTYPE html>
-
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AERO</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
-    <body>
 
-    <h1>Welcome to AERO!!</h1>
-    <form th:action="@{/login}" method="get">
-        <button type="submit">Login</button>
-    </form>
-<br>
-    <form th:action="@{/logout}" method="get">
-        <button type="submit">Logout</button>
-    </form>
-<br><br>
+<body>
+<div class="container">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mu-4 mb-4">
+        <div class="navbar-nav">
+            <form class="nav-item" th:action="@{/login}" method="get">
+                <button type="submit" class="btn btn-primary bg-dark">Login</button>
+            </form>
+            <form class="nav-item" th:action="@{/logout}" method="get">
+                <button type="submit" class="btn btn-primary bg-dark">Logout</button>
+            </form>
+            <form class="nav-item" th:action="@{/register}" method="get">
+                <button type="submit" class="btn btn-primary bg-dark">Register</button>
+            </form>
+            <form class="nav-item" th:action="@{/passenger/info}" method="get">
+                <button type="submit" class="btn btn-primary bg-dark">My Profile</button>
+            </form>
+            <form class="nav-item" th:action="@{/admin}" method="get">
+                <button type="submit" class="btn btn-primary bg-dark">Admin</button>
+            </form>
+            <button class="nav-item btn btn-link" th:onclick="window.open([[${whatsappURL}]])">Chat with us on WhatsApp Web</button>
+        </div>
+    </nav>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#journeyDate').val(new Date().toISOString().slice(0, 10));
 
-    <form th:action="@{/register}" method="get">
-        <button type="submit">Register</button>
-    </form>
-<br><br>
-
-    <form th:action="@{/passenger/info}" method="get">
-        <button type="submit">My Profile</button>
-    </form>
-<br><br>
-
-    <form th:action="@{/search}" method="post" th:object="${flightSearchReqDTO}">
-<!--        <p th:if="${#fields.hasErrors('isFormToCodeDifferent')}" th:errors="*{isFormToCodeDifferent}"></p><br>-->
-        <!-- From Airport Selection -->
-        <label for="fromCode">From</label>
-        <select id="fromCode" name="fromCode" th:field="*{fromCode}">
-            <option th:each="airport : ${airports}" th:value="${airport.code}" th:text="${airport.code + ' | ' + airport.name + ' - ' + airport.city}"></option>
-        </select>
-<br><br>
-
-        <!-- To Airport Select -->
-        <label for="toCode">To:</label>
-        <select id="toCode" name="toCode" th:field="*{toCode}">
-            <option th:each="airport : ${airports}" th:value="${airport.code}" th:text="${airport.code + ' | ' + airport.name + ' - ' + airport.city}"></option>
-        </select>
-<br><br>
-        <!-- Journey Date -->
-        <label for="journeyDate">Journey Date:</label>
-        <input type="date" id="journeyDate" name="journeyDate" th:field="*{journeyDate}" th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
-<!--        <p th:if="${#fields.hasErrors('journeyDate')}" th:errors="*{journeyDate}"></p><br>-->
-<br><br>
-        <!-- Class Select -->
-        <label for="seatClass">Class:</label>
-        <select id="seatClass" name="seatClass" th:field="*{seatClass}">
-            <option th:each="classType : ${seatClasses}" th:value="${classType}" th:text="${classType}"></option>
-        </select>
-<br><br>
-        <!-- Number of Travelers -->
-        <label for="noPassengers">Travelers:</label>
-        <select id="noPassengers" name="noPassengers" th:field="*{noPassengers}">
-            <option th:each="i : ${#numbers.sequence(1, highestPassenger)}" th:value="${i}" th:text="${i}"></option>
-        </select>
-
-        <br>
-        <button type="submit">Search</button>
-    </form>
-
-<br><br>
-    <button th:onclick="window.open([[${whatsappURL}]])">Chat with us on WhatsApp Web</button>
-
-<br><br>
-    <form th:action="@{/admin}" method="get">
-        <button type="submit">Admin</button>
-    </form>
-
-    <script>
-        $(document).ready(function() {
-            $('#journeyDate').val(new Date().toISOString().slice(0, 10));
-
-            $('#fromCode').on('change', function() {
-                var selectedAirportCode = $(this).val();
-                $('#toCode option[value="' + selectedAirportCode + '"]').remove();
-            });
+        $('#fromCode').on('change', function() {
+            var selectedAirportCode = $(this).val();
+            $('#toCode option[value="' + selectedAirportCode + '"]').remove();
         });
-    </script>
-    </body>
+    });
+</script>
+</body>
+
 </html>
