@@ -26,7 +26,7 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
 
     public static String[] excludedEndpoints = new String[] {
-            "/", "/login", "/logout", "/logoutUser", "/register", "/search/**", "/auth/**", "/schedule/find"
+            "/", "/login", "/logout", "/logoutUser", "/register", "/search/**", "/auth/**", "/schedule/find", "/images/**"
     };
 
     @Bean

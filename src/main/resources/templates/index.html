@@ -17,6 +17,9 @@
 <div class="container">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-light mu-10 mt-2 justify-content-end">
+        <a class="navbar-brand mr-auto" th:href="@{/}">
+            <img th:src="@{/images/aero_logo.png}"  alt="AERO Logo" style="max-height: 40px;">
+        </a>
         <div class="navbar-nav">
             <form class="nav-item" th:action="@{/login}" method="get">
                 <button type="submit" class="btn bg-light">Login</button>
