@@ -6,7 +6,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: #ffffff;
             padding-top: 50px;
         }
         .container {
@@ -20,6 +20,7 @@
 </head>
 <body>
 <div class="container">
+    <img th:src="@{/images/login_success.jpg}" alt="Success" class="success-image" style="width: 35%; height: 35%;">
     <h2 class="message">Welcome <span th:text="${passengerName}" style="color: #ff0066; font-weight: bold;"></span></h2>
     <a th:href="@{/}" class="btn btn-primary">Return to Home</a>
 </div>
