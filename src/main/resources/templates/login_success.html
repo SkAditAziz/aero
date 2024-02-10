@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Success</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<h2 th:text="'Hi ' + ${passengerName}"></h2>
-<p>Login successfully!</p>
-<a th:href="@{/}">Return to Home</a>
+<div class="container">
+    <h2 th:text="'Hi ' + ${passengerName}" class="message"></h2>
+    <p class="message">Login successfully!</p>
+    <a th:href="@{/}" class="btn btn-primary">Return to Home</a>
+</div>
 </body>
 </html>
