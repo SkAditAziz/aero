@@ -3,33 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <title>Aero</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 50px;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tbody tr:hover {
+            background-color: #f2f2f2;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <h2>Available Flights</h2>
+<div class="container">
     <form th:action="@{/confirmFlight}" method="post">
-    <table>
-        <thead>
-        <tr>
-            <th>Flight</th>
-            <th>Airline</th>
-            <th>Departure</th>
-            <th>Duration</th>
-            <th>Class</th>
-            <th>Fare</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="flightSchedule : ${flightSchedules}" th:if="${flightSchedule.seatAvailable}">
-            <td th:text="${flightSchedule.id}"></td>
-            <td th:text="${flightSchedule.airlineName}"></td>
-            <td th:text="${flightSchedule.departureTime}"></td>
-            <td th:text="${flightSchedule.duration}"></td>
-            <td th:text="${flightSchedule.seatClassType}"></td>
-            <td th:text="${flightSchedule.totalFare}"></td>
-            <td> <button type="submit" th:name="scheduleId" th:value="${flightSchedule.scheduleId}">Select</button></td>
-        </tr>
-        </tbody>
-    </table>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Flight</th>
+                <th>Airline</th>
+                <th>Departure</th>
+                <th>Duration</th>
+                <th>Class</th>
+                <th>Fare</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="flightSchedule : ${flightSchedules}" th:if="${flightSchedule.seatAvailable}">
+                <td th:text="${flightSchedule.id}"></td>
+                <td th:text="${flightSchedule.airlineName}"></td>
+                <td th:text="${flightSchedule.departureTime}"></td>
+                <td th:text="${flightSchedule.duration}"></td>
+                <td th:text="${flightSchedule.seatClassType}"></td>
+                <td th:text="${flightSchedule.totalFare}"></td>
+                <td>
+                    <button type="submit" th:name="scheduleId" th:value="${flightSchedule.scheduleId}" class="btn btn-primary">Confirm</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </form>
+</div>
 </body>
 </html>
