@@ -51,7 +51,9 @@
             <tr th:each="flightSchedule : ${flightSchedules}" th:if="${flightSchedule.seatAvailable}">
                 <td th:text="${flightSchedule.id}"></td>
                 <td th:text="${flightSchedule.airlineName}"></td>
-                <td th:text="${flightSchedule.departureTime}"></td>
+                <td>
+                    <span style="font-weight: bold; font-size: 1.1em;" th:text="${flightSchedule.departureTime}"></span>
+                </td>
                 <td th:text="${flightSchedule.duration}"></td>
                 <td th:text="${flightSchedule.seatClassType}"></td>
                 <td th:text="${flightSchedule.totalFare}"></td>
