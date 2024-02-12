@@ -75,7 +75,12 @@
         airlineNameElements.forEach(function(element) {
             var airlineName = element.textContent.trim();
             if (!airlineColors.hasOwnProperty(airlineName)) {
-                var color = predefinedColors.shift();
+                var color;
+                if (predefinedColors.length > 0) {
+                    color = predefinedColors.shift();
+                } else {
+                    color = '#' + Math.floor(Math.random()*16777215).toString(16);
+                }
                 airlineColors[airlineName] = color;
             }
             element.style.color = airlineColors[airlineName];
