@@ -50,7 +50,7 @@
             <tbody>
             <tr th:each="flightSchedule : ${flightSchedules}" th:if="${flightSchedule.seatAvailable}">
                 <td th:text="${flightSchedule.id}"></td>
-                <td th:text="${flightSchedule.airlineName}"></td>
+                <td th:text="${flightSchedule.airlineName}" class="airlineName"></td>
                 <td>
                     <span style="font-weight: bold; font-size: 1.1em;" th:text="${flightSchedule.departureTime}"></span>
                 </td>
@@ -65,5 +65,24 @@
         </table>
     </form>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var airlineNameElements = document.querySelectorAll('.airlineName');
+        var predefinedColors = ['#EC2151', '#5C4C7C', '#2DA5AD', '#D96437', '#AD2D89'];
+        var airlineColors = {};
+
+        airlineNameElements.forEach(function(element) {
+            var airlineName = element.textContent.trim();
+            if (!airlineColors.hasOwnProperty(airlineName)) {
+                var color = predefinedColors.shift();
+                airlineColors[airlineName] = color;
+            }
+            element.style.color = airlineColors[airlineName];
+            element.style.fontWeight = 'bold';
+            element.style.fontSize = '1.4em';
+        });
+    });
+</script>
 </body>
 </html>
