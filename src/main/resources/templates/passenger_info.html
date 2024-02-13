@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>My Profile</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<h1 th:text="'Hello ' + ${passengerName}"></h1>
-<h3>Your journey with us....</h3>
-<br>
-    <table>
-        <thead>
+<div class="container">
+    <h1 th:text="'Hello ' + ${passengerName}" class="mt-5"></h1>
+    <h3 class="mb-4">Your journey with us....</h3>
+    <table class="table table-striped">
+        <thead class="thead-dark">
         <tr>
             <th>Ticket#</th>
             <th>Journey Date</th>
@@ -19,6 +20,7 @@
             <th>Seats</th>
             <th>Fare</th>
             <th>Status</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -31,9 +33,10 @@
             <td th:text="${ticket.seats}"></td>
             <td th:text="${ticket.totalFare}"></td>
             <td th:text="${ticket.ticketStatus}"></td>
-            <td><a th:href="@{'/passenger/showTicket/' + ${ticket.id}}">Show Ticket</a></td>
+            <td><a th:href="@{'/passenger/showTicket/' + ${ticket.id}}" class="btn btn-primary btn-sm">Show Ticket</a></td>
         </tr>
         </tbody>
     </table>
+</div>
 </body>
 </html>
