@@ -13,7 +13,7 @@
             <div class="col-md-4">
                 <form th:action="@{/login}" th:object="${loginReqDTO}" method="post">
                     <div class="form-group">
-                        <input type="text" th:field="*{username}" class="form-control" placeholder="Username">
+                        <input type="text" th:field="*{username}" class="form-control" placeholder="Email or Contact no">
                     </div>
                     <div class="form-group">
                         <input type="password" th:field="*{password}" class="form-control" placeholder="Password">
