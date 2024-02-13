@@ -21,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -118,8 +119,10 @@ public class TicketService {
 
     public List<TicketDetailsResponseDTO> getTicketsByPassenger(Passenger passenger) {
         List<Ticket> tickets = ticketRepository.findTicketsByPassenger(passenger);
-        return tickets.stream()
+        List<TicketDetailsResponseDTO> ticketDetailsResponseDTOS = tickets.stream()
                 .map(new TicketDetailsResponseDTOMapper())
                 .collect(Collectors.toList());
+        ticketDetailsResponseDTOS.sort(Comparator.comparing(TicketDetailsResponseDTO::getDate).reversed());
+        return ticketDetailsResponseDTOS;
     }
 }
