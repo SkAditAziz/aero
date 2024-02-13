@@ -8,6 +8,9 @@
         .green-row {
             background-color: #D2F1B6;
         }
+        .red-row {
+            background-color: #F1B9B6;
+        }
     </style>
 </head>
 <body>
@@ -49,8 +52,12 @@
       var rows = table.getElementsByTagName('tr');
       for (var i = 0; i < rows.length; i++) {
         var cells = rows[i].getElementsByTagName('td');
-        if (cells.length > 0 && cells[7].innerText.trim() === 'UPCOMING') {
-          rows[i].classList.add('green-row');
+        if (cells.length > 0) {
+            var status = cells[7].innerText.trim();
+            if (status === 'UPCOMING')
+                rows[i].classList.add('green-row');
+            else if (status === 'CANCELLED')
+                rows[i].classList.add('red-row');
         }
       }
     });
