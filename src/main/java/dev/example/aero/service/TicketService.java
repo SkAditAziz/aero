@@ -119,10 +119,8 @@ public class TicketService {
 
     public List<TicketDetailsResponseDTO> getTicketsByPassenger(Passenger passenger) {
         List<Ticket> tickets = ticketRepository.findTicketsByPassenger(passenger);
-        List<TicketDetailsResponseDTO> ticketDetailsResponseDTOS = tickets.stream()
-                .map(new TicketDetailsResponseDTOMapper())
+        return tickets.stream()
+                .map(new TicketDetailsResponseDTOMapper()).sorted(Comparator.comparing(TicketDetailsResponseDTO::getDate).reversed())
                 .collect(Collectors.toList());
-        ticketDetailsResponseDTOS.sort(Comparator.comparing(TicketDetailsResponseDTO::getDate).reversed());
-        return ticketDetailsResponseDTOS;
     }
 }
