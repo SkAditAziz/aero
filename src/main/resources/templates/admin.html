@@ -12,10 +12,12 @@
         <label for="journeyDate">Date:</label>
         <input type="date" id="journeyDate" name="journeyDate" th:field="*{journeyDate}" th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
 
-        <label for="flightIDs">Select Flight IDs:</label>
-        <select id="flightIDs" name="flightIDs" multiple="multiple" th:field="*{flightIDs}">
-            <option th:each="flightID : ${flightIDs}" th:value="${flightID}" th:text="${flightID}"></option>
-        </select>
+        <br>
+        <label>Select Flights: </label>
+        <div th:each="flightID : ${flightIDs}">
+                <input type="checkbox" th:field="*{flightIDs}" th:value="${flightID}" />
+                <span th:text="${flightID}"></span>
+        </div>
 
         <button type="submit">Confirm</button>
     </form>
