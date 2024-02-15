@@ -20,4 +20,7 @@ public interface FlightScheduleRepository extends JpaRepository<FlightSchedule,L
 
     @Query("SELECT fs from FlightSchedule fs WHERE fs.flightDate=:flightDate and fs.flightID=:flightID")
     List<FlightSchedule> findByflightDateAndflightID(LocalDate flightDate, String flightID);
+
+    @Query("SELECT DISTINCT(fs.flightID) from FlightSchedule fs WHERE fs.flightDate=:flightDate")
+    List<String> getAlreadyAddedFlightIDsOnDate(LocalDate flightDate);
 }
