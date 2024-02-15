@@ -42,6 +42,8 @@
 
             <br>
             <label>Select Flights: </label>
+            <br>
+            <button type="button" onclick="selectAll()">Select All</button>
             <div th:each="flightID : ${flightIDs}">
                 <input type="checkbox" th:field="*{flightIDs}" th:value="${flightID}" />
                 <span th:text="${flightID}"></span>
@@ -61,6 +63,13 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    function selectAll() {
+        var checkboxes = document.querySelectorAll('#addFlightForm input[type="checkbox"]');
+        checkboxes.forEach(function(checkbox) {
+            checkbox.checked = true;
+        });
+    }
+
     $(document).ready(function() {
         $('.row.mb-2').on('click', function() {
             var target = $(this).find('label').attr('for');
