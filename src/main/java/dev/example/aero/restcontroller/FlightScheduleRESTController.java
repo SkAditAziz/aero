@@ -1,6 +1,7 @@
 package dev.example.aero.restcontroller;
 
 import dev.example.aero.dto.FlightDetailsResponseDTO;
+import dev.example.aero.repository.FlightScheduleRepository;
 import dev.example.aero.service.FlightScheduleService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -15,9 +17,11 @@ import java.util.Map;
 @RequestMapping("/schedule")
 public class FlightScheduleRESTController {
     private final FlightScheduleService flightScheduleService;
+    private final FlightScheduleRepository flightScheduleRepository;
 
-    public FlightScheduleRESTController(FlightScheduleService flightScheduleService) {
+    public FlightScheduleRESTController(FlightScheduleService flightScheduleService, FlightScheduleRepository flightScheduleRepository) {
         this.flightScheduleService = flightScheduleService;
+        this.flightScheduleRepository = flightScheduleRepository;
     }
 
     @GetMapping("/find")
@@ -40,5 +44,11 @@ public class FlightScheduleRESTController {
         } catch (DataIntegrityViolationException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT,"Already have the Flight(s) On the day");
         }
+    }
+
+    @GetMapping("/flightids")
+    public List<String> getFlightIDs(@RequestParam String date) {
+        LocalDate flightDate = LocalDate.parse(date);
+        return flightScheduleRepository.getAlreadyAddedFlightIDsOnDate(flightDate);
     }
 }
