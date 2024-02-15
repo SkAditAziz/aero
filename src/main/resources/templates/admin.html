@@ -82,6 +82,8 @@
     }
 
     $(document).ready(function() {
+        $('#journeyDate').val(new Date().toISOString().slice(0, 10));
+
         $('.row.mb-2').on('click', function() {
             var target = $(this).find('label').attr('for');
             $('.form-container').hide();
