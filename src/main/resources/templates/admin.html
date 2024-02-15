@@ -14,9 +14,10 @@
         }
         .row.mb-2 {
             display: flex;
-            justify-content: center; /* Horizontally center the content */
-            align-items: center; /* Vertically center the content */
-            height: 100%; /* Adjust the height as needed */
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            cursor: pointer;
         }
         .clickable-label {
             position: center;
@@ -61,8 +62,8 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
-        $('.clickable-label').on('click', function() {
-            var target = $(this).attr('for');
+        $('.row.mb-2').on('click', function() {
+            var target = $(this).find('label').attr('for');
             $('.form-container').hide();
             $('#' + target).show();
         });
