@@ -2,30 +2,63 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .form-container {
+            display: none;
+        }
+        .clickable-label {
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h2>Welcome to ADMIN</h2>
-    <br><br>
-    <h3>Add Flight</h3>
-    <form th:action="@{/admin/add_flight}" method="post" th:object="${addFlightReqDTO}">
-        <label for="journeyDate">Date:</label>
-        <input type="date" id="journeyDate" name="journeyDate" th:field="*{journeyDate}" th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+<div class="container mt-5">
+    <div class="row">
+        <div class="col">
+            <label for="addFlightForm" class="clickable-label">Add Flight</label>
+        </div>
+        <div class="col">
+            <label for="uploadForm" class="clickable-label">Add Flights By Uploading File</label>
+        </div>
+    </div>
+    <div id="addFlightForm" class="form-container mt-3">
+        <form th:action="@{/admin/add_flight}" method="post" th:object="${addFlightReqDTO}">
+            <label for="journeyDate">Date:</label>
+            <input type="date" id="journeyDate" name="journeyDate" th:field="*{journeyDate}" th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
 
-        <br>
-        <label>Select Flights: </label>
-        <div th:each="flightID : ${flightIDs}">
+            <br>
+            <label>Select Flights: </label>
+            <div th:each="flightID : ${flightIDs}">
                 <input type="checkbox" th:field="*{flightIDs}" th:value="${flightID}" />
                 <span th:text="${flightID}"></span>
-        </div>
+            </div>
 
-        <button type="submit">Confirm</button>
-    </form>
-<hr>
-    <h4>Add flights by uploading file</h4>
-    <form th:action="@{/admin/upload}" method="post" enctype="multipart/form-data">
-        <input id="input-file" type="file" name="file" />
-        <button type="submit">Upload</button>
-    </form>
+            <button type="submit">Confirm</button>
+        </form>
+    </div>
+    <div id="uploadForm" class="form-container mt-3">
+        <h4>Add flights by uploading file</h4>
+        <form th:action="@{/admin/upload}" method="post" enctype="multipart/form-data">
+            <input id="input-file" type="file" name="file" />
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.clickable-label').on('click', function() {
+            var target = $(this).attr('for');
+            $('.form-container').hide();
+            $('#' + target).show();
+        });
+    });
+</script>
 </body>
 </html>
