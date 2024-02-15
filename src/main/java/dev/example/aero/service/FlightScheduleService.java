@@ -82,8 +82,8 @@ public class FlightScheduleService {
     public void addOrUpdateFlightScheduleWithFile(MultipartFile file) throws IOException {
         if (isCSV(file)) {
             addOrUpdateWithCSV(file);
-        } else if (isEXCEL(file)) {
-            addOrUpdateWithXCEL(file);
+        } else {
+            throw new IllegalArgumentException("Unsupported File Format!");
         }
     }
 
@@ -104,7 +104,7 @@ public class FlightScheduleService {
 
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
-
+                // TODO if the cell's type is not string, it won't work!
                 String dateString = row.getCell(0).getStringCellValue();
                 if (dateString == null || dateString.isEmpty()) break; // end of the file
 

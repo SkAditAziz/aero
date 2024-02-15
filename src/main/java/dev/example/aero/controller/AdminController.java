@@ -35,7 +35,12 @@ public class AdminController {
         try {
             flightScheduleService.addOrUpdateFlightScheduleWithFile(file);
         } catch (Exception e) {
-            model.addAttribute("errMsg", "Can not upload file");
+            String errMsg;
+            if (e instanceof IllegalArgumentException)
+                errMsg = e.getMessage();
+            else
+                errMsg = "Can not upload file";
+            model.addAttribute("errMsg", errMsg);
             return "flight_add_fail";
         }
         return "confirm_add_flight";
