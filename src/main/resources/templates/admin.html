@@ -43,7 +43,7 @@
             <br>
             <label>Select Flights: </label>
             <br>
-            <button type="button" onclick="selectAll()">Select All</button>
+            <button type="button" onclick="toggleSelectAll()">Select All</button>
             <div th:each="flightID : ${flightIDs}">
                 <input type="checkbox" th:field="*{flightIDs}" th:value="${flightID}" />
                 <span th:text="${flightID}"></span>
@@ -63,11 +63,22 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    function selectAll() {
+    function toggleSelectAll() {
         var checkboxes = document.querySelectorAll('#addFlightForm input[type="checkbox"]');
+        var selectAllButton = document.querySelector('#addFlightForm button');
+
+        var areAllChecked = true;
         checkboxes.forEach(function(checkbox) {
-            checkbox.checked = true;
+            if (!checkbox.checked) {
+                areAllChecked = false;
+            }
         });
+
+        checkboxes.forEach(function(checkbox) {
+            checkbox.checked = !areAllChecked;
+        });
+
+        selectAllButton.textContent = areAllChecked ? 'Select All' : 'Unselect All';
     }
 
     $(document).ready(function() {
