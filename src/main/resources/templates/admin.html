@@ -6,25 +6,33 @@
     <title>Admin</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        .row {
+            background-color: #F0E68C;
+        }
         .form-container {
             display: none;
         }
+        .row.mb-2 {
+            display: flex;
+            justify-content: center; /* Horizontally center the content */
+            align-items: center; /* Vertically center the content */
+            height: 100%; /* Adjust the height as needed */
+        }
         .clickable-label {
+            position: center;
             cursor: pointer;
             font-weight: bold;
-            text-decoration: underline;
+            font-size: 30px;
         }
     </style>
 </head>
 <body>
 <div class="container mt-5">
-    <div class="row">
-        <div class="col">
-            <label for="addFlightForm" class="clickable-label">Add Flight</label>
-        </div>
-        <div class="col">
-            <label for="uploadForm" class="clickable-label">Add Flights By Uploading File</label>
-        </div>
+    <div class="row mb-2">
+        <label for="addFlightForm" class="clickable-label">Add Flight</label>
+    </div>
+    <div class="row mb-2">
+        <label for="uploadForm" class="clickable-label">Add Flights By Uploading File</label>
     </div>
     <div id="addFlightForm" class="form-container mt-3">
         <form th:action="@{/admin/add_flight}" method="post" th:object="${addFlightReqDTO}">
