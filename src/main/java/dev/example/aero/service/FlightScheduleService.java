@@ -158,7 +158,7 @@ public class FlightScheduleService {
 
     @Transactional
     private void cancelFlight(LocalDate flightDate, String flightID) {
-            List<FlightSchedule> schedulesToCancel = flightScheduleRepository.findIdByflightDateAndflightID(flightDate, flightID);
+            List<FlightSchedule> schedulesToCancel = flightScheduleRepository.findByflightDateAndflightID(flightDate, flightID);
         List<Ticket> ticketsToCancel = new ArrayList<>();
         for (FlightSchedule schedule : schedulesToCancel) {
             ticketsToCancel.addAll(ticketRepository.findByflightSchedule(schedule));
