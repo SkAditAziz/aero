@@ -38,7 +38,7 @@
     <div id="addFlightForm" class="form-container mt-3">
         <form th:action="@{/admin/add_flight}" method="post" th:object="${addFlightReqDTO}">
             <label for="journeyDate">Date:</label>
-            <input type="date" id="journeyDate" name="journeyDate" th:field="*{journeyDate}" th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+            <input type="date" id="journeyDate" name="journeyDate" th:field="*{journeyDate}" th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" onchange="updateFlightIDs()">
 
             <br>
             <label>Select Flights: </label>
@@ -79,6 +79,22 @@
         });
 
         selectAllButton.textContent = areAllChecked ? 'Select All' : 'Unselect All';
+    }
+
+    function updateFlightIDs() {
+        var selectedDate = document.getElementById('journeyDate').value;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/schedule/flightids?date=' + selectedDate, true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var flightIDs = JSON.parse(xhr.responseText);
+                var checkboxes = document.querySelectorAll('#addFlightForm input[type="checkbox"]');
+                checkboxes.forEach(function(checkbox) {
+                    checkbox.checked = flightIDs.includes(checkbox.value);
+                });
+            }
+        };
+        xhr.send();
     }
 
     $(document).ready(function() {
