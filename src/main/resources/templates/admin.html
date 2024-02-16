@@ -65,7 +65,7 @@
     <div id="cancelFlight" class="form-container mt-3">
         <form th:action="@{/admin/cancel_flight}" method="post" th:object="${addFlightReqDTO}">
             <label for="cancelDate">First Select the Date:</label><br>
-            <input type="date" id="cancelDate" name="journeyDate" th:field="*{journeyDate}" th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+            <input type="date" id="cancelDate" name="journeyDate" th:field="*{journeyDate}" th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" onchange="getFlightIDsToCancel()">
 
             <br><br>
             <div id="flightIDsContainer" style="display: none;">
@@ -111,6 +111,38 @@
                 checkboxes.forEach(function(checkbox) {
                     checkbox.checked = flightIDs.includes(checkbox.value);
                 });
+            }
+        };
+        xhr.send();
+    }
+
+    function getFlightIDsToCancel() {
+        var selectedDate = document.getElementById("cancelDate").value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/schedule/flightids?date=" + selectedDate, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var flightIDs = JSON.parse(xhr.responseText);
+
+                var flightIDsContainer = document.getElementById("flightIDsContainer");
+                flightIDsContainer.style.display = "block";
+                flightIDsContainer.innerHTML = "";
+                flightIDs.forEach(function (flightID) {
+                    var checkboxDiv = document.createElement("div");
+                    var checkbox = document.createElement("input");
+                    checkbox.type = "checkbox";
+                    checkbox.name = "flightIDs";
+                    checkbox.value = flightID;
+                    var span = document.createElement("span");
+                    span.textContent = flightID;
+                    checkboxDiv.appendChild(checkbox);
+                    checkboxDiv.appendChild(span);
+                    flightIDsContainer.appendChild(checkboxDiv);
+                });
+
+                var confirmButton = document.getElementById("confirmButton");
+                confirmButton.style.display = flightIDs.length > 0 ? "block" : "none";
             }
         };
         xhr.send();
