@@ -45,4 +45,10 @@ public class AdminController {
         }
         return "confirm_add_flight";
     }
+
+    @PostMapping("/cancel_flight")
+    public String cancelFlight(AddFlightReqDTO addFlightReqDTO) {
+        flightScheduleService.cancelFlightsOnDate(addFlightReqDTO.getJourneyDate(), addFlightReqDTO.getFlightIDs());
+        return "confirm_add_flight";
+    }
 }
