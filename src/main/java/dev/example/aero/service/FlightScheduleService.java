@@ -158,7 +158,7 @@ public class FlightScheduleService {
 
     @Transactional
     private void cancelFlight(LocalDate flightDate, String flightID) {
-            List<FlightSchedule> schedulesToCancel = flightScheduleRepository.findByflightDateAndflightID(flightDate, flightID);
+        List<FlightSchedule> schedulesToCancel = flightScheduleRepository.findByflightDateAndflightID(flightDate, flightID);
         List<Ticket> ticketsToCancel = new ArrayList<>();
         for (FlightSchedule schedule : schedulesToCancel) {
             ticketsToCancel.addAll(ticketRepository.findByflightSchedule(schedule));
@@ -190,5 +190,11 @@ public class FlightScheduleService {
                 flightSearchReqDTO.getSeatClass().getCode(),
                 flightSearchReqDTO.getNoPassengers()
         );
+    }
+
+    public void cancelFlightsOnDate(LocalDate flightDate, List<String> flightIDs) {
+        for (String flightId : flightIDs) {
+            cancelFlight(flightDate, flightId);
+        }
     }
 }
