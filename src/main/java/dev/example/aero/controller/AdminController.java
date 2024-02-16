@@ -47,8 +47,13 @@ public class AdminController {
     }
 
     @PostMapping("/cancel_flight")
-    public String cancelFlight(AddFlightReqDTO addFlightReqDTO) {
-        flightScheduleService.cancelFlightsOnDate(addFlightReqDTO.getJourneyDate(), addFlightReqDTO.getFlightIDs());
+    public String cancelFlight(AddFlightReqDTO addFlightReqDTO, Model model) {
+        try {
+            flightScheduleService.cancelFlightsOnDate(addFlightReqDTO.getJourneyDate(), addFlightReqDTO.getFlightIDs());
+        } catch (Exception e) {
+            model.addAttribute("errMsg", "No flight Selected!");
+            return "flight_add_fail";
+        }
         return "confirm_add_flight";
     }
 }

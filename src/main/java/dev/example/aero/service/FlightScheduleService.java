@@ -193,6 +193,9 @@ public class FlightScheduleService {
     }
 
     public void cancelFlightsOnDate(LocalDate flightDate, List<String> flightIDs) {
+        if (flightIDs == null || flightIDs.isEmpty() || flightIDs.stream().anyMatch(String::isEmpty))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
         for (String flightId : flightIDs) {
             cancelFlight(flightDate, flightId);
         }
