@@ -3,8 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Confirmed</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #ffffff;
+            padding-top: 50px;
+        }
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
 </head>
 <body>
-    <h3>Flights are added or Updated!</h3>
+<div class="container">
+    <img th:src="@{/images/confirm-icon.png}" alt="Success" class="success-image" style="width: 25%; height: 25%;">
+    <h3 class="mt-2 mb-2" style="font-family: Fira Sans;">Flight schedule Updated!</h3>
+    <a th:href="@{/}" class="btn btn-primary">Return to Home</a>
+</div>
 </body>
 </html>
