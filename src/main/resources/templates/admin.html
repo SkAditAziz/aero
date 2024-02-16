@@ -35,6 +35,9 @@
     <div class="row mb-2">
         <label for="uploadForm" class="clickable-label">Add Flights By Uploading File</label>
     </div>
+    <div class="row mb-2">
+        <label for="cancelFlight" class="clickable-label">Cancel Flight</label>
+    </div>
     <div id="addFlightForm" class="form-container mt-3">
         <form th:action="@{/admin/add_flight}" method="post" th:object="${addFlightReqDTO}">
             <label for="journeyDate">Date:</label>
@@ -57,6 +60,22 @@
         <form th:action="@{/admin/upload}" method="post" enctype="multipart/form-data">
             <input id="input-file" type="file" name="file" />
             <button type="submit">Upload</button>
+        </form>
+    </div>
+    <div id="cancelFlight" class="form-container mt-3">
+        <form th:action="@{/admin/cancel_flight}" method="post" th:object="${addFlightReqDTO}">
+            <label for="cancelDate">First Select the Date:</label><br>
+            <input type="date" id="cancelDate" name="journeyDate" th:field="*{journeyDate}" th:min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+
+            <br><br>
+            <div id="flightIDsContainer" style="display: none;">
+                <div th:each="flightID : ${flightIDsToCancel}">
+                    <input type="checkbox" th:field="*{flightIDs}" th:value="${flightID}" />
+                    <span th:text="${flightID}"></span>
+                </div>
+            </div>
+
+            <button type="submit" id="confirmButton" class="btn btn-danger btn-sm" style="display: none;">Cancel Selected Flight</button>
         </form>
     </div>
 </div>
