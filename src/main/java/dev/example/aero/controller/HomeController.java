@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -70,6 +71,7 @@ public class HomeController {
     public String showAdmin(@NotNull Model model) {
         model.addAttribute("flightIDs", flightRepository.findAllIds());
         model.addAttribute("addFlightReqDTO", new AddFlightReqDTO());
+        model.addAttribute("flightIDsToCancel", new ArrayList<String>());
         return "admin";
     }
 }
