@@ -101,20 +101,32 @@
     }
 
     function updateFlightIDs() {
-        var selectedDate = document.getElementById('journeyDate').value;
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/schedule/flightids?date=' + selectedDate, true);
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                var flightIDs = JSON.parse(xhr.responseText);
-                var checkboxes = document.querySelectorAll('#addFlightForm input[type="checkbox"]');
-                checkboxes.forEach(function(checkbox) {
-                    checkbox.checked = flightIDs.includes(checkbox.value);
-                });
-            }
-        };
-        xhr.send();
-    }
+    var selectedDate = document.getElementById('journeyDate').value;
+    var xhrAdded = new XMLHttpRequest();
+    xhrAdded.open('GET', '/schedule/flightids?date=' + selectedDate, true);
+    xhrAdded.onload = function() {
+        if (xhrAdded.status === 200) {
+            var addedFlightIDs = JSON.parse(xhrAdded.responseText);
+            var xhrCanceled = new XMLHttpRequest();
+            xhrCanceled.open('GET', '/schedule/canceled-flightids?date=' + selectedDate, true);
+            xhrCanceled.onload = function() {
+                if (xhrCanceled.status === 200) {
+                    var canceledFlightIDs = JSON.parse(xhrCanceled.responseText);
+                    var checkboxes = document.querySelectorAll('#addFlightForm input[type="checkbox"]');
+                    checkboxes.forEach(function(checkbox) {
+                        checkbox.checked = addedFlightIDs.includes(checkbox.value);
+                        if (canceledFlightIDs.includes(checkbox.value)) {
+                            checkbox.disabled = true;
+                            checkbox.parentElement.style.textDecoration = 'line-through';
+                        }
+                    });
+                }
+            };
+            xhrCanceled.send();
+        }
+    };
+    xhrAdded.send();
+}
 
     function getFlightIDsToCancel() {
         var selectedDate = document.getElementById("cancelDate").value;
