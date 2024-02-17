@@ -53,7 +53,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="flightSchedule : ${flightSchedules}" th:if="${flightSchedule.seatAvailable}">
+            <tr th:each="flightSchedule : ${flightSchedules}" th:if="${flightSchedule.seatAvailable} and ${flightSchedule.flightStatus.toString()} == 'UPCOMING'">
                 <td th:text="${flightSchedule.id}"></td>
                 <td th:text="${flightSchedule.airlineName}" class="airlineName"></td>
                 <td>
