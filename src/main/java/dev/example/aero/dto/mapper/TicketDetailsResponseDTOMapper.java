@@ -16,7 +16,7 @@ public class TicketDetailsResponseDTOMapper implements Function<Ticket,TicketDet
                 ticket.getSeatClassType(),
                 ticket.getTotalSeats(),
                 ticket.getTotalFare(),
-                ticket.getTicketStatus()
+                ticket.getFlightStatus()
         );
     }
 }

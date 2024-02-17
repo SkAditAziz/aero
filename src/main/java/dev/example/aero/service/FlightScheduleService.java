@@ -3,7 +3,7 @@ package dev.example.aero.service;
 import dev.example.aero.dto.FlightDetailsResponseDTO;
 import dev.example.aero.dto.FlightSearchReqDTO;
 import dev.example.aero.dto.mapper.FlightDetailsResponseDTOMapper;
-import dev.example.aero.enumeration.TicketStatus;
+import dev.example.aero.enumeration.FlightStatus;
 import dev.example.aero.model.Flight;
 import dev.example.aero.model.FlightSchedule;
 import dev.example.aero.model.Ticket;
@@ -123,7 +123,7 @@ public class FlightScheduleService {
 
                 if (status == null || status.isEmpty()) {
                     addOrUpdateSingleFlightSchedule(flightDate, flightID);
-                } else if (status.equalsIgnoreCase(String.valueOf(TicketStatus.CANCELLED))) {
+                } else if (status.equalsIgnoreCase(String.valueOf(FlightStatus.CANCELLED))) {
                     cancelFlight(flightDate, flightID);
                 }
             }
@@ -149,7 +149,7 @@ public class FlightScheduleService {
                 String status = record.get(2);
                 if (status == null || status.isEmpty()) {
                     addOrUpdateSingleFlightSchedule(flightDate, flightID);
-                } else if (status.equalsIgnoreCase(String.valueOf(TicketStatus.CANCELLED))) {
+                } else if (status.equalsIgnoreCase(String.valueOf(FlightStatus.CANCELLED))) {
                     cancelFlight(flightDate, flightID);
                 }
             }
@@ -167,7 +167,7 @@ public class FlightScheduleService {
             flightScheduleRepository.save(schedule);
         }
         for (Ticket t : ticketsToCancel) {
-            t.setTicketStatus(TicketStatus.CANCELLED);
+            t.setFlightStatus(FlightStatus.CANCELLED);
             ticketRepository.save(t);
             jmsTemplate.convertAndSend("messagequeue.q", t);
         }

@@ -1,7 +1,7 @@
 package dev.example.aero.dto;
 
 import dev.example.aero.enumeration.SeatClassType;
-import dev.example.aero.enumeration.TicketStatus;
+import dev.example.aero.enumeration.FlightStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,5 +22,5 @@ public class TicketDetailsResponseDTO {
     private SeatClassType seatClassType;
     private int seats;
     private BigDecimal totalFare;
-    private TicketStatus ticketStatus;
+    private FlightStatus flightStatus;
 }

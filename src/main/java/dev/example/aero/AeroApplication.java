@@ -48,7 +48,7 @@ public class AeroApplication {
 //			SeatClassType s = SeatClassType.BUSINESS;
 //			int totalSeat = 2;
 //			double totalFare = 13000.0;
-//			TicketStatus ts = TicketStatus.UPCOMING;
+//			FlightStatus ts = FlightStatus.UPCOMING;
 //
 //			Ticket t = new Ticket("0",f,p,fs,s,totalSeat,totalFare,ts);
 //			ticketRepository.save(t);

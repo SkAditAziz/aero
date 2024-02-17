@@ -5,7 +5,7 @@ import dev.example.aero.dto.TicketDetailsResponseDTO;
 import dev.example.aero.dto.mapper.TicketDetailsResponseDTOMapper;
 import dev.example.aero.model.*;
 import dev.example.aero.enumeration.SeatClassType;
-import dev.example.aero.enumeration.TicketStatus;
+import dev.example.aero.enumeration.FlightStatus;
 import dev.example.aero.repository.FlightRepository;
 import dev.example.aero.repository.FlightScheduleRepository;
 import dev.example.aero.repository.PassengerRepository;
@@ -84,8 +84,8 @@ public class TicketService {
         Flight flight = flightRepository.findById(flightSchedule.getFlightID()).orElse(null);
         SeatClassType seatClassType = flightSchedule.getSeatClassType();
         BigDecimal totalFare = flightSchedule.getTotalFare(flightScheduleRequest.getTotalSeats());
-        TicketStatus ticketStatus = TicketStatus.UPCOMING;
-        return new Ticket(flight, flightScheduleRequest.getPassenger(), flightSchedule,seatClassType, flightScheduleRequest.getTotalSeats(), totalFare, ticketStatus);
+        FlightStatus flightStatus = FlightStatus.UPCOMING;
+        return new Ticket(flight, flightScheduleRequest.getPassenger(), flightSchedule,seatClassType, flightScheduleRequest.getTotalSeats(), totalFare, flightStatus);
     }
 
     public String saveTicketPdf(Ticket ticket, byte[] pdfTicket) {

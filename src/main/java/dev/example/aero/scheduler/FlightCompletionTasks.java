@@ -1,6 +1,6 @@
 package dev.example.aero.scheduler;
 
-import dev.example.aero.enumeration.TicketStatus;
+import dev.example.aero.enumeration.FlightStatus;
 import dev.example.aero.model.Ticket;
 import dev.example.aero.repository.PassengerRepository;
 import dev.example.aero.repository.TicketRepository;
@@ -25,7 +25,7 @@ public class FlightCompletionTasks {
     public void updateTicketStatusAndDistance() {
         List<Ticket> ticketsToUpdate = ticketRepository.completedFlightTickets();
         for (Ticket t: ticketsToUpdate) {
-            t.setTicketStatus(TicketStatus.COMPLETED);
+            t.setFlightStatus(FlightStatus.COMPLETED);
             ticketRepository.save(t);
             passengerRepository.addDistanceFlied(t.getPassenger(), t.getFlight());
         }

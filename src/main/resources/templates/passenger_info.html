@@ -40,7 +40,7 @@
             <td th:text="${ticket.seatClassType}"></td>
             <td th:text="${ticket.seats}"></td>
             <td th:text="${ticket.totalFare}"></td>
-            <td th:text="${ticket.ticketStatus}"></td>
+            <td th:text="${ticket.flightStatus}"></td>
             <td><a th:href="@{'/passenger/showTicket/' + ${ticket.id}}" class="btn btn-primary btn-sm">Download</a></td>
         </tr>
         </tbody>

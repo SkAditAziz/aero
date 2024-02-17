@@ -1,8 +1,8 @@
 package dev.example.aero.model;
 
 import dev.example.aero.custom.CustomTicketIDGenerator;
+import dev.example.aero.enumeration.FlightStatus;
 import dev.example.aero.enumeration.SeatClassType;
-import dev.example.aero.enumeration.TicketStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -49,15 +49,15 @@ public class Ticket implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS")
-    private TicketStatus ticketStatus;
+    private FlightStatus flightStatus;
 
-    public Ticket(Flight flight, Passenger passenger, FlightSchedule flightSchedule, SeatClassType seatClassType, int totalSeats, BigDecimal totalFare, TicketStatus ticketStatus) {
+    public Ticket(Flight flight, Passenger passenger, FlightSchedule flightSchedule, SeatClassType seatClassType, int totalSeats, BigDecimal totalFare, FlightStatus flightStatus) {
         this.flight = flight;
         this.passenger = passenger;
         this.flightSchedule = flightSchedule;
         this.seatClassType = seatClassType;
         this.totalSeats = totalSeats;
         this.totalFare = totalFare;
-        this.ticketStatus = ticketStatus;
+        this.flightStatus = flightStatus;
     }
 }
