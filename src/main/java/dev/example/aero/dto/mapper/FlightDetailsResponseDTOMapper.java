@@ -4,7 +4,6 @@ import dev.example.aero.dto.FlightDetailsResponseDTO;
 import dev.example.aero.model.Flight;
 import dev.example.aero.model.FlightSchedule;
 import dev.example.aero.repository.FlightRepository;
-import dev.example.aero.service.FlightService;
 
 import java.util.function.Function;
 
@@ -28,7 +27,8 @@ public class FlightDetailsResponseDTOMapper implements Function<FlightSchedule, 
                 flightSchedule.getSeatClassType(),
                 flightSchedule.isSeatAvailable(noPassengers),
                 flightSchedule.getTotalFare(noPassengers),
-                flightSchedule.getId()
+                flightSchedule.getId(),
+                flightSchedule.getFlightStatus()
         );
     }
 }

@@ -1,5 +1,6 @@
 package dev.example.aero.dto;
 
+import dev.example.aero.enumeration.FlightStatus;
 import dev.example.aero.enumeration.SeatClassType;
 import lombok.*;
 
@@ -19,4 +20,5 @@ public class FlightDetailsResponseDTO {
     private boolean seatAvailable;
     private BigDecimal totalFare;
     private long scheduleId;
+    private FlightStatus flightStatus;
 }
