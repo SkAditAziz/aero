@@ -1,5 +1,6 @@
 package dev.example.aero.model;
 
+import dev.example.aero.enumeration.FlightStatus;
 import dev.example.aero.enumeration.SeatClassType;
 import dev.example.aero.enumeration.SeatClassTypeConverter;
 import jakarta.persistence.*;
@@ -38,12 +39,17 @@ public class FlightSchedule implements Serializable {
     @Column(name = "FARE", nullable = false)
     private BigDecimal fare;
 
-    public FlightSchedule(LocalDate flightDate, String flightID, SeatClassType seatClassType, int availableSeats, BigDecimal fare) {
+    @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS", nullable = false)
+    private FlightStatus flightStatus;
+
+    public FlightSchedule(LocalDate flightDate, String flightID, SeatClassType seatClassType, int availableSeats, BigDecimal fare, FlightStatus flightStatus) {
         this.flightDate = flightDate;
         this.flightID = flightID;
         this.seatClassType = seatClassType;
         this.availableSeats = availableSeats;
         this.fare = fare;
+        this.flightStatus = flightStatus;
     }
 
     public BigDecimal getTotalFare(int noPassenger) {

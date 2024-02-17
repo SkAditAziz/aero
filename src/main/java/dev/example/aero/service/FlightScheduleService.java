@@ -59,7 +59,7 @@ public class FlightScheduleService {
         if (flight != null) {
             try {
                 List<FlightSchedule> flightSchedules = flight.getSeatInfoList().stream()
-                        .map(seatInfo -> new FlightSchedule(flightDate, flightID, seatInfo.getSeatClassType(), seatInfo.getAvailableSeats(), seatInfo.getFare()))
+                        .map(seatInfo -> new FlightSchedule(flightDate, flightID, seatInfo.getSeatClassType(), seatInfo.getAvailableSeats(), seatInfo.getFare(), FlightStatus.UPCOMING))
                         .collect(Collectors.toList());
                 flightScheduleRepository.saveAll(flightSchedules);
             } catch (DataIntegrityViolationException e) {
