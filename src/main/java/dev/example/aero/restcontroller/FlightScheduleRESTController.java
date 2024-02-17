@@ -51,4 +51,10 @@ public class FlightScheduleRESTController {
         LocalDate flightDate = LocalDate.parse(date);
         return flightScheduleRepository.getAlreadyAddedFlightIDsOnDate(flightDate);
     }
+
+    @GetMapping("/canceled-flightids")
+    public List<String> getCancelledFlightIDs(@RequestParam String date) {
+        LocalDate flightDate = LocalDate.parse(date);
+        return flightScheduleRepository.getAlreadyCancelledFlightIDsOnDate(flightDate);
+    }
 }
