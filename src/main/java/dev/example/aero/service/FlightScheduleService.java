@@ -162,8 +162,7 @@ public class FlightScheduleService {
         List<Ticket> ticketsToCancel = new ArrayList<>();
         for (FlightSchedule schedule : schedulesToCancel) {
             ticketsToCancel.addAll(ticketRepository.findByflightSchedule(schedule));
-            // disabling schedule by making no available seat, adding a flag in the FlightSchedule class is a better solution
-            schedule.setAvailableSeats(0);
+            schedule.setFlightStatus(FlightStatus.CANCELLED);
             flightScheduleRepository.save(schedule);
         }
         for (Ticket t : ticketsToCancel) {
