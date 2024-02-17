@@ -23,4 +23,7 @@ public interface FlightScheduleRepository extends JpaRepository<FlightSchedule,L
 
     @Query("SELECT DISTINCT(fs.flightID) from FlightSchedule fs WHERE fs.flightDate=:flightDate AND fs.flightStatus != 'CANCELLED'")
     List<String> getAlreadyAddedFlightIDsOnDate(LocalDate flightDate);
+
+    @Query("SELECT DISTINCT(fs.flightID) from FlightSchedule fs WHERE fs.flightDate=:flightDate AND fs.flightStatus = 'CANCELLED'")
+    List<String> getAlreadyCancelledFlightIDsOnDate(LocalDate flightDate);
 }
