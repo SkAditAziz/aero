@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RequestMapping("/admin")
@@ -25,6 +26,9 @@ public class AdminController {
             flightScheduleService.addOrUpdateFlightSchedule(addFlightReqDTO.getJourneyDate(), addFlightReqDTO.getFlightIDs());
         } catch (DataIntegrityViolationException e) {
             model.addAttribute("errMsg", "Already have the Flight(s) On the day");
+            return "flight_add_fail";
+        } catch (ResponseStatusException rse) {
+            model.addAttribute("errMsg", rse.getReason());
             return "flight_add_fail";
         }
         return "confirm_add_flight";
