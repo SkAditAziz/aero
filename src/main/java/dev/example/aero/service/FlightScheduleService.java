@@ -45,7 +45,7 @@ public class FlightScheduleService {
 
     public void addOrUpdateFlightSchedule(LocalDate flightDate, List<String> flightIDs) {
         if (flightIDs == null || flightIDs.isEmpty() || flightIDs.stream().anyMatch(String::isEmpty))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Flight Inserted");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Please select flights correctly!");
 
         for (String flightId : flightIDs) {
             addOrUpdateSingleFlightSchedule(flightDate, flightId);
