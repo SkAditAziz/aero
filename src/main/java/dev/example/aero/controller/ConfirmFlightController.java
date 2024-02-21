@@ -26,6 +26,9 @@ public class ConfirmFlightController {
         FlightSchedule flightSchedule = flightScheduleRepository.findById(scheduleId).orElse(null);
         Passenger currentPassenger = UserProvider.getCurrentPassenger();
         try {
+            /* TODO if I reload the confirm_flight page, this ticketService.getSelectedSeats() is becoming 0
+                new Ticket is being created with empty seat!
+            */
             ticketService.issueTicket(new FlightScheduleRequest(flightSchedule, ticketService.getSelectedSeats(), currentPassenger));
             return "confirm_flight";
         } catch (ResponseStatusException e) {
