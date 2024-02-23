@@ -5,10 +5,10 @@
     <title>Failed</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="bg-light">
+<body>
 <div class="container mt-5">
-    <h2 class="text-danger">Ooops!!</h2>
-    <h4 th:text="${errMsg}" class="text-secondary"></h4>
+    <h4 th:text="${errMsg}" class="text-secondary text-danger"></h4>
+    <img th:src="@{/images/retry.jpg}" alt="retry" style="width: 15%; height: 15%;">
 </div>
 </body>
 </html>
