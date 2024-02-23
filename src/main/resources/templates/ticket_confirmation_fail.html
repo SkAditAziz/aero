@@ -2,10 +2,13 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Sorry</title>
+    <title>Failed</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-<h2>Ooops!!</h2>
-<h4 th:text="${errMsg}"></h4>
+<body class="bg-light">
+<div class="container mt-5">
+    <h2 class="text-danger">Ooops!!</h2>
+    <h4 th:text="${errMsg}" class="text-secondary"></h4>
+</div>
 </body>
 </html>
