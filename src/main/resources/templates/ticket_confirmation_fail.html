@@ -13,7 +13,9 @@
 <body>
 <div class="container mt-5">
     <h4 th:text="${errMsg}" class="text-secondary text-danger"></h4>
-    <img th:src="@{/images/retry.jpg}" alt="retry" style="width: 15%; height: 15%;">
+    <a th:href="@{/}">
+        <img th:src="@{/images/retry.jpg}" alt="retry" style="width: 15%; height: 15%;">
+    </a>
 </div>
 </body>
 </html>
