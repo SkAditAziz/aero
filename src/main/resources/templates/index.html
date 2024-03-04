@@ -15,30 +15,7 @@
 
 <body>
 <div class="container-fluid">
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-light mu-10 mt-2 justify-content-end">
-        <a class="navbar-brand mr-auto" th:href="@{/}">
-            <img th:src="@{/images/aero_logo.png}"  alt="AERO Logo" style="max-height: 40px;">
-        </a>
-        <div class="navbar-nav">
-            <form class="nav-item" th:action="@{/login}" method="get">
-                <button type="submit" class="btn bg-light">Login</button>
-            </form>
-            <form class="nav-item" th:action="@{/logout}" method="get">
-                <button type="submit" class="btn bg-light">Logout</button>
-            </form>
-            <form class="nav-item" th:action="@{/register}" method="get">
-                <button type="submit" class="btn bg-light">Register</button>
-            </form>
-            <form class="nav-item" th:action="@{/passenger/info}" method="get">
-                <button type="submit" class="btn bg-light">My Profile</button>
-            </form>
-            <form class="nav-item" th:action="@{/admin}" method="get">
-                <button type="submit" class="btn btn-info">Admin</button>
-            </form>
-            <button class="nav-item btn btn-link" th:onclick="window.open([[${whatsappURL}]])">Chat with us on WhatsApp Web</button>
-        </div>
-    </nav>
+    <div th:replace="_navbar.html"></div>
 
     <div class="row justify-content-center">
         <div class="col-md-8">
