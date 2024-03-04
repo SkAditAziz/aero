@@ -11,6 +11,7 @@
     </style>
 </head>
 <body>
+<div th:replace="_navbar.html"></div>
 <div class="container mt-5">
     <h4 th:text="${errMsg}" class="text-secondary text-danger"></h4>
     <a th:href="@{/}">
