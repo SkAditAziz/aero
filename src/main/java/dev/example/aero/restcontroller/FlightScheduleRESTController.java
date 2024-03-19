@@ -1,6 +1,7 @@
 package dev.example.aero.restcontroller;
 
 import dev.example.aero.dto.FlightDetailsResponseDTO;
+import dev.example.aero.dto.FlightSearchReqDTO;
 import dev.example.aero.repository.FlightScheduleRepository;
 import dev.example.aero.service.FlightScheduleService;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +32,11 @@ public class FlightScheduleRESTController {
         if (flightResponseDTOList.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"No flight found");
         return flightResponseDTOList;
+    }
+
+    @GetMapping("/findFlights")
+    public List<FlightDetailsResponseDTO> getFlightDetailsOnDateWithBody(@RequestBody FlightSearchReqDTO flightSearchReqDTO) {
+        return flightScheduleService.getFlightDetailsOnDate(flightSearchReqDTO);
     }
 
     @PostMapping("/insert")
