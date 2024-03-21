@@ -34,7 +34,7 @@ public class FlightScheduleRESTController {
         return flightResponseDTOList;
     }
 
-    @GetMapping("/findFlights")
+    @PostMapping("/findFlights")
     public List<FlightDetailsResponseDTO> getFlightDetailsOnDateWithBody(@RequestBody FlightSearchReqDTO flightSearchReqDTO) {
         return flightScheduleService.getFlightDetailsOnDate(flightSearchReqDTO);
     }
